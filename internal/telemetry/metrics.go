@@ -21,7 +21,7 @@ var globalMetrics *Metrics
 
 // InitializeMetrics sets up metric instruments
 func InitializeMetrics() error {
-	meter := otel.Meter(serviceName)
+	meter := otel.GetMeterProvider().Meter(serviceName)
 
 	queryCounter, err := meter.Int64Counter(
 		"bgpin.queries.total",
