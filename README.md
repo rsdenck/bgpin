@@ -1,8 +1,6 @@
-# bgpin
+# Platform Border Gateway Protocol
 
 <div align="center">
-
-**Platform Border Gateway Protocol**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8.svg)](https://golang.org/)
@@ -142,12 +140,20 @@ func main() {
 
 ## 📖 Documentação
 
-- [Guia Completo da CLI](docs/CLI_GUIDE.md) - Todos os comandos e exemplos
+- [Installation Guide](docs/INSTALLATION.md) - Guia completo de instalação
+- [Quick Start](docs/QUICK_START.md) - Início rápido
+- [CLI Guide](docs/CLI_GUIDE.md) - Todos os comandos e exemplos
 - [Flow Collector Guide](docs/FLOW_COLLECTOR.md) - NetFlow/sFlow/IPFIX setup e uso
 - [Telemetria](docs/TELEMETRY.md) - OpenTelemetry integration
 - [Arquitetura](docs/ARCHITECTURE.md) - Design e estrutura do projeto
 - [SDK README](sdk/README.md) - Documentação do SDK
 - [Exemplos de Output](docs/OUTPUT_EXAMPLES.md) - Exemplos visuais
+- [Vendors Status](docs/vendors/STATUS.md) - Status de implementação dos vendors
+- [Project Summary](docs/PROJECT_SUMMARY.md) - Resumo do projeto
+
+### Releases
+- [v0.2.0](docs/releases/v0.2.0.md) - Flow collector + Cisco/Juniper parsers
+- [v0.1.0](docs/releases/v0.1.0.md) - Initial release
 
 ## 🎨 Exemplos de Saída
 
