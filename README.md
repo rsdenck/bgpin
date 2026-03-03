@@ -40,12 +40,14 @@ CLI profissional + SDK + Telemetria + Flow Analysis
 - Exportação para OTLP, Jaeger, Prometheus
 - Dashboards Grafana
 
-### ✅ Flow Analysis (Preparado)
-- Coleta NetFlow/sFlow/IPFIX
-- Análise de tráfego por ASN
-- Detecção de anomalias (DDoS, spikes)
+### ✅ Flow Analysis
+- Coleta NetFlow/sFlow/IPFIX em tempo real
+- Análise de tráfego por ASN e prefixo
+- Detecção de anomalias (DDoS, spikes, drops)
 - Comparação de upstreams
 - Correlação BGP + Flow
+- Agregação configurável
+- Worker pools para alta performance
 
 ### 🔄 Em Desenvolvimento
 - Consulta múltiplos Looking Glass
@@ -87,6 +89,13 @@ bgpin asn peers 262978
 
 # Análise de prefixo
 bgpin prefix overview 186.250.184.0/24
+
+# Flow telemetry (requer configuração)
+bgpin flow top                    # Top prefixes por tráfego
+bgpin flow asn 15169              # Estatísticas de tráfego do ASN
+bgpin flow anomaly                # Detectar anomalias de tráfego
+bgpin flow upstream-compare       # Comparar upstreams
+bgpin flow stats                  # Estatísticas do coletor
 
 # Formato JSON
 bgpin asn info 262978 -o json
@@ -134,8 +143,11 @@ func main() {
 ## 📖 Documentação
 
 - [Guia Completo da CLI](docs/CLI_GUIDE.md) - Todos os comandos e exemplos
+- [Flow Collector Guide](docs/FLOW_COLLECTOR.md) - NetFlow/sFlow/IPFIX setup e uso
+- [Telemetria](docs/TELEMETRY.md) - OpenTelemetry integration
 - [Arquitetura](docs/ARCHITECTURE.md) - Design e estrutura do projeto
 - [SDK README](sdk/README.md) - Documentação do SDK
+- [Exemplos de Output](docs/OUTPUT_EXAMPLES.md) - Exemplos visuais
 
 ## 🎨 Exemplos de Saída
 

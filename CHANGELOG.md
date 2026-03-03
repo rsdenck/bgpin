@@ -5,6 +5,63 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-03-03
+
+### Added
+- Complete NetFlow/sFlow/IPFIX collector implementation
+- Real-time flow aggregation and processing
+- BGP correlation for traffic analysis
+- Anomaly detection (DDoS, traffic spikes, drops)
+- GitHub Actions workflow for Linux builds (amd64, arm64, 386)
+- Comprehensive flow collector documentation
+
+#### Flow Collector Features
+- Multi-protocol support (NetFlow v5/v9/v10, sFlow v5, IPFIX)
+- Concurrent flow processing with worker pools
+- Configurable aggregation windows
+- ASN-level traffic statistics
+- Memory-efficient with flow limits
+- Thread-safe operations
+
+#### New CLI Commands
+- `bgpin flow top` - Show top prefixes by traffic (real data)
+- `bgpin flow asn <asn>` - ASN traffic statistics (real data)
+- `bgpin flow anomaly` - Detect traffic anomalies (real data)
+- `bgpin flow upstream-compare` - Compare upstream providers
+- `bgpin flow stats` - Show collector statistics
+
+#### Configuration
+- Flow collection settings in bgpin.yaml
+- NetFlow, sFlow, IPFIX listener configuration
+- Worker pool and buffer size tuning
+- BGP correlation toggle
+- Anomaly detection thresholds
+
+#### Documentation
+- docs/FLOW_COLLECTOR.md - Complete flow collector guide
+- Exporter configuration examples (Cisco, Juniper, Linux)
+- Performance tuning guidelines
+- Troubleshooting section
+- Architecture diagrams
+
+### Changed
+- Updated README with flow collector features
+- Enhanced CLI output with real flow data when available
+- Improved error handling in flow processing
+
+### Technical Details
+- GoFlowCollector with UDP listeners
+- Flow aggregation with time windows
+- BGP correlation engine
+- Anomaly detection algorithms
+- Configurable thresholds and limits
+
+### CI/CD
+- GitHub Actions for automated builds
+- Multi-architecture Linux support (amd64, arm64, 386)
+- Automated releases with checksums
+- Test coverage reporting
+
 ## [0.1.0] - 2026-03-03
 
 ### Added
@@ -27,10 +84,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `bgpin asn peers` - Show RIS peers
 - `bgpin prefix overview` - Get prefix overview
 - `bgpin lg` - List looking glasses
-- `bgpin flow top` - Top prefixes by traffic (prepared)
-- `bgpin flow asn` - ASN traffic statistics (prepared)
-- `bgpin flow anomaly` - Detect anomalies (prepared)
-- `bgpin flow upstream-compare` - Compare upstreams (prepared)
 - `bgpin version` - Show version information
 
 #### SDK Features
@@ -77,11 +130,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- NetFlow/sFlow/IPFIX collector implementation
-- goflow integration
-- Time-series database storage
-- Grafana dashboards
-- Machine learning for anomaly detection
+- Time-series database storage (InfluxDB, TimescaleDB)
+- Grafana dashboard templates
+- Machine learning for advanced anomaly detection
 - Multiple Looking Glass support
 - Vendor-specific parsers (Cisco, Juniper, FRR)
 - RPKI validation
@@ -89,7 +140,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Interactive TUI mode
 - PeeringDB integration
 - RouteViews integration
+- Real-time streaming API
+- GeoIP enrichment
+- Export to Kafka/NATS
 
 ---
 
+[0.2.0]: https://github.com/rsdenck/bgpin/releases/tag/v0.2.0
 [0.1.0]: https://github.com/rsdenck/bgpin/releases/tag/v0.1.0
