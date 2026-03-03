@@ -1,6 +1,6 @@
-# Platform Border Gateway Protocol
-
 <div align="center">
+
+# Platform Border Gateway Protocol
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8.svg)](https://golang.org/)
