@@ -1,0 +1,74 @@
+# bgpin Configuration File
+# Copy this file to bgpin.yaml and customize as needed
+
+# General settings
+timeout: 30  # Default timeout in seconds
+output: table  # Default output format: table, json, yaml
+
+# Cache configuration
+cache:
+  enabled: true
+  ttl: 300  # Time to live in seconds (5 minutes)
+
+# Looking Glass configurations
+looking_glasses:
+  - name: "RIPE RIS"
+    url: "https://stat.ripe.net"
+    vendor: "ripe"
+    type: "http"
+    enabled: true
+
+  - name: "Hurricane Electric"
+    url: "https://lg.he.net"
+    vendor: "cisco"
+    type: "http"
+    enabled: false
+
+  - name: "Level3"
+    url: "https://lookingglass.centurylink.com"
+    vendor: "cisco"
+    type: "http"
+    enabled: false
+
+# RIPE RIS SDK Configuration
+ripe:
+  rate_limit: 10  # Requests per second
+  retry_max: 3
+  retry_wait_min: 1  # seconds
+  retry_wait_max: 10  # seconds
+  user_agent: "bgpin/0.1.0"
+
+# Analysis settings
+analysis:
+  # Detect AS-PATH prepending
+  max_prepend: 3  # Alert if same ASN appears more than this many times
+  
+  # Detect suspicious AS-PATH patterns
+  check_loops: true
+  check_bogon_asns: true
+  
+  # RPKI validation
+  rpki_enabled: false
+  rpki_server: ""
+
+# Output settings
+output_settings:
+  # Table format settings
+  table:
+    max_rows: 50
+    truncate: true
+  
+  # JSON format settings
+  json:
+    pretty: true
+    indent: 2
+  
+  # YAML format settings
+  yaml:
+    indent: 2
+
+# Logging
+logging:
+  level: "info"  # debug, info, warn, error
+  format: "text"  # text, json
+  output: "stderr"  # stdout, stderr, file path
