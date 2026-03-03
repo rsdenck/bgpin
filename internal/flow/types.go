@@ -56,15 +56,21 @@ type FlowStats struct {
 
 // ASNTraffic represents traffic statistics for an ASN
 type ASNTraffic struct {
-	ASN          uint32
-	InboundBPS   float64
-	OutboundBPS  float64
-	InboundPPS   float64
-	OutboundPPS  float64
-	TotalBytes   uint64
-	TotalPackets uint64
-	TopPrefixes  []PrefixTraffic
-	TopPeers     []PeerTraffic
+	ASN            uint32
+	InboundBPS     float64
+	OutboundBPS    float64
+	InboundPPS     float64
+	OutboundPPS    float64
+	InboundBytes   uint64
+	OutboundBytes  uint64
+	InboundPackets uint64
+	OutboundPackets uint64
+	InboundFlows   uint64
+	OutboundFlows  uint64
+	TotalBytes     uint64
+	TotalPackets   uint64
+	TopPrefixes    []PrefixTraffic
+	TopPeers       []PeerTraffic
 }
 
 // PrefixTraffic represents traffic for a specific prefix
@@ -92,6 +98,8 @@ type Anomaly struct {
 	Severity    string    // low, medium, high, critical
 	Description string
 	Prefix      string
+	DstAddr     net.IP
+	DstAS       uint32
 	ASN         uint32
 	Metric      string // bps, pps, flow_count
 	Baseline    float64

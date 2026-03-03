@@ -10,6 +10,41 @@ cache:
   enabled: true
   ttl: 300  # Time to live in seconds (5 minutes)
 
+# Flow collection configuration
+flow:
+  enabled: false  # Enable flow collection
+  
+  # NetFlow configuration
+  netflow:
+    enabled: true
+    addr: "0.0.0.0"
+    port: 2055
+  
+  # sFlow configuration
+  sflow:
+    enabled: true
+    addr: "0.0.0.0"
+    port: 6343
+  
+  # IPFIX configuration
+  ipfix:
+    enabled: true
+    addr: "0.0.0.0"
+    port: 4739
+  
+  # Processing configuration
+  workers: 4  # Number of flow processing workers
+  buffer_size: 10000  # Flow buffer size
+  bgp_correlation: true  # Enable BGP correlation
+  
+  # Aggregation settings
+  aggregate_window: 60  # Aggregation window in seconds
+  max_flows: 100000  # Maximum flows to keep in memory
+  
+  # Anomaly detection
+  anomaly_detection: true
+  anomaly_window: 300  # Anomaly detection window in seconds
+
 # Looking Glass configurations
 looking_glasses:
   - name: "RIPE RIS"

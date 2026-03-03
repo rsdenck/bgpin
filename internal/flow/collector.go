@@ -137,13 +137,22 @@ func (c *Collector) aggregateStats() {
 		if asnStats, ok := c.asnStats[flow.DstAS]; ok {
 			asnStats.TotalBytes += flow.Bytes
 			asnStats.TotalPackets += flow.Packets
+			asnStats.InboundBytes += flow.Bytes
+			asnStats.InboundPackets += flow.Packets
+			asnStats.InboundFlows++
 		} else {
 			c.asnStats[flow.DstAS] = &ASNTraffic{
-				ASN:          flow.DstAS,
-				TotalBytes:   flow.Bytes,
-				TotalPackets: flow.Packets,
-				TopPrefixes:  make([]PrefixTraffic, 0),
-				TopPeers:     make([]PeerTraffic, 0),
+				ASN:             flow.DstAS,
+				TotalBytes:      flow.Bytes,
+				TotalPackets:    flow.Packets,
+				InboundBytes:    flow.Bytes,
+				InboundPackets:  flow.Packets,
+				InboundFlows:    1,
+				OutboundBytes:   0,
+				OutboundPackets: 0,
+				OutboundFlows:   0,
+				TopPrefixes:     make([]PrefixTraffic, 0),
+				TopPeers:        make([]PeerTraffic, 0),
 			}
 		}
 	}
@@ -183,8 +192,8 @@ func (c *Collector) anomalyDetectionLoop(ctx context.Context) {
 
 // detectAnomalies detects traffic anomalies
 func (c *Collector) detectAnomalies() {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
+	c.mu.Lock()
+	defer c.mu.Unlock()
 
 	// Simple anomaly detection based on thresholds
 	for prefix, stats := range c.stats {
@@ -196,6 +205,7 @@ func (c *Collector) detectAnomalies() {
 				Description: fmt.Sprintf("High traffic detected on prefix %s", prefix),
 				Prefix:      prefix,
 				ASN:         stats.ASN,
+				DstAS:       stats.ASN,
 				Metric:      "bps",
 				Current:     stats.BPS,
 				Threshold:   1e9,
@@ -212,6 +222,7 @@ func (c *Collector) detectAnomalies() {
 				Description: fmt.Sprintf("Potential DDoS detected on prefix %s", prefix),
 				Prefix:      prefix,
 				ASN:         stats.ASN,
+				DstAS:       stats.ASN,
 				Metric:      "pps",
 				Current:     stats.PPS,
 				Threshold:   100000,
@@ -276,4 +287,24 @@ func (c *Collector) GetTopPrefixes(limit int) []FlowStats {
 	}
 
 	return stats
+}
+
+// GetTopFlows returns top flows by traffic
+func (c *Collector) GetTopFlows(limit int) []FlowRecord {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if len(c.flows) == 0 {
+		return []FlowRecord{}
+	}
+
+	// Return most recent flows (simplified)
+	flows := make([]FlowRecord, len(c.flows))
+	copy(flows, c.flows)
+
+	if len(flows) > limit {
+		flows = flows[len(flows)-limit:]
+	}
+
+	return flows
 }
