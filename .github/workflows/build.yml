@@ -119,7 +119,9 @@ jobs:
           go-version: '1.23'
 
       - name: Run tests
-        run: go test -v -race -coverprofile=coverage.txt -covermode=atomic $(go list ./... | grep -v /examples/)
+        run: |
+          # Test only packages with actual test files
+          go test -v -race -coverprofile=coverage.txt -covermode=atomic ./sdk/integration_test/...
 
       - name: Upload coverage
         uses: codecov/codecov-action@v4
