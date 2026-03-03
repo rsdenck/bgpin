@@ -1,8 +1,19 @@
-# bgpin - Plataforma BGP Completa
+# bgpin
 
-**CLI profissional + SDK + Telemetria + Flow Analysis**
+<div align="center">
 
-Plataforma completa em Golang para análise BGP, consulta de Looking Glass, telemetria de rede e correlação com flow data (NetFlow/sFlow/IPFIX).
+**Platform Border Gateway Protocol**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8.svg)](https://golang.org/)
+[![Release](https://img.shields.io/github/v/release/rsdenck/bgpin.svg)](https://github.com/rsdenck/bgpin/releases)
+[![Tests](https://img.shields.io/badge/tests-passing-success.svg)](https://github.com/rsdenck/bgpin)
+
+CLI profissional + SDK + Telemetria + Flow Analysis
+
+</div>
+
+---
 
 ## 🚀 Características
 
@@ -493,3 +504,8 @@ A CLI usa a biblioteca `go-pretty/table` para outputs visuais profissionais:
 - ✅ Largura dinâmica
 
 Veja mais exemplos em [docs/OUTPUT_EXAMPLES.md](docs/OUTPUT_EXAMPLES.md)
+
+
+## Overview
+
+Plataforma completa em Golang para análise BGP, consulta de Looking Glass, telemetria de rede e correlação com flow data (NetFlow/sFlow/IPFIX).
