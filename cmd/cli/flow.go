@@ -168,7 +168,7 @@ func runFlowTop(cmd *cobra.Command, args []string) error {
 	t.AppendFooter(table.Row{"", "", "", "Total: 2.69 Gbps", "368k", ""})
 	t.Render()
 
-	fmt.Println("\n⚠️  Note: Flow collection not enabled or no data available.")
+	fmt.Println("\nâš ï¸  Note: Flow collection not enabled or no data available.")
 	fmt.Println("To enable: configure flow settings in bgpin.yaml and restart exporters.")
 
 	return nil
@@ -206,7 +206,7 @@ func runFlowASN(cmd *cobra.Command, args []string) error {
 	t.AppendRow(table.Row{"Flows", "15,234", "12,891"})
 	t.Render()
 
-	fmt.Println("\n⚠️  Note: Flow collection not enabled or no data for this ASN.")
+	fmt.Println("\nâš ï¸  Note: Flow collection not enabled or no data for this ASN.")
 
 	return nil
 }
@@ -250,7 +250,7 @@ func runFlowAnomaly(cmd *cobra.Command, args []string) error {
 	}
 	t.Render()
 
-	fmt.Println("\n⚠️  Note: Anomaly detection not enabled or no anomalies detected.")
+	fmt.Println("\nâš ï¸  Note: Anomaly detection not enabled or no anomalies detected.")
 
 	return nil
 }
@@ -280,7 +280,7 @@ func runFlowUpstream(cmd *cobra.Command, args []string) error {
 
 	t.Render()
 
-	fmt.Println("\n⚠️  Note: Upstream comparison not yet implemented. This is example output.")
+	fmt.Println("\nâš ï¸  Note: Upstream comparison not yet implemented. This is example output.")
 	fmt.Println("This feature will correlate BGP data with actual traffic flows.")
 
 	return nil
@@ -298,7 +298,7 @@ func newFlowStatsCommand() *cobra.Command {
 
 func runFlowStats(cmd *cobra.Command, args []string) error {
 	if flowCollector == nil {
-		fmt.Println("⚠️  Flow collector not enabled.")
+		fmt.Println("âš ï¸  Flow collector not enabled.")
 		fmt.Println("To enable: set flow.enabled=true in bgpin.yaml")
 		return nil
 	}

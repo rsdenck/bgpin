@@ -1,15 +1,15 @@
 # Vendors Implementation Status
 
-## ✅ IMPLEMENTADO COMPLETAMENTE
+## âœ… IMPLEMENTADO COMPLETAMENTE
 
 ### Flow Telemetry (NetFlow/sFlow/IPFIX)
-- ✅ **NetFlow v5/v9/v10 (IPFIX)** - Coletor UDP completo
-- ✅ **sFlow v5** - Coletor UDP completo
-- ✅ **IPFIX** - Coletor UDP completo
-- ✅ **Agregação em tempo real** - Worker pools
-- ✅ **Correlação BGP** - Match flows com routing data
-- ✅ **Detecção de anomalias** - DDoS, spikes, drops
-- ✅ **CLI completa** - 5 comandos funcionais
+- âœ… **NetFlow v5/v9/v10 (IPFIX)** - Coletor UDP completo
+- âœ… **sFlow v5** - Coletor UDP completo
+- âœ… **IPFIX** - Coletor UDP completo
+- âœ… **AgregaÃ§Ã£o em tempo real** - Worker pools
+- âœ… **CorrelaÃ§Ã£o BGP** - Match flows com routing data
+- âœ… **DetecÃ§Ã£o de anomalias** - DDoS, spikes, drops
+- âœ… **CLI completa** - 5 comandos funcionais
 
 **Arquivos:**
 - `internal/flow/goflow_collector.go` - Coletor principal
@@ -19,14 +19,14 @@
 
 **Comandos CLI:**
 ```bash
-bgpin flow top                    # Top prefixes por tráfego
-bgpin flow asn 15169              # Estatísticas de ASN
+bgpin flow top                    # Top prefixes por trÃ¡fego
+bgpin flow asn 15169              # EstatÃ­sticas de ASN
 bgpin flow anomaly                # Detectar anomalias
 bgpin flow upstream-compare       # Comparar upstreams
-bgpin flow stats                  # Estatísticas do coletor
+bgpin flow stats                  # EstatÃ­sticas do coletor
 ```
 
-**Configuração:**
+**ConfiguraÃ§Ã£o:**
 ```yaml
 flow:
   enabled: true
@@ -43,20 +43,20 @@ flow:
 
 ---
 
-## 🚧 IMPLEMENTADO PARCIALMENTE
+## ðŸš§ IMPLEMENTADO PARCIALMENTE
 
 ### Tier 1 / Backbone / ISP Core
 
-#### 1. Cisco Systems ✅ PARSER IMPLEMENTADO
+#### 1. Cisco Systems âœ… PARSER IMPLEMENTADO
 **Suporte:** IOS, IOS-XE, IOS-XR, NX-OS
 
 **Implementado:**
-- ✅ SSH adapter (`internal/adapters/ssh/ssh.go`)
-- ✅ Parser completo (`internal/parsers/cisco/cisco.go`)
-- ✅ BGP neighbors parsing
-- ✅ BGP routes parsing
-- ✅ AS_PATH extraction
-- ✅ Multi-vendor support (IOS/IOS-XE/IOS-XR/NX-OS)
+- âœ… SSH adapter (`internal/adapters/ssh/ssh.go`)
+- âœ… Parser completo (`internal/parsers/cisco/cisco.go`)
+- âœ… BGP neighbors parsing
+- âœ… BGP routes parsing
+- âœ… AS_PATH extraction
+- âœ… Multi-vendor support (IOS/IOS-XE/IOS-XR/NX-OS)
 
 **Comandos suportados:**
 - `show ip bgp neighbors`
@@ -77,16 +77,16 @@ parser.Connect(ctx)
 neighbors, _ := parser.GetBGPNeighbors(ctx)
 ```
 
-#### 2. Juniper Networks ✅ PARSER IMPLEMENTADO
+#### 2. Juniper Networks âœ… PARSER IMPLEMENTADO
 **Suporte:** JunOS
 
 **Implementado:**
-- ✅ NETCONF adapter (`internal/adapters/netconf/netconf.go`)
-- ✅ Parser completo (`internal/parsers/junos/junos.go`)
-- ✅ XML RPC parsing
-- ✅ BGP neighbors via NETCONF
-- ✅ BGP routes via NETCONF
-- ✅ Structured XML parsing
+- âœ… NETCONF adapter (`internal/adapters/netconf/netconf.go`)
+- âœ… Parser completo (`internal/parsers/junos/junos.go`)
+- âœ… XML RPC parsing
+- âœ… BGP neighbors via NETCONF
+- âœ… BGP routes via NETCONF
+- âœ… Structured XML parsing
 
 **RPCs suportados:**
 - `<get-bgp-neighbor-information/>`
@@ -107,19 +107,19 @@ neighbors, _ := parser.GetBGPNeighbors(ctx)
 
 ---
 
-## ❌ NÃO IMPLEMENTADO (Estrutura Preparada)
+## âŒ NÃƒO IMPLEMENTADO (Estrutura Preparada)
 
 ### 3. Arista Networks
-**Status:** Estrutura básica existe
+**Status:** Estrutura bÃ¡sica existe
 **Protocolo:** eAPI (HTTP JSON), gNMI, SSH CLI
 **Arquivo:** `internal/parsers/arista/` (vazio)
 
-**Libs necessárias:**
+**Libs necessÃ¡rias:**
 ```bash
 # gNMI
 go get github.com/openconfig/gnmi
 
-# HTTP client padrão Go para eAPI
+# HTTP client padrÃ£o Go para eAPI
 ```
 
 **Comandos eAPI:**
@@ -137,76 +137,76 @@ go get github.com/openconfig/gnmi
 ```
 
 ### 4. Nokia (SR OS)
-**Status:** Não implementado
+**Status:** NÃ£o implementado
 **Protocolo:** NETCONF, gNMI, CLI SSH
-**Arquivo:** `internal/parsers/nokia/` (não existe)
+**Arquivo:** `internal/parsers/nokia/` (nÃ£o existe)
 
-**Libs necessárias:**
+**Libs necessÃ¡rias:**
 ```bash
 go get github.com/openconfig/gnmi
 go get golang.org/x/crypto/ssh
 ```
 
 ### 5. Huawei
-**Status:** Não implementado
+**Status:** NÃ£o implementado
 **Protocolo:** NETCONF, CLI SSH, SNMP
-**Arquivo:** `internal/parsers/huawei/` (não existe)
+**Arquivo:** `internal/parsers/huawei/` (nÃ£o existe)
 
-**Libs necessárias:**
+**Libs necessÃ¡rias:**
 ```bash
 go get github.com/gosnmp/gosnmp
 ```
 
 ### 6. MikroTik
-**Status:** Não implementado
+**Status:** NÃ£o implementado
 **Protocolo:** RouterOS API
-**Arquivo:** `internal/parsers/mikrotik/` (não existe)
+**Arquivo:** `internal/parsers/mikrotik/` (nÃ£o existe)
 
-**Libs necessárias:**
+**Libs necessÃ¡rias:**
 ```bash
 go get github.com/go-routeros/routeros
 ```
 
 ### 7. Ubiquiti
-**Status:** Não implementado
+**Status:** NÃ£o implementado
 **Protocolo:** SSH, REST API
-**Arquivo:** `internal/parsers/ubiquiti/` (não existe)
+**Arquivo:** `internal/parsers/ubiquiti/` (nÃ£o existe)
 
 ### 8. Fortinet
-**Status:** Não implementado
+**Status:** NÃ£o implementado
 **Protocolo:** REST API, SSH
-**Arquivo:** `internal/parsers/fortinet/` (não existe)
+**Arquivo:** `internal/parsers/fortinet/` (nÃ£o existe)
 
 ### 9. Palo Alto Networks
-**Status:** Não implementado
+**Status:** NÃ£o implementado
 **Protocolo:** XML API, REST
-**Arquivo:** `internal/parsers/paloalto/` (não existe)
+**Arquivo:** `internal/parsers/paloalto/` (nÃ£o existe)
 
 ---
 
-## ☁️ CLOUD PROVIDERS (Não Implementado)
+## â˜ï¸ CLOUD PROVIDERS (NÃ£o Implementado)
 
 ### AWS
-**Status:** Não implementado
-**Serviços:** Direct Connect, VPC Routing
+**Status:** NÃ£o implementado
+**ServiÃ§os:** Direct Connect, VPC Routing
 **Lib:** `github.com/aws/aws-sdk-go-v2`
 
 ### Google Cloud
-**Status:** Não implementado
-**Serviços:** Cloud Router, BGP Peering
+**Status:** NÃ£o implementado
+**ServiÃ§os:** Cloud Router, BGP Peering
 **Lib:** `cloud.google.com/go`
 
 ### Microsoft Azure
-**Status:** Não implementado
-**Serviços:** ExpressRoute, BGP Sessions
+**Status:** NÃ£o implementado
+**ServiÃ§os:** ExpressRoute, BGP Sessions
 **Lib:** Azure SDK Go
 
 ---
 
-## 🔧 BGP PURO
+## ðŸ”§ BGP PURO
 
 ### GoBGP
-**Status:** Não implementado
+**Status:** NÃ£o implementado
 **Protocolo:** BGP nativo em Go
 **Lib:** `github.com/osrg/gobgp/v3`
 
@@ -224,35 +224,35 @@ go s.Serve()
 
 ---
 
-## 📊 RESUMO
+## ðŸ“Š RESUMO
 
 | Categoria | Status | Vendors |
 |-----------|--------|---------|
-| **Flow Telemetry** | ✅ **100%** | NetFlow, sFlow, IPFIX |
-| **Cisco** | ✅ **100%** | IOS, IOS-XE, IOS-XR, NX-OS |
-| **Juniper** | ✅ **100%** | JunOS (NETCONF) |
-| **Arista** | ❌ 0% | EOS |
-| **Nokia** | ❌ 0% | SR OS |
-| **Huawei** | ❌ 0% | VRP |
-| **MikroTik** | ❌ 0% | RouterOS |
-| **Ubiquiti** | ❌ 0% | EdgeRouter |
-| **Fortinet** | ❌ 0% | FortiGate |
-| **Palo Alto** | ❌ 0% | PAN-OS |
-| **Cloud (AWS/GCP/Azure)** | ❌ 0% | - |
-| **GoBGP** | ❌ 0% | Native BGP |
+| **Flow Telemetry** | âœ… **100%** | NetFlow, sFlow, IPFIX |
+| **Cisco** | âœ… **100%** | IOS, IOS-XE, IOS-XR, NX-OS |
+| **Juniper** | âœ… **100%** | JunOS (NETCONF) |
+| **Arista** | âŒ 0% | EOS |
+| **Nokia** | âŒ 0% | SR OS |
+| **Huawei** | âŒ 0% | VRP |
+| **MikroTik** | âŒ 0% | RouterOS |
+| **Ubiquiti** | âŒ 0% | EdgeRouter |
+| **Fortinet** | âŒ 0% | FortiGate |
+| **Palo Alto** | âŒ 0% | PAN-OS |
+| **Cloud (AWS/GCP/Azure)** | âŒ 0% | - |
+| **GoBGP** | âŒ 0% | Native BGP |
 
 ---
 
-## 🎯 PRIORIDADES PARA PRÓXIMA VERSÃO (v0.3.0)
+## ðŸŽ¯ PRIORIDADES PARA PRÃ“XIMA VERSÃƒO (v0.3.0)
 
 ### Alta Prioridade
-1. ✅ **Flow Telemetry** - COMPLETO
-2. ✅ **Cisco Parser** - COMPLETO
-3. ✅ **Juniper Parser** - COMPLETO
-4. ⏳ **Arista Parser** - Próximo
-5. ⏳ **CLI Integration** - Integrar parsers com CLI
+1. âœ… **Flow Telemetry** - COMPLETO
+2. âœ… **Cisco Parser** - COMPLETO
+3. âœ… **Juniper Parser** - COMPLETO
+4. â³ **Arista Parser** - PrÃ³ximo
+5. â³ **CLI Integration** - Integrar parsers com CLI
 
-### Média Prioridade
+### MÃ©dia Prioridade
 6. Nokia SR OS
 7. MikroTik RouterOS
 8. GoBGP integration
@@ -266,7 +266,7 @@ go s.Serve()
 
 ---
 
-## 🚀 COMO USAR (Implementados)
+## ðŸš€ COMO USAR (Implementados)
 
 ### Flow Collector
 
@@ -289,7 +289,7 @@ bgpin flow asn 15169
 bgpin flow anomaly
 ```
 
-### Cisco Parser (Programático)
+### Cisco Parser (ProgramÃ¡tico)
 
 ```go
 package main
@@ -320,7 +320,7 @@ func main() {
 }
 ```
 
-### Juniper Parser (Programático)
+### Juniper Parser (ProgramÃ¡tico)
 
 ```go
 package main
@@ -353,37 +353,37 @@ func main() {
 
 ---
 
-## 📝 NOTAS TÉCNICAS
+## ðŸ“ NOTAS TÃ‰CNICAS
 
 ### Adapters Implementados
-- ✅ `internal/adapters/ssh/` - SSH client genérico
-- ✅ `internal/adapters/netconf/` - NETCONF client
-- ❌ `internal/adapters/http/` - HTTP client (básico)
-- ❌ `internal/adapters/grpc/` - gRPC/gNMI (não implementado)
+- âœ… `internal/adapters/ssh/` - SSH client genÃ©rico
+- âœ… `internal/adapters/netconf/` - NETCONF client
+- âŒ `internal/adapters/http/` - HTTP client (bÃ¡sico)
+- âŒ `internal/adapters/grpc/` - gRPC/gNMI (nÃ£o implementado)
 
 ### Core BGP Types
-- ✅ `internal/core/bgp/route.go` - Route structures
-- ✅ `internal/core/aspath/` - AS_PATH handling
-- ❌ `internal/core/rpki/` - RPKI validation (estrutura existe)
+- âœ… `internal/core/bgp/route.go` - Route structures
+- âœ… `internal/core/aspath/` - AS_PATH handling
+- âŒ `internal/core/rpki/` - RPKI validation (estrutura existe)
 
 ### Parsers Directory Structure
 ```
 internal/parsers/
-├── cisco/
-│   └── cisco.go          ✅ COMPLETO
-├── junos/
-│   └── junos.go          ✅ COMPLETO
-├── frr/                  ❌ VAZIO
-├── arista/               ❌ NÃO EXISTE
-├── nokia/                ❌ NÃO EXISTE
-├── huawei/               ❌ NÃO EXISTE
-├── mikrotik/             ❌ NÃO EXISTE
-└── ...
+â”œâ”€â”€ cisco/
+â”‚   â””â”€â”€ cisco.go          âœ… COMPLETO
+â”œâ”€â”€ junos/
+â”‚   â””â”€â”€ junos.go          âœ… COMPLETO
+â”œâ”€â”€ frr/                  âŒ VAZIO
+â”œâ”€â”€ arista/               âŒ NÃƒO EXISTE
+â”œâ”€â”€ nokia/                âŒ NÃƒO EXISTE
+â”œâ”€â”€ huawei/               âŒ NÃƒO EXISTE
+â”œâ”€â”€ mikrotik/             âŒ NÃƒO EXISTE
+â””â”€â”€ ...
 ```
 
 ---
 
-## 🔗 REFERÊNCIAS
+## ðŸ”— REFERÃŠNCIAS
 
 ### Implementados
 - [Cisco IOS BGP Commands](https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_bgp/command/irg-cr-book.html)

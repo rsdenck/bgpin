@@ -2,7 +2,7 @@
 
 Complete documentation for the Platform Border Gateway Protocol CLI and SDK.
 
-## 📚 Table of Contents
+## ðŸ“š Table of Contents
 
 ### Getting Started
 - [Installation Guide](INSTALLATION.md) - Complete installation instructions
@@ -32,18 +32,18 @@ Complete documentation for the Platform Border Gateway Protocol CLI and SDK.
 - [SDK Documentation](../sdk/README.md) - Go SDK documentation
 - [SDK Examples](../sdk/examples/) - Code examples
 
-## 🚀 Quick Links
+## ðŸš€ Quick Links
 
 ### For Users
-- [Installation](INSTALLATION.md) → [Quick Start](QUICK_START.md) → [CLI Guide](CLI_GUIDE.md)
+- [Installation](INSTALLATION.md) â†’ [Quick Start](QUICK_START.md) â†’ [CLI Guide](CLI_GUIDE.md)
 
 ### For Developers
-- [Architecture](ARCHITECTURE.md) → [SDK Documentation](../sdk/README.md) → [Contributing](../CONTRIBUTING.md)
+- [Architecture](ARCHITECTURE.md) â†’ [SDK Documentation](../sdk/README.md) â†’ [Contributing](../CONTRIBUTING.md)
 
 ### For Network Engineers
-- [Flow Collector](FLOW_COLLECTOR.md) → [Vendor Status](vendors/STATUS.md)
+- [Flow Collector](FLOW_COLLECTOR.md) â†’ [Vendor Status](vendors/STATUS.md)
 
-## 📖 Documentation by Topic
+## ðŸ“– Documentation by Topic
 
 ### BGP Operations
 - Query ASN information
@@ -60,8 +60,8 @@ Complete documentation for the Platform Border Gateway Protocol CLI and SDK.
 - Upstream comparison
 
 ### Vendor Integration
-- Cisco (IOS, IOS-XE, IOS-XR, NX-OS) ✅
-- Juniper (JunOS) ✅
+- Cisco (IOS, IOS-XE, IOS-XR, NX-OS) âœ…
+- Juniper (JunOS) âœ…
 - Arista (EOS) - Planned
 - Nokia (SR OS) - Planned
 - MikroTik (RouterOS) - Planned
@@ -73,17 +73,17 @@ Complete documentation for the Platform Border Gateway Protocol CLI and SDK.
 - Performance monitoring
 - Error tracking
 
-## 🔗 External Resources
+## ðŸ”— External Resources
 
 - [GitHub Repository](https://github.com/rsdenck/bgpin)
 - [Issue Tracker](https://github.com/rsdenck/bgpin/issues)
 - [Discussions](https://github.com/rsdenck/bgpin/discussions)
 - [Releases](https://github.com/rsdenck/bgpin/releases)
 
-## 📝 Contributing
+## ðŸ“ Contributing
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines on how to contribute to bgpin.
 
-## 📄 License
+## ðŸ“„ License
 
 bgpin is released under the MIT License. See [LICENSE](../LICENSE) for details.

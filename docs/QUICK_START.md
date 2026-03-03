@@ -1,9 +1,9 @@
 # bgpin - Quick Start Guide
 
-## 🚀 Instalação Rápida
+## ðŸš€ InstalaÃ§Ã£o RÃ¡pida
 
 ```bash
-# Clone o repositório
+# Clone o repositÃ³rio
 git clone https://github.com/bgpin/bgpin
 cd bgpin
 
@@ -14,11 +14,11 @@ go build -o bgpin ./cmd/cli/
 ./bgpin version
 ```
 
-## 📝 Comandos Essenciais
+## ðŸ“ Comandos Essenciais
 
-### 1. Informações de ASN
+### 1. InformaÃ§Ãµes de ASN
 ```bash
-# Informações básicas
+# InformaÃ§Ãµes bÃ¡sicas
 bgpin asn info 262978
 
 # Formato JSON
@@ -55,16 +55,16 @@ bgpin asn peers 262978
 bgpin asn peers 262978 -o json
 ```
 
-### 5. Análise de Prefixo
+### 5. AnÃ¡lise de Prefixo
 ```bash
 # Ver quem anuncia um prefixo
 bgpin prefix overview 186.250.184.0/24
 
-# IPv6 também funciona
+# IPv6 tambÃ©m funciona
 bgpin prefix overview 2804:4d44::/32
 ```
 
-## 🎯 Exemplos Práticos
+## ðŸŽ¯ Exemplos PrÃ¡ticos
 
 ### Investigar um ASN Completo
 ```bash
@@ -118,27 +118,27 @@ bgpin asn prefixes 262978 -o json | jq -r '.prefixes[].prefix' | grep ':'
 bgpin asn neighbors 262978 -o json | jq '.neighbors | group_by(.type) | map({type: .[0].type, count: length})'
 ```
 
-## 🧪 Testar o SDK
+## ðŸ§ª Testar o SDK
 
 ```bash
 # Executar todos os testes
 go test -v ./sdk/integration_test/
 
-# Teste específico
+# Teste especÃ­fico
 go test -v ./sdk/integration_test/ -run TestGetASNInfo_262978
 
 # Executar exemplo
 go run sdk/examples/demo.go
 ```
 
-## ⚙️ Configuração
+## âš™ï¸ ConfiguraÃ§Ã£o
 
-### Criar arquivo de configuração
+### Criar arquivo de configuraÃ§Ã£o
 ```bash
 cp bgpin.yaml.example bgpin.yaml
 ```
 
-### Editar configuração
+### Editar configuraÃ§Ã£o
 ```yaml
 # bgpin.yaml
 timeout: 30
@@ -153,12 +153,12 @@ ripe:
   retry_max: 3
 ```
 
-### Usar configuração customizada
+### Usar configuraÃ§Ã£o customizada
 ```bash
 bgpin --config /path/to/config.yaml asn info 262978
 ```
 
-## 🔍 Troubleshooting
+## ðŸ” Troubleshooting
 
 ### Timeout
 ```bash
@@ -168,25 +168,25 @@ bgpin asn info 262978 --timeout 60
 
 ### Modo Verbose
 ```bash
-# Ver detalhes de execução
+# Ver detalhes de execuÃ§Ã£o
 bgpin -v asn info 262978
 ```
 
-### Verificar versão
+### Verificar versÃ£o
 ```bash
 bgpin version
 ```
 
-## 📚 Mais Informações
+## ðŸ“š Mais InformaÃ§Ãµes
 
 - [Guia Completo da CLI](docs/CLI_GUIDE.md)
 - [Arquitetura](docs/ARCHITECTURE.md)
 - [SDK README](sdk/README.md)
 - [README Principal](README.md)
 
-## 🎓 Exemplos de Uso Real
+## ðŸŽ“ Exemplos de Uso Real
 
-### 1. Monitorar mudanças em prefixos
+### 1. Monitorar mudanÃ§as em prefixos
 ```bash
 # Verificar a cada 5 minutos
 watch -n 300 'bgpin prefix overview 186.250.184.0/24'
@@ -202,7 +202,7 @@ for asn in 262978 13335 15169; do
 done
 ```
 
-### 3. Alertar se ASN não está anunciando
+### 3. Alertar se ASN nÃ£o estÃ¡ anunciando
 ```bash
 #!/bin/bash
 ASN=262978
@@ -211,11 +211,11 @@ ANNOUNCED=$(bgpin asn info $ASN -o json | jq -r '.announced')
 
 if [ "$ANNOUNCED" != "true" ]; then
     echo "ALERT: AS$ASN is not announcing!"
-    # Enviar notificação
+    # Enviar notificaÃ§Ã£o
 fi
 ```
 
-### 4. Gerar relatório diário
+### 4. Gerar relatÃ³rio diÃ¡rio
 ```bash
 #!/bin/bash
 DATE=$(date +%Y-%m-%d)
@@ -227,7 +227,7 @@ bgpin asn prefixes $ASN -o json > "report_${DATE}_prefixes.json"
 echo "Daily report generated for $DATE"
 ```
 
-## 🚀 Deploy
+## ðŸš€ Deploy
 
 ### Docker (futuro)
 ```dockerfile
@@ -253,25 +253,25 @@ Restart=always
 WantedBy=multi-user.target
 ```
 
-## 💡 Dicas
+## ðŸ’¡ Dicas
 
 1. **Use aliases**: `alias bgp='bgpin asn'`
 2. **Exporte para JSON**: Facilita parsing com jq
-3. **Use timeout**: Para operações longas
+3. **Use timeout**: Para operaÃ§Ãµes longas
 4. **Modo verbose**: Para debug
 5. **Cache**: Habilite para melhor performance
 
-## 🎯 Casos de Uso
+## ðŸŽ¯ Casos de Uso
 
-- ✅ Investigação de ASN
-- ✅ Monitoramento de prefixos
-- ✅ Análise de vizinhos BGP
-- ✅ Auditoria de anúncios
-- ✅ Troubleshooting de rotas
-- ✅ Automação de relatórios
-- ✅ CI/CD pipelines
-- ✅ SOC/Blue Team operations
+- âœ… InvestigaÃ§Ã£o de ASN
+- âœ… Monitoramento de prefixos
+- âœ… AnÃ¡lise de vizinhos BGP
+- âœ… Auditoria de anÃºncios
+- âœ… Troubleshooting de rotas
+- âœ… AutomaÃ§Ã£o de relatÃ³rios
+- âœ… CI/CD pipelines
+- âœ… SOC/Blue Team operations
 
 ---
 
-**Pronto para começar? Execute: `bgpin asn info 262978`** 🚀
+**Pronto para comeÃ§ar? Execute: `bgpin asn info 262978`** ðŸš€

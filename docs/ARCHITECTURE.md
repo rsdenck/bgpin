@@ -1,83 +1,83 @@
 # bgpin - Arquitetura
 
-## Visão Geral
+## VisÃ£o Geral
 
 bgpin segue uma arquitetura Clean + Hexagonal (Ports & Adapters), separando claramente as responsabilidades e permitindo extensibilidade.
 
-## Estrutura de Diretórios
+## Estrutura de DiretÃ³rios
 
 ```
 bgpin/
-├── cmd/cli/              # CLI Layer - Entrada do usuário
-│   ├── root.go          # Comando raiz e configuração
-│   ├── asn.go           # Comandos ASN
-│   ├── prefix.go        # Comandos de prefixo
-│   ├── lookup.go        # Lookup em LGs
-│   ├── route.go         # Comandos de rota
-│   ├── neighbors.go     # Comandos de vizinhos
-│   ├── analyze.go       # Análise de anomalias
-│   ├── list.go          # Listar LGs
-│   └── version.go       # Versão
-│
-├── internal/            # Código interno (não exportável)
-│   ├── core/           # Domain Layer - Lógica de negócio
-│   │   ├── bgp/        # Tipos e lógica BGP
-│   │   ├── aspath/     # Análise de AS-PATH
-│   │   └── rpki/       # Validação RPKI
-│   │
-│   ├── adapters/       # Adapters Layer - Comunicação externa
-│   │   ├── http/       # HTTP Looking Glass
-│   │   ├── ssh/        # SSH Looking Glass
-│   │   └── telnet/     # Telnet Looking Glass
-│   │
-│   ├── parsers/        # Parsing Layer - Vendor-specific
-│   │   ├── cisco/      # Parser Cisco IOS
-│   │   ├── junos/      # Parser Juniper JunOS
-│   │   └── frr/        # Parser FRRouting
-│   │
-│   ├── services/       # Service Layer - Orquestração
-│   │   ├── lg/         # Serviço de Looking Glass
-│   │   └── analyzer/   # Serviço de análise
-│   │
-│   └── output/         # Output Layer - Formatação
-│       ├── json/       # Formatador JSON
-│       ├── yaml/       # Formatador YAML
-│       └── table/      # Formatador tabela
-│
-├── pkg/                # Código público (exportável)
-│   ├── config/         # Configuração
-│   └── telemetry/      # OpenTelemetry (futuro)
-│
-├── sdk/                # RIPE RIS SDK
-│   ├── client.go       # Cliente HTTP
-│   ├── config.go       # Configuração SDK
-│   ├── types.go        # Tipos de dados
-│   ├── errors.go       # Erros customizados
-│   ├── rate_limit.go   # Rate limiting
-│   ├── retry.go        # Retry logic
-│   ├── integration_test/
-│   └── examples/
-│
-└── docs/               # Documentação
-    ├── CLI_GUIDE.md
-    └── ARCHITECTURE.md
+â”œâ”€â”€ cmd/cli/              # CLI Layer - Entrada do usuÃ¡rio
+â”‚   â”œâ”€â”€ root.go          # Comando raiz e configuraÃ§Ã£o
+â”‚   â”œâ”€â”€ asn.go           # Comandos ASN
+â”‚   â”œâ”€â”€ prefix.go        # Comandos de prefixo
+â”‚   â”œâ”€â”€ lookup.go        # Lookup em LGs
+â”‚   â”œâ”€â”€ route.go         # Comandos de rota
+â”‚   â”œâ”€â”€ neighbors.go     # Comandos de vizinhos
+â”‚   â”œâ”€â”€ analyze.go       # AnÃ¡lise de anomalias
+â”‚   â”œâ”€â”€ list.go          # Listar LGs
+â”‚   â””â”€â”€ version.go       # VersÃ£o
+â”‚
+â”œâ”€â”€ internal/            # CÃ³digo interno (nÃ£o exportÃ¡vel)
+â”‚   â”œâ”€â”€ core/           # Domain Layer - LÃ³gica de negÃ³cio
+â”‚   â”‚   â”œâ”€â”€ bgp/        # Tipos e lÃ³gica BGP
+â”‚   â”‚   â”œâ”€â”€ aspath/     # AnÃ¡lise de AS-PATH
+â”‚   â”‚   â””â”€â”€ rpki/       # ValidaÃ§Ã£o RPKI
+â”‚   â”‚
+â”‚   â”œâ”€â”€ adapters/       # Adapters Layer - ComunicaÃ§Ã£o externa
+â”‚   â”‚   â”œâ”€â”€ http/       # HTTP Looking Glass
+â”‚   â”‚   â”œâ”€â”€ ssh/        # SSH Looking Glass
+â”‚   â”‚   â””â”€â”€ telnet/     # Telnet Looking Glass
+â”‚   â”‚
+â”‚   â”œâ”€â”€ parsers/        # Parsing Layer - Vendor-specific
+â”‚   â”‚   â”œâ”€â”€ cisco/      # Parser Cisco IOS
+â”‚   â”‚   â”œâ”€â”€ junos/      # Parser Juniper JunOS
+â”‚   â”‚   â””â”€â”€ frr/        # Parser FRRouting
+â”‚   â”‚
+â”‚   â”œâ”€â”€ services/       # Service Layer - OrquestraÃ§Ã£o
+â”‚   â”‚   â”œâ”€â”€ lg/         # ServiÃ§o de Looking Glass
+â”‚   â”‚   â””â”€â”€ analyzer/   # ServiÃ§o de anÃ¡lise
+â”‚   â”‚
+â”‚   â””â”€â”€ output/         # Output Layer - FormataÃ§Ã£o
+â”‚       â”œâ”€â”€ json/       # Formatador JSON
+â”‚       â”œâ”€â”€ yaml/       # Formatador YAML
+â”‚       â””â”€â”€ table/      # Formatador tabela
+â”‚
+â”œâ”€â”€ pkg/                # CÃ³digo pÃºblico (exportÃ¡vel)
+â”‚   â”œâ”€â”€ config/         # ConfiguraÃ§Ã£o
+â”‚   â””â”€â”€ telemetry/      # OpenTelemetry (futuro)
+â”‚
+â”œâ”€â”€ sdk/                # RIPE RIS SDK
+â”‚   â”œâ”€â”€ client.go       # Cliente HTTP
+â”‚   â”œâ”€â”€ config.go       # ConfiguraÃ§Ã£o SDK
+â”‚   â”œâ”€â”€ types.go        # Tipos de dados
+â”‚   â”œâ”€â”€ errors.go       # Erros customizados
+â”‚   â”œâ”€â”€ rate_limit.go   # Rate limiting
+â”‚   â”œâ”€â”€ retry.go        # Retry logic
+â”‚   â”œâ”€â”€ integration_test/
+â”‚   â””â”€â”€ examples/
+â”‚
+â””â”€â”€ docs/               # DocumentaÃ§Ã£o
+    â”œâ”€â”€ CLI_GUIDE.md
+    â””â”€â”€ ARCHITECTURE.md
 ```
 
 ## Camadas
 
 ### 1. CLI Layer (cmd/cli/)
 
-**Responsabilidade**: Interface com o usuário
+**Responsabilidade**: Interface com o usuÃ¡rio
 
 - Parsing de argumentos (Cobra)
-- Validação de entrada
-- Chamada aos serviços
-- Formatação de saída
+- ValidaÃ§Ã£o de entrada
+- Chamada aos serviÃ§os
+- FormataÃ§Ã£o de saÃ­da
 
-**Dependências**:
+**DependÃªncias**:
 - `github.com/spf13/cobra` - CLI framework
-- `github.com/spf13/viper` - Configuração
-- `internal/services/*` - Serviços de negócio
+- `github.com/spf13/viper` - ConfiguraÃ§Ã£o
+- `internal/services/*` - ServiÃ§os de negÃ³cio
 
 **Exemplo**:
 ```go
@@ -91,17 +91,17 @@ func runASNInfo(cmd *cobra.Command, args []string) error {
 
 ### 2. Core Domain Layer (internal/core/)
 
-**Responsabilidade**: Lógica de negócio pura
+**Responsabilidade**: LÃ³gica de negÃ³cio pura
 
 - Tipos de dados BGP
-- Validações de domínio
-- Análise de AS-PATH
-- Detecção de anomalias
+- ValidaÃ§Ãµes de domÃ­nio
+- AnÃ¡lise de AS-PATH
+- DetecÃ§Ã£o de anomalias
 
 **Regras**:
-- ❌ NÃO pode importar adapters
-- ❌ NÃO pode importar HTTP/SSH/Telnet
-- ✅ Apenas lógica de negócio pura
+- âŒ NÃƒO pode importar adapters
+- âŒ NÃƒO pode importar HTTP/SSH/Telnet
+- âœ… Apenas lÃ³gica de negÃ³cio pura
 
 **Exemplo**:
 ```go
@@ -129,7 +129,7 @@ func (r *Route) HasLoop() bool {
 
 ### 3. Adapters Layer (internal/adapters/)
 
-**Responsabilidade**: Comunicação com sistemas externos
+**Responsabilidade**: ComunicaÃ§Ã£o com sistemas externos
 
 #### HTTP Adapter
 ```go
@@ -179,7 +179,7 @@ Cada vendor tem formato diferente:
 *> 186.250.184.0/24  200.160.0.1    0    100      0 262978 i
 ```
 
-**Implementação**:
+**ImplementaÃ§Ã£o**:
 ```go
 type Parser interface {
     ParseRoutes(output string) ([]bgp.Route, error)
@@ -190,13 +190,13 @@ type CiscoParser struct {
 }
 
 func (p *CiscoParser) ParseRoutes(output string) ([]bgp.Route, error) {
-    // Regex parsing específico para Cisco
+    // Regex parsing especÃ­fico para Cisco
 }
 ```
 
 ### 5. Services Layer (internal/services/)
 
-**Responsabilidade**: Orquestração de lógica de negócio
+**Responsabilidade**: OrquestraÃ§Ã£o de lÃ³gica de negÃ³cio
 
 #### Looking Glass Service
 ```go
@@ -206,7 +206,7 @@ type LGService struct {
 }
 
 func (s *LGService) QueryMultipleLGs(ctx context.Context, prefix string) ([]Result, error) {
-    // Consulta múltiplos LGs em paralelo
+    // Consulta mÃºltiplos LGs em paralelo
     // Usa goroutines + WaitGroup
 }
 ```
@@ -226,7 +226,7 @@ func (s *AnalyzerService) DetectAnomalies(route *bgp.Route) []Anomaly {
 
 ### 6. Output Layer (internal/output/)
 
-**Responsabilidade**: Formatação de saída
+**Responsabilidade**: FormataÃ§Ã£o de saÃ­da
 
 ```go
 type Formatter interface {
@@ -247,96 +247,96 @@ type TableFormatter struct{}
 - Context support
 - Tipos estruturados
 
-**Características**:
+**CaracterÃ­sticas**:
 - Thread-safe
-- Configurável
+- ConfigurÃ¡vel
 - Testado com dados reais (ASN 262978)
 
 ## Fluxo de Dados
 
 ```
-┌─────────────┐
-│   Usuário   │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────────────────────────────────┐
-│         CLI Layer (cmd/cli/)            │
-│  • Parse argumentos                     │
-│  • Valida entrada                       │
-└──────┬──────────────────────────────────┘
-       │
-       ▼
-┌─────────────────────────────────────────┐
-│      Service Layer (services/)          │
-│  • Orquestra lógica                     │
-│  • Coordena adapters                    │
-└──────┬──────────────────────────────────┘
-       │
-       ├──────────────┬──────────────┐
-       ▼              ▼              ▼
-┌──────────┐   ┌──────────┐   ┌──────────┐
-│   HTTP   │   │   SSH    │   │  Telnet  │
-│ Adapter  │   │ Adapter  │   │ Adapter  │
-└────┬─────┘   └────┬─────┘   └────┬─────┘
-     │              │              │
-     └──────────────┴──────────────┘
-                    │
-                    ▼
-         ┌─────────────────────┐
-         │  Looking Glass      │
-         │  (Cisco/Juniper)    │
-         └──────────┬──────────┘
-                    │
-                    ▼
-         ┌─────────────────────┐
-         │   Parser Layer      │
-         │  • Cisco Parser     │
-         │  • Junos Parser     │
-         └──────────┬──────────┘
-                    │
-                    ▼
-         ┌─────────────────────┐
-         │   Core Domain       │
-         │  • Route structs    │
-         │  • Validations      │
-         └──────────┬──────────┘
-                    │
-                    ▼
-         ┌─────────────────────┐
-         │  Analyzer Service   │
-         │  • Anomaly detect   │
-         │  • RPKI validation  │
-         └──────────┬──────────┘
-                    │
-                    ▼
-         ┌─────────────────────┐
-         │   Output Layer      │
-         │  • JSON/YAML/Table  │
-         └──────────┬──────────┘
-                    │
-                    ▼
-              ┌─────────┐
-              │ Usuário │
-              └─────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚   UsuÃ¡rio   â”‚
+â””â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”˜
+       â”‚
+       â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚         CLI Layer (cmd/cli/)            â”‚
+â”‚  â€¢ Parse argumentos                     â”‚
+â”‚  â€¢ Valida entrada                       â”‚
+â””â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+       â”‚
+       â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚      Service Layer (services/)          â”‚
+â”‚  â€¢ Orquestra lÃ³gica                     â”‚
+â”‚  â€¢ Coordena adapters                    â”‚
+â””â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+       â”‚
+       â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+       â–¼              â–¼              â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚   HTTP   â”‚   â”‚   SSH    â”‚   â”‚  Telnet  â”‚
+â”‚ Adapter  â”‚   â”‚ Adapter  â”‚   â”‚ Adapter  â”‚
+â””â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”˜
+     â”‚              â”‚              â”‚
+     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                    â”‚
+                    â–¼
+         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚  Looking Glass      â”‚
+         â”‚  (Cisco/Juniper)    â”‚
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                    â”‚
+                    â–¼
+         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚   Parser Layer      â”‚
+         â”‚  â€¢ Cisco Parser     â”‚
+         â”‚  â€¢ Junos Parser     â”‚
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                    â”‚
+                    â–¼
+         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚   Core Domain       â”‚
+         â”‚  â€¢ Route structs    â”‚
+         â”‚  â€¢ Validations      â”‚
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                    â”‚
+                    â–¼
+         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚  Analyzer Service   â”‚
+         â”‚  â€¢ Anomaly detect   â”‚
+         â”‚  â€¢ RPKI validation  â”‚
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                    â”‚
+                    â–¼
+         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚   Output Layer      â”‚
+         â”‚  â€¢ JSON/YAML/Table  â”‚
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                    â”‚
+                    â–¼
+              â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+              â”‚ UsuÃ¡rio â”‚
+              â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
-## Princípios de Design
+## PrincÃ­pios de Design
 
 ### 1. Separation of Concerns
-Cada camada tem uma responsabilidade única e bem definida.
+Cada camada tem uma responsabilidade Ãºnica e bem definida.
 
 ### 2. Dependency Inversion
-Camadas superiores dependem de abstrações, não de implementações concretas.
+Camadas superiores dependem de abstraÃ§Ãµes, nÃ£o de implementaÃ§Ãµes concretas.
 
 ### 3. Interface Segregation
-Interfaces pequenas e específicas ao invés de grandes e genéricas.
+Interfaces pequenas e especÃ­ficas ao invÃ©s de grandes e genÃ©ricas.
 
 ### 4. Open/Closed Principle
-Aberto para extensão (novos vendors), fechado para modificação.
+Aberto para extensÃ£o (novos vendors), fechado para modificaÃ§Ã£o.
 
 ### 5. Single Responsibility
-Cada módulo tem uma única razão para mudar.
+Cada mÃ³dulo tem uma Ãºnica razÃ£o para mudar.
 
 ## Extensibilidade
 
@@ -350,20 +350,20 @@ Cada módulo tem uma única razão para mudar.
 
 1. Criar parser em `internal/parsers/`
 2. Implementar interface `Parser`
-3. Adicionar regex patterns específicos
+3. Adicionar regex patterns especÃ­ficos
 
-### Adicionar nova análise
+### Adicionar nova anÃ¡lise
 
-1. Adicionar função em `internal/services/analyzer/`
-2. Implementar lógica de detecção
+1. Adicionar funÃ§Ã£o em `internal/services/analyzer/`
+2. Implementar lÃ³gica de detecÃ§Ã£o
 3. Retornar tipo `Anomaly`
 
 ## Testes
 
 ### Unit Tests
-- Core domain (lógica pura)
+- Core domain (lÃ³gica pura)
 - Parsers (regex patterns)
-- Analyzers (detecção)
+- Analyzers (detecÃ§Ã£o)
 
 ### Integration Tests
 - SDK (RIPE RIS API real)
@@ -375,8 +375,8 @@ Cada módulo tem uma única razão para mudar.
 
 ## Performance
 
-### Concorrência
-- Consultas paralelas a múltiplos LGs
+### ConcorrÃªncia
+- Consultas paralelas a mÃºltiplos LGs
 - Goroutines + WaitGroup
 - Context para cancelamento
 
@@ -386,28 +386,28 @@ Cada módulo tem uma única razão para mudar.
 
 ### Rate Limiting
 - Token bucket algorithm
-- Configurável por fonte
+- ConfigurÃ¡vel por fonte
 
-## Segurança
+## SeguranÃ§a
 
 ### Input Validation
-- Sanitização de comandos
+- SanitizaÃ§Ã£o de comandos
 - Whitelist de comandos permitidos
-- Validação de prefixos/ASNs
+- ValidaÃ§Ã£o de prefixos/ASNs
 
 ### Rate Limiting
-- Proteção contra abuse
-- Limites configuráveis
+- ProteÃ§Ã£o contra abuse
+- Limites configurÃ¡veis
 
 ### Timeout
-- Todas as operações com timeout
+- Todas as operaÃ§Ãµes com timeout
 - Context-based cancellation
 
 ## Observabilidade (Futuro)
 
 ### OpenTelemetry
-- Traces de requisições
-- Métricas de performance
+- Traces de requisiÃ§Ãµes
+- MÃ©tricas de performance
 - Logs estruturados
 
 ### Exporters
@@ -418,11 +418,11 @@ Cada módulo tem uma única razão para mudar.
 ## Roadmap
 
 - [x] SDK RIPE RIS
-- [x] CLI básica
-- [ ] Múltiplos LG adapters
+- [x] CLI bÃ¡sica
+- [ ] MÃºltiplos LG adapters
 - [ ] Parsers completos
-- [ ] Análise de anomalias
-- [ ] Validação RPKI
+- [ ] AnÃ¡lise de anomalias
+- [ ] ValidaÃ§Ã£o RPKI
 - [ ] Cache inteligente
 - [ ] OpenTelemetry
 - [ ] TUI interativo

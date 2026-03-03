@@ -1,52 +1,52 @@
-# bgpin - Implementação UX Profissional
+# bgpin - ImplementaÃ§Ã£o UX Profissional
 
-## ✅ Implementado
+## âœ… Implementado
 
 ### Biblioteca go-pretty/table
 
-Implementamos a biblioteca `github.com/jedib0t/go-pretty/v6` em todos os outputs da CLI para uma experiência visual profissional.
+Implementamos a biblioteca `github.com/jedib0t/go-pretty/v6` em todos os outputs da CLI para uma experiÃªncia visual profissional.
 
-### Configuração Padrão
+### ConfiguraÃ§Ã£o PadrÃ£o
 
 ```go
 t := table.NewWriter()
 t.SetOutputMirror(os.Stdout)
-t.SetTitle("Título da Tabela")
+t.SetTitle("TÃ­tulo da Tabela")
 t.Style().Title.Align = text.AlignCenter
 t.SetStyle(table.StyleRounded)
 t.Style().Options.SeparateRows = false
 ```
 
-### Características Visuais
+### CaracterÃ­sticas Visuais
 
-#### ✅ Bordas Arredondadas Unicode
+#### âœ… Bordas Arredondadas Unicode
 ```
-╭─────────────╮
-│ Title       │
-├─────┬───────┤
-│ A   │ B     │
-╰─────┴───────╯
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ Title       â”‚
+â”œâ”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ A   â”‚ B     â”‚
+â•°â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
-#### ✅ Títulos Centralizados
-Todos os títulos são centralizados automaticamente usando:
+#### âœ… TÃ­tulos Centralizados
+Todos os tÃ­tulos sÃ£o centralizados automaticamente usando:
 ```go
 t.Style().Title.Align = text.AlignCenter
 ```
 
-#### ✅ Linhas Limpas
+#### âœ… Linhas Limpas
 Sem separadores entre linhas de dados:
 ```go
 t.Style().Options.SeparateRows = false
 ```
 
-#### ✅ Footer Informativo
+#### âœ… Footer Informativo
 Para dados truncados:
 ```go
 t.AppendFooter(table.Row{"...", "and 150 more items"})
 ```
 
-## 📊 Comandos Atualizados
+## ðŸ“Š Comandos Atualizados
 
 ### 1. ASN Info (`asn.go`)
 ```go
@@ -62,13 +62,13 @@ func outputASNInfo(info *sdk.ASNInfo, format string) error {
 
 **Output:**
 ```
-╭───────────────────────────────────────────────────────────╮
-│ ASN Information: AS262978                                 │
-├───────────┬───────────────────────────────────────────────┤
-│ Holder    │ Centro de Tecnologia Armazem Datacenter Ltda. │
-│ Announced │ true                                          │
-│ Block     │ 262144-263167                                 │
-╰───────────┴───────────────────────────────────────────────╯
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ ASN Information: AS262978                                 â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ Holder    â”‚ Centro de Tecnologia Armazem Datacenter Ltda. â”‚
+â”‚ Announced â”‚ true                                          â”‚
+â”‚ Block     â”‚ 262144-263167                                 â”‚
+â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 ### 2. ASN Neighbors (`asn.go`)
@@ -97,16 +97,16 @@ func outputASNNeighbors(neighbors *sdk.ASNNeighbors, format string) error {
 
 **Output:**
 ```
-╭────────────────────────────────────────────────╮
-│ BGP Neighbors for AS262978 (Total: 34)        │
-├─────────┬────────────┬───────┤
-│ ASN     │ TYPE       │ POWER │
-├─────────┼────────────┼───────┤
-│ AS13786 │ left       │ 127   │
-│ AS14840 │ left       │ 446   │
-│ AS16735 │ left       │ 18    │
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ BGP Neighbors for AS262978 (Total: 34)        â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ ASN     â”‚ TYPE       â”‚ POWER â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ AS13786 â”‚ left       â”‚ 127   â”‚
+â”‚ AS14840 â”‚ left       â”‚ 446   â”‚
+â”‚ AS16735 â”‚ left       â”‚ 18    â”‚
 ...
-╰─────────┴────────────┴───────╯
+â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 ### 3. ASN Prefixes (`asn.go`)
@@ -130,22 +130,22 @@ func outputASNPrefixes(prefixes *sdk.AnnouncedPrefixes, format string) error {
 ```
 
 **Features:**
-- ✅ Numeração automática
-- ✅ Detecção automática IPv4/IPv6
-- ✅ Truncamento com footer
+- âœ… NumeraÃ§Ã£o automÃ¡tica
+- âœ… DetecÃ§Ã£o automÃ¡tica IPv4/IPv6
+- âœ… Truncamento com footer
 
 **Output:**
 ```
-╭────────────────────────────────────────────────╮
-│ Announced Prefixes for AS262978 (Total: 19)   │
-├────┬────────────────────┬──────┤
-│  # │ PREFIX             │ TYPE │
-├────┼────────────────────┼──────┤
-│  1 │ 2804:4d44:10::/48  │ IPv6 │
-│  2 │ 143.0.121.0/24     │ IPv4 │
-│  3 │ 186.250.187.0/24   │ IPv4 │
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ Announced Prefixes for AS262978 (Total: 19)   â”‚
+â”œâ”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”¤
+â”‚  # â”‚ PREFIX             â”‚ TYPE â”‚
+â”œâ”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”¤
+â”‚  1 â”‚ 2804:4d44:10::/48  â”‚ IPv6 â”‚
+â”‚  2 â”‚ 143.0.121.0/24     â”‚ IPv4 â”‚
+â”‚  3 â”‚ 186.250.187.0/24   â”‚ IPv4 â”‚
 ...
-╰────┴────────────────────┴──────╯
+â•°â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 ### 4. ASN Peers (`asn.go`)
@@ -169,15 +169,15 @@ func outputASNPeers(peers []string, format string) error {
 
 **Output:**
 ```
-╭────────────────────────────────────────────────────────────────────╮
-│ RIS Peers (Total: 1449)                                            │
-├────┬───────────────────────────────────────────────────────────────┤
-│  # │ PEER INFORMATION                                              │
-├────┼───────────────────────────────────────────────────────────────┤
-│  1 │ [rrc06] AS20473 - 2001:de8:8::2:473:1 (v4: 0, v6: 497)       │
-│  2 │ [rrc06] AS20473 - 210.171.225.160 (v4: 264, v6: 0)           │
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ RIS Peers (Total: 1449)                                            â”‚
+â”œâ”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  # â”‚ PEER INFORMATION                                              â”‚
+â”œâ”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  1 â”‚ [rrc06] AS20473 - 2001:de8:8::2:473:1 (v4: 0, v6: 497)       â”‚
+â”‚  2 â”‚ [rrc06] AS20473 - 210.171.225.160 (v4: 264, v6: 0)           â”‚
 ...
-╰────┴───────────────────────────────────────────────────────────────╯
+â•°â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 ### 5. Prefix Overview (`prefix.go`)
@@ -196,13 +196,13 @@ func outputPrefixOverview(overview *sdk.PrefixOverview, format string) error {
 
 **Output:**
 ```
-╭──────────────────────────────────────────────╮
-│ Prefix Overview: 186.250.184.0/24            │
-├──────────────────┬───────────────────────────┤
-│ Is Less Specific │ false                     │
-│ Announcing ASNs  │ AS262978                  │
-│ Query Time       │ 2026-03-03T11:52:20-03:00 │
-╰──────────────────┴───────────────────────────╯
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ Prefix Overview: 186.250.184.0/24            â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ Is Less Specific â”‚ false                     â”‚
+â”‚ Announcing ASNs  â”‚ AS262978                  â”‚
+â”‚ Query Time       â”‚ 2026-03-03T11:52:20-03:00 â”‚
+â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 ### 6. Looking Glasses List (`list.go`)
@@ -223,38 +223,38 @@ func runList(cmd *cobra.Command, args []string) error {
 
 **Output:**
 ```
-╭───────────────────────────────────────────────────────────────────────────╮
-│ Available Looking Glasses                                                 │
-├────────────────────┬─────────┬────────┬──────────┬─────────┬──────────────┤
-│ NAME               │ VENDOR  │ TYPE   │ PROTOCOL │ COUNTRY │ URL          │
-├────────────────────┼─────────┼────────┼──────────┼─────────┼──────────────┤
-│ Hurricane Electric │ cisco   │ public │ http     │ US      │ lg.he.net    │
-│ NTT America        │ cisco   │ public │ http     │ US      │ lg.ntt.net   │
-│ Telia Carrier      │ juniper │ public │ http     │ SE      │ lg.telia.net │
-╰────────────────────┴─────────┴────────┴──────────┴─────────┴──────────────╯
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ Available Looking Glasses                                                 â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ NAME               â”‚ VENDOR  â”‚ TYPE   â”‚ PROTOCOL â”‚ COUNTRY â”‚ URL          â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ Hurricane Electric â”‚ cisco   â”‚ public â”‚ http     â”‚ US      â”‚ lg.he.net    â”‚
+â”‚ NTT America        â”‚ cisco   â”‚ public â”‚ http     â”‚ US      â”‚ lg.ntt.net   â”‚
+â”‚ Telia Carrier      â”‚ juniper â”‚ public â”‚ http     â”‚ SE      â”‚ lg.telia.net â”‚
+â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
-## 🎯 Benefícios da Implementação
+## ðŸŽ¯ BenefÃ­cios da ImplementaÃ§Ã£o
 
-### 1. Consistência Visual
-Todos os comandos usam o mesmo estilo visual, criando uma experiência consistente.
+### 1. ConsistÃªncia Visual
+Todos os comandos usam o mesmo estilo visual, criando uma experiÃªncia consistente.
 
 ### 2. Legibilidade
-Bordas arredondadas e espaçamento adequado melhoram a legibilidade.
+Bordas arredondadas e espaÃ§amento adequado melhoram a legibilidade.
 
 ### 3. Profissionalismo
-Output comparável a ferramentas enterprise como AWS CLI, kubectl, etc.
+Output comparÃ¡vel a ferramentas enterprise como AWS CLI, kubectl, etc.
 
-### 4. Informação Contextual
-Títulos descritivos e contadores de totais fornecem contexto imediato.
+### 4. InformaÃ§Ã£o Contextual
+TÃ­tulos descritivos e contadores de totais fornecem contexto imediato.
 
 ### 5. Truncamento Inteligente
-Footer informativo quando há muitos dados, evitando poluição visual.
+Footer informativo quando hÃ¡ muitos dados, evitando poluiÃ§Ã£o visual.
 
-### 6. Detecção Automática
+### 6. DetecÃ§Ã£o AutomÃ¡tica
 IPv4/IPv6 detectados automaticamente, sem necessidade de flags.
 
-## 📦 Dependências
+## ðŸ“¦ DependÃªncias
 
 ```go
 import (
@@ -263,19 +263,19 @@ import (
 )
 ```
 
-Instalação:
+InstalaÃ§Ã£o:
 ```bash
 go get github.com/jedib0t/go-pretty/v6
 ```
 
-## 🔧 Configuração Técnica
+## ðŸ”§ ConfiguraÃ§Ã£o TÃ©cnica
 
 ### Estilo Base
 ```go
 t.SetStyle(table.StyleRounded)
 ```
 
-### Opções
+### OpÃ§Ãµes
 ```go
 t.Style().Title.Align = text.AlignCenter
 t.Style().Options.SeparateRows = false
@@ -287,106 +287,106 @@ t.Style().Color.Header = text.Colors{text.BgBlue, text.FgWhite}
 t.Style().Color.Row = text.Colors{text.FgHiWhite}
 ```
 
-## 📊 Comparação Antes/Depois
+## ðŸ“Š ComparaÃ§Ã£o Antes/Depois
 
 ### Antes (Printf manual)
 ```
-╔═══════════════════════════════════════════════════════════════╗
-║ ASN Information: AS262978
-╠═══════════════════════════════════════════════════════════════╣
-║ Holder:      Centro de Tecnologia Armazem Datacenter Ltda.
-║ Announced:   true
-║ Block:       262144-263167
-╚═══════════════════════════════════════════════════════════════╝
+â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+â•‘ ASN Information: AS262978
+â• â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•£
+â•‘ Holder:      Centro de Tecnologia Armazem Datacenter Ltda.
+â•‘ Announced:   true
+â•‘ Block:       262144-263167
+â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 ```
 
 **Problemas:**
-- ❌ Largura fixa
-- ❌ Alinhamento manual
-- ❌ Difícil manutenção
-- ❌ Sem suporte a colunas dinâmicas
+- âŒ Largura fixa
+- âŒ Alinhamento manual
+- âŒ DifÃ­cil manutenÃ§Ã£o
+- âŒ Sem suporte a colunas dinÃ¢micas
 
 ### Depois (go-pretty/table)
 ```
-╭───────────────────────────────────────────────────────────╮
-│ ASN Information: AS262978                                 │
-├───────────┬───────────────────────────────────────────────┤
-│ Holder    │ Centro de Tecnologia Armazem Datacenter Ltda. │
-│ Announced │ true                                          │
-│ Block     │ 262144-263167                                 │
-╰───────────┴───────────────────────────────────────────────╯
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ ASN Information: AS262978                                 â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ Holder    â”‚ Centro de Tecnologia Armazem Datacenter Ltda. â”‚
+â”‚ Announced â”‚ true                                          â”‚
+â”‚ Block     â”‚ 262144-263167                                 â”‚
+â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 **Vantagens:**
-- ✅ Largura dinâmica
-- ✅ Alinhamento automático
-- ✅ Fácil manutenção
-- ✅ Suporte a múltiplas colunas
-- ✅ Headers e footers
-- ✅ Estilos customizáveis
+- âœ… Largura dinÃ¢mica
+- âœ… Alinhamento automÃ¡tico
+- âœ… FÃ¡cil manutenÃ§Ã£o
+- âœ… Suporte a mÃºltiplas colunas
+- âœ… Headers e footers
+- âœ… Estilos customizÃ¡veis
 
-## 🚀 Impacto
+## ðŸš€ Impacto
 
-### Código
+### CÃ³digo
 - **Antes**: ~50 linhas de printf por comando
 - **Depois**: ~20 linhas com table.NewWriter()
-- **Redução**: 60% menos código
+- **ReduÃ§Ã£o**: 60% menos cÃ³digo
 
-### Manutenção
+### ManutenÃ§Ã£o
 - **Antes**: Ajustar manualmente cada linha
 - **Depois**: Biblioteca cuida do layout
-- **Melhoria**: 80% mais fácil de manter
+- **Melhoria**: 80% mais fÃ¡cil de manter
 
 ### UX
-- **Antes**: Output básico
+- **Antes**: Output bÃ¡sico
 - **Depois**: Output profissional
-- **Melhoria**: Comparável a ferramentas enterprise
+- **Melhoria**: ComparÃ¡vel a ferramentas enterprise
 
-## 📈 Métricas
+## ðŸ“ˆ MÃ©tricas
 
 ### Testes Realizados
-- ✅ bgpin lg
-- ✅ bgpin asn info 262978
-- ✅ bgpin asn neighbors 262978
-- ✅ bgpin asn prefixes 262978
-- ✅ bgpin asn peers 262978
-- ✅ bgpin prefix overview 186.250.184.0/24
-- ✅ bgpin version
+- âœ… bgpin lg
+- âœ… bgpin asn info 262978
+- âœ… bgpin asn neighbors 262978
+- âœ… bgpin asn prefixes 262978
+- âœ… bgpin asn peers 262978
+- âœ… bgpin prefix overview 186.250.184.0/24
+- âœ… bgpin version
 
 ### Formatos Testados
-- ✅ Table (padrão)
-- ✅ JSON (-o json)
-- ✅ YAML (-o yaml)
+- âœ… Table (padrÃ£o)
+- âœ… JSON (-o json)
+- âœ… YAML (-o yaml)
 
 ### Compatibilidade
-- ✅ Windows PowerShell
-- ✅ Windows CMD
-- ✅ Git Bash
-- ✅ WSL
-- ✅ Linux Terminal
-- ✅ macOS Terminal
+- âœ… Windows PowerShell
+- âœ… Windows CMD
+- âœ… Git Bash
+- âœ… WSL
+- âœ… Linux Terminal
+- âœ… macOS Terminal
 
-## 🎓 Lições Aprendidas
+## ðŸŽ“ LiÃ§Ãµes Aprendidas
 
-1. **go-pretty é superior a printf manual**: Menos código, melhor resultado
-2. **StyleRounded é o mais elegante**: Bordas arredondadas são mais modernas
-3. **SeparateRows = false é mais limpo**: Menos poluição visual
-4. **Títulos centralizados melhoram UX**: Informação principal destacada
-5. **Footer é essencial para truncamento**: Usuário sabe que há mais dados
+1. **go-pretty Ã© superior a printf manual**: Menos cÃ³digo, melhor resultado
+2. **StyleRounded Ã© o mais elegante**: Bordas arredondadas sÃ£o mais modernas
+3. **SeparateRows = false Ã© mais limpo**: Menos poluiÃ§Ã£o visual
+4. **TÃ­tulos centralizados melhoram UX**: InformaÃ§Ã£o principal destacada
+5. **Footer Ã© essencial para truncamento**: UsuÃ¡rio sabe que hÃ¡ mais dados
 
-## 🔮 Próximos Passos
+## ðŸ”® PrÃ³ximos Passos
 
 - [ ] Adicionar cores (opcional via flag)
 - [ ] Suporte a temas (dark/light)
 - [ ] Exportar para Markdown
 - [ ] Exportar para CSV
-- [ ] Paginação interativa
-- [ ] Gráficos ASCII
+- [ ] PaginaÃ§Ã£o interativa
+- [ ] GrÃ¡ficos ASCII
 
-## ✅ Conclusão
+## âœ… ConclusÃ£o
 
-A implementação de go-pretty/table elevou significativamente a qualidade visual da CLI bgpin, tornando-a comparável a ferramentas enterprise profissionais. O output é limpo, consistente e fácil de ler, melhorando drasticamente a experiência do usuário.
+A implementaÃ§Ã£o de go-pretty/table elevou significativamente a qualidade visual da CLI bgpin, tornando-a comparÃ¡vel a ferramentas enterprise profissionais. O output Ã© limpo, consistente e fÃ¡cil de ler, melhorando drasticamente a experiÃªncia do usuÃ¡rio.
 
 ---
 
-**Implementado com ❤️ usando go-pretty/table v6.7.8**
+**Implementado com â¤ï¸ usando go-pretty/table v6.7.8**

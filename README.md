@@ -13,51 +13,51 @@ CLI profissional + SDK + Telemetria + Flow Analysis
 
 ---
 
-## 🚀 Características
+## ðŸš€ CaracterÃ­sticas
 
-### ✅ CLI Completa
-- Consulta informações de ASN (holder, block, status)
+### âœ… CLI Completa
+- Consulta informaÃ§Ãµes de ASN (holder, block, status)
 - Lista vizinhos BGP (upstream, downstream, peers)
 - Mostra prefixos anunciados (IPv4 e IPv6)
 - Visualiza RIS peers por RRC
-- Análise de prefixos específicos
-- Múltiplos formatos de saída (table, JSON, YAML)
+- AnÃ¡lise de prefixos especÃ­ficos
+- MÃºltiplos formatos de saÃ­da (table, JSON, YAML)
 - UX profissional com go-pretty/table
 
-### ✅ SDK RIPE RIS
-- Rate limiting configurável
+### âœ… SDK RIPE RIS
+- Rate limiting configurÃ¡vel
 - Retry com exponential backoff
 - Context support completo
-- Testes de integração reais (sem mocks)
-- Thread-safe para requisições concorrentes
+- Testes de integraÃ§Ã£o reais (sem mocks)
+- Thread-safe para requisiÃ§Ãµes concorrentes
 
-### ✅ Telemetria & Observabilidade
+### âœ… Telemetria & Observabilidade
 - OpenTelemetry integration
 - Distributed tracing
-- Métricas de performance
-- Exportação para OTLP, Jaeger, Prometheus
+- MÃ©tricas de performance
+- ExportaÃ§Ã£o para OTLP, Jaeger, Prometheus
 - Dashboards Grafana
 
-### ✅ Flow Analysis
+### âœ… Flow Analysis
 - Coleta NetFlow/sFlow/IPFIX em tempo real
-- Análise de tráfego por ASN e prefixo
-- Detecção de anomalias (DDoS, spikes, drops)
-- Comparação de upstreams
-- Correlação BGP + Flow
-- Agregação configurável
+- AnÃ¡lise de trÃ¡fego por ASN e prefixo
+- DetecÃ§Ã£o de anomalias (DDoS, spikes, drops)
+- ComparaÃ§Ã£o de upstreams
+- CorrelaÃ§Ã£o BGP + Flow
+- AgregaÃ§Ã£o configurÃ¡vel
 - Worker pools para alta performance
 
-### 🔄 Em Desenvolvimento
-- Consulta múltiplos Looking Glass
-- Parsing estruturado de múltiplos vendors (Cisco, Juniper, FRR)
-- Validação RPKI
+### ðŸ”„ Em Desenvolvimento
+- Consulta mÃºltiplos Looking Glass
+- Parsing estruturado de mÃºltiplos vendors (Cisco, Juniper, FRR)
+- ValidaÃ§Ã£o RPKI
 - Cache inteligente
 - Machine Learning para anomalias
 
-## 📦 Instalação
+## ðŸ“¦ InstalaÃ§Ã£o
 
 ```bash
-# Clone o repositório
+# Clone o repositÃ³rio
 git clone https://github.com/bgpin/bgpin
 cd bgpin
 
@@ -68,12 +68,12 @@ go build -o bgpin ./cmd/cli/
 go install ./cmd/cli/
 ```
 
-## 🎯 Uso Rápido
+## ðŸŽ¯ Uso RÃ¡pido
 
 ### CLI
 
 ```bash
-# Informações de um ASN
+# InformaÃ§Ãµes de um ASN
 bgpin asn info 262978
 
 # Vizinhos BGP
@@ -85,15 +85,15 @@ bgpin asn prefixes 262978
 # RIS peers
 bgpin asn peers 262978
 
-# Análise de prefixo
+# AnÃ¡lise de prefixo
 bgpin prefix overview 186.250.184.0/24
 
-# Flow telemetry (requer configuração)
-bgpin flow top                    # Top prefixes por tráfego
-bgpin flow asn 15169              # Estatísticas de tráfego do ASN
-bgpin flow anomaly                # Detectar anomalias de tráfego
+# Flow telemetry (requer configuraÃ§Ã£o)
+bgpin flow top                    # Top prefixes por trÃ¡fego
+bgpin flow asn 15169              # EstatÃ­sticas de trÃ¡fego do ASN
+bgpin flow anomaly                # Detectar anomalias de trÃ¡fego
 bgpin flow upstream-compare       # Comparar upstreams
-bgpin flow stats                  # Estatísticas do coletor
+bgpin flow stats                  # EstatÃ­sticas do coletor
 
 # Formato JSON
 bgpin asn info 262978 -o json
@@ -101,7 +101,7 @@ bgpin asn info 262978 -o json
 # Listar Looking Glasses
 bgpin lg
 
-# Versão
+# VersÃ£o
 bgpin version
 ```
 
@@ -126,7 +126,7 @@ func main() {
     ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
     defer cancel()
     
-    // Obter informações do ASN
+    // Obter informaÃ§Ãµes do ASN
     info, err := client.GetASNInfo(ctx, 262978)
     if err != nil {
         log.Fatal(err)
@@ -138,63 +138,63 @@ func main() {
 }
 ```
 
-## 📖 Documentação
+## ðŸ“– DocumentaÃ§Ã£o
 
-- [Installation Guide](docs/INSTALLATION.md) - Guia completo de instalação
-- [Quick Start](docs/QUICK_START.md) - Início rápido
+- [Installation Guide](docs/INSTALLATION.md) - Guia completo de instalaÃ§Ã£o
+- [Quick Start](docs/QUICK_START.md) - InÃ­cio rÃ¡pido
 - [CLI Guide](docs/CLI_GUIDE.md) - Todos os comandos e exemplos
 - [Flow Collector Guide](docs/FLOW_COLLECTOR.md) - NetFlow/sFlow/IPFIX setup e uso
 - [Telemetria](docs/TELEMETRY.md) - OpenTelemetry integration
 - [Arquitetura](docs/ARCHITECTURE.md) - Design e estrutura do projeto
-- [SDK README](sdk/README.md) - Documentação do SDK
+- [SDK README](sdk/README.md) - DocumentaÃ§Ã£o do SDK
 - [Exemplos de Output](docs/OUTPUT_EXAMPLES.md) - Exemplos visuais
-- [Vendors Status](docs/vendors/STATUS.md) - Status de implementação dos vendors
+- [Vendors Status](docs/vendors/STATUS.md) - Status de implementaÃ§Ã£o dos vendors
 - [Project Summary](docs/PROJECT_SUMMARY.md) - Resumo do projeto
 
 ### Releases
 - [v0.2.0](docs/releases/v0.2.0.md) - Flow collector + Cisco/Juniper parsers
 - [v0.1.0](docs/releases/v0.1.0.md) - Initial release
 
-## 🎨 Exemplos de Saída
+## ðŸŽ¨ Exemplos de SaÃ­da
 
-### Informações de ASN (Formato Tabela)
+### InformaÃ§Ãµes de ASN (Formato Tabela)
 ```
-╭───────────────────────────────────────────────────────────╮
-│ ASN Information: AS262978                                 │
-├───────────┬───────────────────────────────────────────────┤
-│ Holder    │ Centro de Tecnologia Armazem Datacenter Ltda. │
-│ Announced │ true                                          │
-│ Block     │ 262144-263167                                 │
-╰───────────┴───────────────────────────────────────────────╯
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ ASN Information: AS262978                                 â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ Holder    â”‚ Centro de Tecnologia Armazem Datacenter Ltda. â”‚
+â”‚ Announced â”‚ true                                          â”‚
+â”‚ Block     â”‚ 262144-263167                                 â”‚
+â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 ### Prefixos Anunciados
 ```
-╭────────────────────────────────────────────────╮
-│ Announced Prefixes for AS262978 (Total: 19)   │
-├────┬────────────────────┬──────┤
-│  # │ PREFIX             │ TYPE │
-├────┼────────────────────┼──────┤
-│  1 │ 2804:4d44:10::/48  │ IPv6 │
-│  2 │ 143.0.121.0/24     │ IPv4 │
-│  3 │ 186.250.187.0/24   │ IPv4 │
-│  4 │ 186.250.184.0/24   │ IPv4 │
-│  5 │ 2804:4d44:c::/48   │ IPv6 │
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ Announced Prefixes for AS262978 (Total: 19)   â”‚
+â”œâ”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”¤
+â”‚  # â”‚ PREFIX             â”‚ TYPE â”‚
+â”œâ”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”¤
+â”‚  1 â”‚ 2804:4d44:10::/48  â”‚ IPv6 â”‚
+â”‚  2 â”‚ 143.0.121.0/24     â”‚ IPv4 â”‚
+â”‚  3 â”‚ 186.250.187.0/24   â”‚ IPv4 â”‚
+â”‚  4 â”‚ 186.250.184.0/24   â”‚ IPv4 â”‚
+â”‚  5 â”‚ 2804:4d44:c::/48   â”‚ IPv6 â”‚
 ...
-╰────┴────────────────────┴──────╯
+â•°â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 ### Looking Glasses
 ```
-╭───────────────────────────────────────────────────────────────────────────╮
-│ Available Looking Glasses                                                 │
-├────────────────────┬─────────┬────────┬──────────┬─────────┬──────────────┤
-│ NAME               │ VENDOR  │ TYPE   │ PROTOCOL │ COUNTRY │ URL          │
-├────────────────────┼─────────┼────────┼──────────┼─────────┼──────────────┤
-│ Hurricane Electric │ cisco   │ public │ http     │ US      │ lg.he.net    │
-│ NTT America        │ cisco   │ public │ http     │ US      │ lg.ntt.net   │
-│ Telia Carrier      │ juniper │ public │ http     │ SE      │ lg.telia.net │
-╰────────────────────┴─────────┴────────┴──────────┴─────────┴──────────────╯
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ Available Looking Glasses                                                 â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ NAME               â”‚ VENDOR  â”‚ TYPE   â”‚ PROTOCOL â”‚ COUNTRY â”‚ URL          â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ Hurricane Electric â”‚ cisco   â”‚ public â”‚ http     â”‚ US      â”‚ lg.he.net    â”‚
+â”‚ NTT America        â”‚ cisco   â”‚ public â”‚ http     â”‚ US      â”‚ lg.ntt.net   â”‚
+â”‚ Telia Carrier      â”‚ juniper â”‚ public â”‚ http     â”‚ SE      â”‚ lg.telia.net â”‚
+â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 ### Formato JSON
@@ -207,16 +207,16 @@ func main() {
 }
 ```
 
-## 🧪 Testes
+## ðŸ§ª Testes
 
-### SDK - Testes de Integração
+### SDK - Testes de IntegraÃ§Ã£o
 Todos os testes usam dados reais do ASN 262978 (sem mocks):
 
 ```bash
 # Executar todos os testes
 go test -v ./sdk/integration_test/
 
-# Teste específico
+# Teste especÃ­fico
 go test -v ./sdk/integration_test/ -run TestGetASNInfo_262978
 
 # Executar exemplo
@@ -225,39 +225,39 @@ go run sdk/examples/demo.go
 
 ### Resultados dos Testes
 ```
-✅ TestGetASNInfo_262978
-✅ TestGetASNNeighbors_262978 (34 vizinhos)
-✅ TestGetAnnouncedPrefixes_262978 (19 prefixos)
-✅ TestGetPrefixOverview_262978
-✅ TestGetRISPeers_262978 (1449 peers)
-✅ TestRateLimiting
-✅ TestRetryOnError
-✅ TestContextTimeout
-✅ TestConcurrentRequests
+âœ… TestGetASNInfo_262978
+âœ… TestGetASNNeighbors_262978 (34 vizinhos)
+âœ… TestGetAnnouncedPrefixes_262978 (19 prefixos)
+âœ… TestGetPrefixOverview_262978
+âœ… TestGetRISPeers_262978 (1449 peers)
+âœ… TestRateLimiting
+âœ… TestRetryOnError
+âœ… TestContextTimeout
+âœ… TestConcurrentRequests
 ```
 
 ## Arquitetura
 
 ```
 bgpin/
-├── cmd/cli/              # CLI commands
-├── internal/
-│   ├── adapters/         # HTTP, SSH, Telnet adapters
-│   ├── core/             # Domain logic (BGP, AS Path, RPKI)
-│   ├── parsers/          # Vendor-specific parsers
-│   └── services/         # Business logic
-├── pkg/
-│   ├── config/           # Configuration
-│   └── telemetry/        # OpenTelemetry (futuro)
-└── sdk/                  # RIPE RIS SDK
-    ├── client.go         # Cliente principal
-    ├── config.go         # Configuração
-    ├── types.go          # Tipos de dados
-    ├── errors.go         # Erros customizados
-    ├── rate_limit.go     # Rate limiting
-    ├── retry.go          # Retry logic
-    ├── integration_test/ # Testes de integração
-    └── examples/         # Exemplos de uso
+â”œâ”€â”€ cmd/cli/              # CLI commands
+â”œâ”€â”€ internal/
+â”‚   â”œâ”€â”€ adapters/         # HTTP, SSH, Telnet adapters
+â”‚   â”œâ”€â”€ core/             # Domain logic (BGP, AS Path, RPKI)
+â”‚   â”œâ”€â”€ parsers/          # Vendor-specific parsers
+â”‚   â””â”€â”€ services/         # Business logic
+â”œâ”€â”€ pkg/
+â”‚   â”œâ”€â”€ config/           # Configuration
+â”‚   â””â”€â”€ telemetry/        # OpenTelemetry (futuro)
+â””â”€â”€ sdk/                  # RIPE RIS SDK
+    â”œâ”€â”€ client.go         # Cliente principal
+    â”œâ”€â”€ config.go         # ConfiguraÃ§Ã£o
+    â”œâ”€â”€ types.go          # Tipos de dados
+    â”œâ”€â”€ errors.go         # Erros customizados
+    â”œâ”€â”€ rate_limit.go     # Rate limiting
+    â”œâ”€â”€ retry.go          # Retry logic
+    â”œâ”€â”€ integration_test/ # Testes de integraÃ§Ã£o
+    â””â”€â”€ examples/         # Exemplos de uso
 ```
 
 ## Tecnologias
@@ -267,45 +267,45 @@ bgpin/
 - **Config**: Viper
 - **Rate Limiting**: golang.org/x/time/rate
 - **HTTP Client**: net/http (stdlib)
-- **Testing**: Testes de integração reais (sem mocks)
+- **Testing**: Testes de integraÃ§Ã£o reais (sem mocks)
 
 ## Roadmap
 
 - [x] SDK RIPE RIS completo
 - [x] Rate limiting e retry
-- [x] Testes de integração
+- [x] Testes de integraÃ§Ã£o
 - [ ] CLI completa
-- [ ] Suporte a múltiplos LG (HTTP, Telnet, SSH)
+- [ ] Suporte a mÃºltiplos LG (HTTP, Telnet, SSH)
 - [ ] Parsers para Cisco, Juniper, FRR
-- [ ] Análise de anomalias BGP
-- [ ] Validação RPKI
+- [ ] AnÃ¡lise de anomalias BGP
+- [ ] ValidaÃ§Ã£o RPKI
 - [ ] OpenTelemetry
 - [ ] Cache inteligente
 - [ ] Modo interativo (TUI)
 
 ## Exemplos de Uso
 
-### Obter informações completas de um ASN
+### Obter informaÃ§Ãµes completas de um ASN
 ```bash
 go run sdk/examples/demo.go
 ```
 
-### Executar testes de integração
+### Executar testes de integraÃ§Ã£o
 ```bash
 go test -v ./sdk/integration_test/
 ```
 
 ## Contribuindo
 
-Contribuições são bem-vindas! Por favor:
+ContribuiÃ§Ãµes sÃ£o bem-vindas! Por favor:
 
 1. Fork o projeto
 2. Crie uma branch para sua feature (`git checkout -b feature/amazing-feature`)
-3. Commit suas mudanças (`git commit -m 'Add amazing feature'`)
+3. Commit suas mudanÃ§as (`git commit -m 'Add amazing feature'`)
 4. Push para a branch (`git push origin feature/amazing-feature`)
 5. Abra um Pull Request
 
-## Licença
+## LicenÃ§a
 
 MIT License - veja o arquivo LICENSE para detalhes
 
@@ -320,48 +320,48 @@ bgpin team
 - ASN 262978 (Centro de Tecnologia Armazem Datacenter Ltda.) usado nos testes
 
 
-## 🏗️ Arquitetura
+## ðŸ—ï¸ Arquitetura
 
 ```
 bgpin/
-├── cmd/cli/              # CLI commands
-│   ├── root.go          # Root command
-│   ├── asn.go           # ASN commands
-│   ├── prefix.go        # Prefix commands
-│   └── version.go       # Version info
-├── internal/
-│   ├── adapters/        # HTTP, SSH, Telnet adapters
-│   ├── core/            # Domain logic (BGP, AS Path, RPKI)
-│   ├── parsers/         # Vendor-specific parsers
-│   └── services/        # Business logic
-├── pkg/
-│   ├── config/          # Configuration
-│   └── telemetry/       # OpenTelemetry (futuro)
-└── sdk/                 # RIPE RIS SDK
-    ├── client.go        # Main client
-    ├── config.go        # Configuration
-    ├── types.go         # Data types
-    ├── errors.go        # Custom errors
-    ├── rate_limit.go    # Rate limiting
-    ├── retry.go         # Retry logic
-    ├── integration_test/
-    └── examples/
+â”œâ”€â”€ cmd/cli/              # CLI commands
+â”‚   â”œâ”€â”€ root.go          # Root command
+â”‚   â”œâ”€â”€ asn.go           # ASN commands
+â”‚   â”œâ”€â”€ prefix.go        # Prefix commands
+â”‚   â””â”€â”€ version.go       # Version info
+â”œâ”€â”€ internal/
+â”‚   â”œâ”€â”€ adapters/        # HTTP, SSH, Telnet adapters
+â”‚   â”œâ”€â”€ core/            # Domain logic (BGP, AS Path, RPKI)
+â”‚   â”œâ”€â”€ parsers/         # Vendor-specific parsers
+â”‚   â””â”€â”€ services/        # Business logic
+â”œâ”€â”€ pkg/
+â”‚   â”œâ”€â”€ config/          # Configuration
+â”‚   â””â”€â”€ telemetry/       # OpenTelemetry (futuro)
+â””â”€â”€ sdk/                 # RIPE RIS SDK
+    â”œâ”€â”€ client.go        # Main client
+    â”œâ”€â”€ config.go        # Configuration
+    â”œâ”€â”€ types.go         # Data types
+    â”œâ”€â”€ errors.go        # Custom errors
+    â”œâ”€â”€ rate_limit.go    # Rate limiting
+    â”œâ”€â”€ retry.go         # Retry logic
+    â”œâ”€â”€ integration_test/
+    â””â”€â”€ examples/
 ```
 
-## 🛠️ Tecnologias
+## ðŸ› ï¸ Tecnologias
 
 - **Linguagem**: Go 1.25+
 - **CLI Framework**: Cobra
 - **Config**: Viper
 - **Rate Limiting**: golang.org/x/time/rate
 - **HTTP Client**: net/http (stdlib)
-- **Testing**: Testes de integração reais (sem mocks)
+- **Testing**: Testes de integraÃ§Ã£o reais (sem mocks)
 
-## 📋 Comandos CLI
+## ðŸ“‹ Comandos CLI
 
 ### ASN Commands
 ```bash
-bgpin asn info [asn]         # Informações do ASN
+bgpin asn info [asn]         # InformaÃ§Ãµes do ASN
 bgpin asn neighbors [asn]    # Vizinhos BGP
 bgpin asn prefixes [asn]     # Prefixos anunciados
 bgpin asn peers [asn]        # RIS peers
@@ -369,21 +369,21 @@ bgpin asn peers [asn]        # RIS peers
 
 ### Prefix Commands
 ```bash
-bgpin prefix overview [prefix]  # Visão geral do prefixo
+bgpin prefix overview [prefix]  # VisÃ£o geral do prefixo
 ```
 
 ### Flow Commands (Preparado)
 ```bash
-bgpin flow top                  # Top prefixes por tráfego
-bgpin flow asn [asn]           # Estatísticas de tráfego do ASN
-bgpin flow anomaly             # Detectar anomalias de tráfego
+bgpin flow top                  # Top prefixes por trÃ¡fego
+bgpin flow asn [asn]           # EstatÃ­sticas de trÃ¡fego do ASN
+bgpin flow anomaly             # Detectar anomalias de trÃ¡fego
 bgpin flow upstream-compare    # Comparar upstreams
 ```
 
 ### Utility Commands
 ```bash
 bgpin lg          # Listar Looking Glasses
-bgpin version     # Informações de versão
+bgpin version     # InformaÃ§Ãµes de versÃ£o
 ```
 
 ### Flags Globais
@@ -391,15 +391,15 @@ bgpin version     # Informações de versão
 -o, --output string   # Formato: table, json, yaml (default: table)
 -t, --timeout int     # Timeout em segundos (default: 30)
 -v, --verbose         # Modo verbose
---config string       # Arquivo de configuração
+--config string       # Arquivo de configuraÃ§Ã£o
 ```
 
-## 🔧 Configuração
+## ðŸ”§ ConfiguraÃ§Ã£o
 
 Crie um arquivo `bgpin.yaml`:
 
 ```yaml
-# Configurações gerais
+# ConfiguraÃ§Ãµes gerais
 timeout: 30
 output: table
 
@@ -416,11 +416,11 @@ ripe:
   retry_wait_max: 10
 ```
 
-## 💡 Exemplos Práticos
+## ðŸ’¡ Exemplos PrÃ¡ticos
 
 ### Investigar um ASN
 ```bash
-# Informações básicas
+# InformaÃ§Ãµes bÃ¡sicas
 bgpin asn info 262978
 
 # Ver todos os vizinhos
@@ -442,7 +442,7 @@ bgpin asn prefixes 262978 -o json | jq '.prefixes | length'
 bgpin asn prefixes 262978 -o json | jq -r '.prefixes[].prefix' | grep -v ':'
 ```
 
-### Automação
+### AutomaÃ§Ã£o
 ```bash
 #!/bin/bash
 # Script para monitorar ASN
@@ -460,70 +460,70 @@ bgpin asn neighbors $ASN -o json > $OUTPUT_DIR/neighbors.json
 echo "Data collected successfully!"
 ```
 
-## 🗺️ Roadmap
+## ðŸ—ºï¸ Roadmap
 
 - [x] SDK RIPE RIS completo
-- [x] CLI básica com comandos ASN e Prefix
-- [x] Múltiplos formatos de saída (table, JSON, YAML)
+- [x] CLI bÃ¡sica com comandos ASN e Prefix
+- [x] MÃºltiplos formatos de saÃ­da (table, JSON, YAML)
 - [x] Rate limiting e retry
-- [x] Testes de integração
-- [ ] Suporte a múltiplos LG (HTTP, Telnet, SSH)
+- [x] Testes de integraÃ§Ã£o
+- [ ] Suporte a mÃºltiplos LG (HTTP, Telnet, SSH)
 - [ ] Parsers para Cisco, Juniper, FRR
-- [ ] Análise de anomalias BGP
-- [ ] Validação RPKI
+- [ ] AnÃ¡lise de anomalias BGP
+- [ ] ValidaÃ§Ã£o RPKI
 - [ ] OpenTelemetry
 - [ ] Cache inteligente
 - [ ] Modo interativo (TUI)
 
-## 🤝 Contribuindo
+## ðŸ¤ Contribuindo
 
-Contribuições são bem-vindas! Por favor:
+ContribuiÃ§Ãµes sÃ£o bem-vindas! Por favor:
 
 1. Fork o projeto
 2. Crie uma branch para sua feature (`git checkout -b feature/amazing-feature`)
-3. Commit suas mudanças (`git commit -m 'Add amazing feature'`)
+3. Commit suas mudanÃ§as (`git commit -m 'Add amazing feature'`)
 4. Push para a branch (`git push origin feature/amazing-feature`)
 5. Abra um Pull Request
 
-## 📝 Licença
+## ðŸ“ LicenÃ§a
 
 MIT License - veja o arquivo LICENSE para detalhes
 
-## 👥 Autor
+## ðŸ‘¥ Autor
 
 bgpin team
 
-## 🙏 Agradecimentos
+## ðŸ™ Agradecimentos
 
 - RIPE NCC pela API RIS
 - Comunidade BGP
 - ASN 262978 (Centro de Tecnologia Armazem Datacenter Ltda.) usado nos testes
 
-## 📞 Suporte
+## ðŸ“ž Suporte
 
 - GitHub Issues: https://github.com/bgpin/bgpin/issues
-- Documentação: [docs/](docs/)
+- DocumentaÃ§Ã£o: [docs/](docs/)
 - Email: support@bgpin.dev
 
 ---
 
-**bgpin** - BGP Intelligence Tool 🌐
+**bgpin** - BGP Intelligence Tool ðŸŒ
 
 
-## 🎨 UX Profissional
+## ðŸŽ¨ UX Profissional
 
 A CLI usa a biblioteca `go-pretty/table` para outputs visuais profissionais:
 
-- ✅ Bordas arredondadas Unicode (╭╮╰╯)
-- ✅ Títulos centralizados
-- ✅ Linhas limpas sem separadores extras
-- ✅ Detecção automática de IPv4/IPv6
-- ✅ Truncamento inteligente com footer
-- ✅ Largura dinâmica
+- âœ… Bordas arredondadas Unicode (â•­â•®â•°â•¯)
+- âœ… TÃ­tulos centralizados
+- âœ… Linhas limpas sem separadores extras
+- âœ… DetecÃ§Ã£o automÃ¡tica de IPv4/IPv6
+- âœ… Truncamento inteligente com footer
+- âœ… Largura dinÃ¢mica
 
 Veja mais exemplos em [docs/OUTPUT_EXAMPLES.md](docs/OUTPUT_EXAMPLES.md)
 
 
 ## Overview
 
-Plataforma completa em Golang para análise BGP, consulta de Looking Glass, telemetria de rede e correlação com flow data (NetFlow/sFlow/IPFIX).
+Plataforma completa em Golang para anÃ¡lise BGP, consulta de Looking Glass, telemetria de rede e correlaÃ§Ã£o com flow data (NetFlow/sFlow/IPFIX).

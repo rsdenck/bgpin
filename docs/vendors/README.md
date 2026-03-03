@@ -8,13 +8,13 @@ This directory contains documentation about vendor-specific BGP parsers.
 
 ## Implemented Vendors
 
-### ✅ Cisco Systems
+### âœ… Cisco Systems
 - **Status:** 100% Complete
 - **Supported:** IOS, IOS-XE, IOS-XR, NX-OS
 - **Protocol:** SSH CLI
 - **File:** `internal/parsers/cisco/cisco.go`
 
-### ✅ Juniper Networks
+### âœ… Juniper Networks
 - **Status:** 100% Complete
 - **Supported:** JunOS
 - **Protocol:** NETCONF/XML RPC

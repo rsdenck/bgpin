@@ -2,17 +2,17 @@
 
 ## OpenTelemetry Integration
 
-bgpin integra OpenTelemetry para observabilidade completa de todas as operações BGP.
+bgpin integra OpenTelemetry para observabilidade completa de todas as operaÃ§Ãµes BGP.
 
-### Características
+### CaracterÃ­sticas
 
-- ✅ Distributed tracing
-- ✅ Métricas de performance
-- ✅ Latência de queries
-- ✅ Contadores de erros
-- ✅ Exportação para OTLP, Jaeger, Prometheus
+- âœ… Distributed tracing
+- âœ… MÃ©tricas de performance
+- âœ… LatÃªncia de queries
+- âœ… Contadores de erros
+- âœ… ExportaÃ§Ã£o para OTLP, Jaeger, Prometheus
 
-### Configuração
+### ConfiguraÃ§Ã£o
 
 ```yaml
 # bgpin.yaml
@@ -21,7 +21,7 @@ telemetry:
   export_type: stdout  # stdout, otlp, jaeger
   endpoint: "localhost:4317"
   
-  # Métricas
+  # MÃ©tricas
   metrics:
     enabled: true
     interval: 60s
@@ -32,16 +32,16 @@ telemetry:
     sample_rate: 1.0  # 100% sampling
 ```
 
-### Traces Disponíveis
+### Traces DisponÃ­veis
 
 #### 1. Query Traces
 ```
 bgpin.query
-├── bgpin.sdk.get_asn_info
-│   ├── http.request
-│   └── json.unmarshal
-├── bgpin.output.format
-└── bgpin.render.table
+â”œâ”€â”€ bgpin.sdk.get_asn_info
+â”‚   â”œâ”€â”€ http.request
+â”‚   â””â”€â”€ json.unmarshal
+â”œâ”€â”€ bgpin.output.format
+â””â”€â”€ bgpin.render.table
 ```
 
 #### 2. Attributes
@@ -50,11 +50,11 @@ bgpin.query
 - `bgp.asn` - ASN consultado
 - `bgp.as_path` - AS Path
 - `cli.command` - Comando executado
-- `cli.output_format` - Formato de saída
-- `result.count` - Número de resultados
-- `duration_ms` - Duração em milissegundos
+- `cli.output_format` - Formato de saÃ­da
+- `result.count` - NÃºmero de resultados
+- `duration_ms` - DuraÃ§Ã£o em milissegundos
 
-### Métricas Disponíveis
+### MÃ©tricas DisponÃ­veis
 
 #### Counters
 - `bgpin.queries.total` - Total de queries executadas
@@ -63,7 +63,7 @@ bgpin.query
 - `bgpin.neighbors.total` - Total de vizinhos consultados
 
 #### Histograms
-- `bgpin.query.duration` - Duração das queries (ms)
+- `bgpin.query.duration` - DuraÃ§Ã£o das queries (ms)
 
 ### Exemplo de Uso
 
@@ -135,7 +135,7 @@ telemetry:
   endpoint: "jaeger:14268"
 ```
 
-### Visualização
+### VisualizaÃ§Ã£o
 
 #### Jaeger UI
 ```
@@ -144,9 +144,9 @@ http://localhost:16686
 
 Visualize:
 - Trace completo de cada query
-- Latência por componente
-- Erros e exceções
-- Dependências entre serviços
+- LatÃªncia por componente
+- Erros e exceÃ§Ãµes
+- DependÃªncias entre serviÃ§os
 
 #### Prometheus + Grafana
 ```yaml
@@ -189,30 +189,30 @@ bgpin pode coletar e analisar dados de flow (NetFlow/sFlow/IPFIX) para correlaci
 ### Arquitetura
 
 ```
-┌─────────────┐
-│   Router    │ NetFlow/sFlow
-│  (Exporter) │────────────┐
-└─────────────┘            │
-                           ▼
-┌─────────────┐      ┌──────────────┐
-│   Switch    │─────▶│ bgpin Flow   │
-│  (Exporter) │      │  Collector   │
-└─────────────┘      └──────┬───────┘
-                            │
-                            ▼
-                     ┌──────────────┐
-                     │  Aggregator  │
-                     │  & Analyzer  │
-                     └──────┬───────┘
-                            │
-                            ▼
-                     ┌──────────────┐
-                     │   Storage    │
-                     │ (Time Series)│
-                     └──────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚   Router    â”‚ NetFlow/sFlow
+â”‚  (Exporter) â”‚â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜            â”‚
+                           â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”      â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚   Switch    â”‚â”€â”€â”€â”€â”€â–¶â”‚ bgpin Flow   â”‚
+â”‚  (Exporter) â”‚      â”‚  Collector   â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜      â””â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”˜
+                            â”‚
+                            â–¼
+                     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                     â”‚  Aggregator  â”‚
+                     â”‚  & Analyzer  â”‚
+                     â””â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”˜
+                            â”‚
+                            â–¼
+                     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                     â”‚   Storage    â”‚
+                     â”‚ (Time Series)â”‚
+                     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
-### Configuração
+### ConfiguraÃ§Ã£o
 
 ```yaml
 # bgpin.yaml
@@ -248,15 +248,15 @@ bgpin flow top --prefix 8.8.8.0/24
 
 Output:
 ```
-╭────────────────────────────────────────────────────────────────────────╮
-│ Top Prefixes by Traffic                                                │
-├───┬─────────────────┬─────────┬──────────────────┬──────┬──────────────┤
-│ # │ PREFIX          │ ASN     │ TRAFFIC          │ PPS  │ TOP PROTOCOL │
-├───┼─────────────────┼─────────┼──────────────────┼──────┼──────────────┤
-│ 1 │ 8.8.8.0/24      │ AS15169 │ 850 Mbps         │ 120k │ TCP (443)    │
-│ 2 │ 1.1.1.0/24      │ AS13335 │ 640 Mbps         │ 98k  │ UDP (53)     │
-│ 3 │ 208.67.222.0/24 │ AS36692 │ 1.2 Gbps         │ 150k │ TCP (80)     │
-╰───┴─────────────────┴─────────┴──────────────────┴──────┴──────────────╯
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ Top Prefixes by Traffic                                                â”‚
+â”œâ”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ # â”‚ PREFIX          â”‚ ASN     â”‚ TRAFFIC          â”‚ PPS  â”‚ TOP PROTOCOL â”‚
+â”œâ”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ 1 â”‚ 8.8.8.0/24      â”‚ AS15169 â”‚ 850 Mbps         â”‚ 120k â”‚ TCP (443)    â”‚
+â”‚ 2 â”‚ 1.1.1.0/24      â”‚ AS13335 â”‚ 640 Mbps         â”‚ 98k  â”‚ UDP (53)     â”‚
+â”‚ 3 â”‚ 208.67.222.0/24 â”‚ AS36692 â”‚ 1.2 Gbps         â”‚ 150k â”‚ TCP (80)     â”‚
+â•°â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 #### 2. ASN Traffic
@@ -267,15 +267,15 @@ bgpin flow asn AS262978
 
 Output:
 ```
-╭────────────────────────────────────────────────╮
-│ Traffic Statistics for AS15169                 │
-├──────────┬──────────────┬──────────────────────┤
-│ METRIC   │ INBOUND      │ OUTBOUND             │
-├──────────┼──────────────┼──────────────────────┤
-│ Traffic  │ 850 Mbps     │ 640 Mbps             │
-│ Packets  │ 120k pps     │ 98k pps              │
-│ Flows    │ 15,234       │ 12,891               │
-╰──────────┴──────────────┴──────────────────────╯
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ Traffic Statistics for AS15169                 â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ METRIC   â”‚ INBOUND      â”‚ OUTBOUND             â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ Traffic  â”‚ 850 Mbps     â”‚ 640 Mbps             â”‚
+â”‚ Packets  â”‚ 120k pps     â”‚ 98k pps              â”‚
+â”‚ Flows    â”‚ 15,234       â”‚ 12,891               â”‚
+â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 #### 3. Anomaly Detection
@@ -286,15 +286,15 @@ bgpin flow anomaly --severity high
 
 Output:
 ```
-╭────────────────────────────────────────────────────────────────────────────────────╮
-│ Detected Traffic Anomalies                                                         │
-├──────────┬───────┬──────────┬─────────────────┬─────────┬──────────────────────────┤
-│ TIME     │ TYPE  │ SEVERITY │ PREFIX          │ ASN     │ DESCRIPTION              │
-├──────────┼───────┼──────────┼─────────────────┼─────────┼──────────────────────────┤
-│ 11:45:23 │ DDoS  │ CRITICAL │ 8.8.8.0/24      │ AS15169 │ High PPS detected (250k) │
-│ 11:42:15 │ Spike │ HIGH     │ 1.1.1.0/24      │ AS13335 │ Traffic spike (2.5 Gbps) │
-│ 11:38:07 │ Drop  │ MEDIUM   │ 208.67.222.0/24 │ AS36692 │ Traffic drop (80%)       │
-╰──────────┴───────┴──────────┴─────────────────┴─────────┴──────────────────────────╯
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ Detected Traffic Anomalies                                                         â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ TIME     â”‚ TYPE  â”‚ SEVERITY â”‚ PREFIX          â”‚ ASN     â”‚ DESCRIPTION              â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ 11:45:23 â”‚ DDoS  â”‚ CRITICAL â”‚ 8.8.8.0/24      â”‚ AS15169 â”‚ High PPS detected (250k) â”‚
+â”‚ 11:42:15 â”‚ Spike â”‚ HIGH     â”‚ 1.1.1.0/24      â”‚ AS13335 â”‚ Traffic spike (2.5 Gbps) â”‚
+â”‚ 11:38:07 â”‚ Drop  â”‚ MEDIUM   â”‚ 208.67.222.0/24 â”‚ AS36692 â”‚ Traffic drop (80%)       â”‚
+â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 #### 4. Upstream Comparison
@@ -305,52 +305,52 @@ bgpin flow upstream-compare --prefix 8.8.8.0/24
 
 Output:
 ```
-╭───────────────────────────────────────────────────────────────────────────╮
-│ Upstream Provider Comparison                                              │
-├──────────┬────────┬────────────┬───────────┬──────┬───────────┬───────────┤
-│ PROVIDER │ ASN    │ AS PATH    │ TRAFFIC   │ PPS  │ LATENCY   │ LOSS      │
-├──────────┼────────┼────────────┼───────────┼──────┼───────────┼───────────┤
-│ Telia    │ AS1299 │ 1299 15169 │ 850 Mbps  │ 120k │ 42ms      │ 0.1%      │
-│ Level3   │ AS3356 │ 3356 15169 │ 640 Mbps  │ 98k  │ 38ms      │ 0.2%      │
-│ GTT      │ AS3257 │ 3257 15169 │ 1.2 Gbps  │ 150k │ 55ms      │ 0.3%      │
-╰──────────┴────────┴────────────┴───────────┴──────┴───────────┴───────────╯
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ Upstream Provider Comparison                                              â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ PROVIDER â”‚ ASN    â”‚ AS PATH    â”‚ TRAFFIC   â”‚ PPS  â”‚ LATENCY   â”‚ LOSS      â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ Telia    â”‚ AS1299 â”‚ 1299 15169 â”‚ 850 Mbps  â”‚ 120k â”‚ 42ms      â”‚ 0.1%      â”‚
+â”‚ Level3   â”‚ AS3356 â”‚ 3356 15169 â”‚ 640 Mbps  â”‚ 98k  â”‚ 38ms      â”‚ 0.2%      â”‚
+â”‚ GTT      â”‚ AS3257 â”‚ 3257 15169 â”‚ 1.2 Gbps  â”‚ 150k â”‚ 55ms      â”‚ 0.3%      â”‚
+â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 ### Casos de Uso
 
-#### 1. Detecção de DDoS
+#### 1. DetecÃ§Ã£o de DDoS
 ```bash
 # Monitorar anomalias em tempo real
 watch -n 5 'bgpin flow anomaly --severity critical'
 ```
 
-#### 2. Análise de Tráfego por ASN
+#### 2. AnÃ¡lise de TrÃ¡fego por ASN
 ```bash
-# Ver tráfego de um ASN específico
+# Ver trÃ¡fego de um ASN especÃ­fico
 bgpin flow asn 262978 -o json | jq '.inbound_bps'
 ```
 
-#### 3. Engenharia de Tráfego
+#### 3. Engenharia de TrÃ¡fego
 ```bash
-# Comparar upstreams para decisões de roteamento
+# Comparar upstreams para decisÃµes de roteamento
 bgpin flow upstream-compare --prefix 8.8.8.0/24
 ```
 
-#### 4. Validação BGP vs Tráfego Real
+#### 4. ValidaÃ§Ã£o BGP vs TrÃ¡fego Real
 ```bash
-# Verificar se prefixos anunciados têm tráfego
+# Verificar se prefixos anunciados tÃªm trÃ¡fego
 bgpin asn prefixes 262978 -o json | \
   jq -r '.prefixes[].prefix' | \
   xargs -I {} bgpin flow top --prefix {}
 ```
 
-### Integração com BGP
+### IntegraÃ§Ã£o com BGP
 
-#### Correlação Automática
+#### CorrelaÃ§Ã£o AutomÃ¡tica
 ```bash
 # bgpin correlaciona automaticamente:
 # - Prefixos anunciados (BGP)
-# - Tráfego real (Flow)
+# - TrÃ¡fego real (Flow)
 # - AS Path (BGP)
 # - Performance (Flow)
 
@@ -359,41 +359,41 @@ bgpin flow top --correlate-bgp
 
 Output:
 ```
-╭─────────────────────────────────────────────────────────────────────────────────────╮
-│ BGP + Flow Correlation                                                              │
-├─────────────────┬─────────┬───────────────┬───────────┬──────┬──────────────────────┤
-│ PREFIX          │ ASN     │ AS PATH       │ TRAFFIC   │ PPS  │ BGP STATUS           │
-├─────────────────┼─────────┼───────────────┼───────────┼──────┼──────────────────────┤
-│ 8.8.8.0/24      │ AS15169 │ 1299 15169    │ 850 Mbps  │ 120k │ ✓ Announced          │
-│ 1.1.1.0/24      │ AS13335 │ 3356 13335    │ 640 Mbps  │ 98k  │ ✓ Announced          │
-│ 192.0.2.0/24    │ AS64512 │ -             │ 1.2 Gbps  │ 150k │ ✗ NOT ANNOUNCED      │
-╰─────────────────┴─────────┴───────────────┴───────────┴──────┴──────────────────────╯
+â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+â”‚ BGP + Flow Correlation                                                              â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ PREFIX          â”‚ ASN     â”‚ AS PATH       â”‚ TRAFFIC   â”‚ PPS  â”‚ BGP STATUS           â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ 8.8.8.0/24      â”‚ AS15169 â”‚ 1299 15169    â”‚ 850 Mbps  â”‚ 120k â”‚ âœ“ Announced          â”‚
+â”‚ 1.1.1.0/24      â”‚ AS13335 â”‚ 3356 13335    â”‚ 640 Mbps  â”‚ 98k  â”‚ âœ“ Announced          â”‚
+â”‚ 192.0.2.0/24    â”‚ AS64512 â”‚ -             â”‚ 1.2 Gbps  â”‚ 150k â”‚ âœ— NOT ANNOUNCED      â”‚
+â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 ```
 
 ### Alertas
 
-#### Anomalias Críticas
+#### Anomalias CrÃ­ticas
 ```bash
 # Configurar alerta para DDoS
 bgpin flow anomaly --watch --severity critical --alert-webhook https://slack.com/webhook
 ```
 
-#### Tráfego Não Anunciado
+#### TrÃ¡fego NÃ£o Anunciado
 ```bash
-# Alertar sobre tráfego em prefixos não anunciados
+# Alertar sobre trÃ¡fego em prefixos nÃ£o anunciados
 bgpin flow top --check-bgp --alert-unanounced
 ```
 
-## Próximos Passos
+## PrÃ³ximos Passos
 
 - [ ] Implementar coletor NetFlow/sFlow/IPFIX
 - [ ] Integrar com goflow
 - [ ] Storage em time-series DB (InfluxDB, TimescaleDB)
 - [ ] Dashboard Grafana
-- [ ] Alertas automáticos
-- [ ] Machine Learning para detecção de anomalias
-- [ ] Correlação BGP + Flow em tempo real
+- [ ] Alertas automÃ¡ticos
+- [ ] Machine Learning para detecÃ§Ã£o de anomalias
+- [ ] CorrelaÃ§Ã£o BGP + Flow em tempo real
 
 ---
 
-**Observabilidade Enterprise para BGP** 🔍
+**Observabilidade Enterprise para BGP** ðŸ”
