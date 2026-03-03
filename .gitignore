@@ -59,7 +59,8 @@ reports/
 !go.mod
 !go.sum
 
-# Telemetry data
-telemetry/
+# Telemetry data (not source code)
+telemetry/*.json
+telemetry/*.log
 traces/
 metrics/
