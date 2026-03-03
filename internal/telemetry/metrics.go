@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
 )
@@ -21,7 +22,8 @@ var globalMetrics *Metrics
 
 // InitializeMetrics sets up metric instruments
 func InitializeMetrics() error {
-	meter := otel.GetMeterProvider().Meter(serviceName)
+	mp := otel.GetMeterProvider()
+	meter := mp.Meter(serviceName)
 
 	queryCounter, err := meter.Int64Counter(
 		"bgpin.queries.total",
