@@ -6,10 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bgpin/bgpin/internal/adapters/http"
 	"github.com/bgpin/bgpin/internal/core/bgp"
-	"github.com/bgpin/bgpin/internal/parsers/cisco"
-	"github.com/bgpin/bgpin/internal/parsers/junos"
 	"github.com/bgpin/bgpin/pkg/config"
 	"github.com/spf13/cobra"
 )
@@ -74,47 +71,36 @@ func runLookup(cmd *cobra.Command, args []string) error {
 }
 
 func queryCiscoLG(ctx context.Context, lg *config.LookingGlass, prefix string) (*bgp.LookupResult, error) {
-	adapter := http.NewHTTPAdapter(lg.URL, 30*time.Second)
-	parser := cisco.NewParser()
-
-	output, err := adapter.QueryBGP(ctx, prefix)
-	if err != nil {
-		return nil, err
-	}
-
-	routes, err := parser.ParseRoutes(output)
-	if err != nil {
-		return nil, err
-	}
-
+	// TODO: Implement with new parser API
+	// parser, err := cisco.NewParser(cisco.Config{
+	//     Host: lg.URL,
+	//     Username: "admin",
+	//     Password: "password",
+	// })
+	
 	return &bgp.LookupResult{
 		Prefix:    prefix,
 		QueryLG:   lg.Name,
 		Timestamp: time.Now(),
-		Routes:    routes,
-	}, nil
+		Routes:    []bgp.Route{},
+	}, fmt.Errorf("cisco parser integration not yet implemented")
 }
 
 func queryJuniperLG(ctx context.Context, lg *config.LookingGlass, prefix string) (*bgp.LookupResult, error) {
-	adapter := http.NewHTTPAdapter(lg.URL, 30*time.Second)
-	parser := junos.NewParser()
-
-	output, err := adapter.QueryBGP(ctx, prefix)
-	if err != nil {
-		return nil, err
-	}
-
-	routes, err := parser.ParseRoutes(output)
-	if err != nil {
-		return nil, err
-	}
-
+	// TODO: Implement with new parser API
+	// parser, err := junos.NewParser(junos.Config{
+	//     Host: lg.URL,
+	//     Port: 830,
+	//     Username: "admin",
+	//     Password: "password",
+	// })
+	
 	return &bgp.LookupResult{
 		Prefix:    prefix,
 		QueryLG:   lg.Name,
 		Timestamp: time.Now(),
-		Routes:    routes,
-	}, nil
+		Routes:    []bgp.Route{},
+	}, fmt.Errorf("juniper parser integration not yet implemented")
 }
 
 func printResult(result *bgp.LookupResult, format string) error {
