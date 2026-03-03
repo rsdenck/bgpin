@@ -1,0 +1,172 @@
+# bgpin v0.1.0 - Complete BGP Platform 🚀
+
+**Release Date**: March 3, 2026
+
+## 🎉 First Release!
+
+bgpin é uma plataforma completa em Golang para análise BGP, consulta de Looking Glass, telemetria de rede e correlação com flow data.
+
+## ✨ Highlights
+
+### Complete RIPE RIS SDK
+- 5 métodos da API RIPE RIS
+- Rate limiting (10 req/s)
+- Retry com exponential backoff
+- Context support
+- Thread-safe
+- 9 testes de integração com dados reais (ASN 262978)
+
+### Professional CLI
+- Comandos ASN (info, neighbors, prefixes, peers)
+- Comandos Prefix (overview)
+- Comandos Flow (top, asn, anomaly, upstream-compare) - preparado
+- UX profissional com go-pretty/table
+- Múltiplos formatos (table, JSON, YAML)
+- Detecção automática IPv4/IPv6
+
+### Telemetry & Observability
+- OpenTelemetry integration
+- Distributed tracing
+- Performance metrics
+- Export para OTLP, Jaeger, Prometheus
+
+### Flow Analysis (Preparado)
+- Estrutura para NetFlow/sFlow/IPFIX
+- Agregação por prefixo e ASN
+- Detecção de anomalias
+- Comparação de upstreams
+
+## 📦 Installation
+
+```bash
+# Clone
+git clone https://github.com/rsdenck/bgpin
+cd bgpin
+
+# Build
+go build -o bgpin ./cmd/cli/
+
+# Or install
+go install github.com/rsdenck/bgpin/cmd/cli@v0.1.0
+```
+
+## 🚀 Quick Start
+
+```bash
+# ASN information
+bgpin asn info 262978
+
+# BGP neighbors
+bgpin asn neighbors 262978
+
+# Announced prefixes
+bgpin asn prefixes 262978
+
+# RIS peers
+bgpin asn peers 262978
+
+# Prefix overview
+bgpin prefix overview 186.250.184.0/24
+
+# List looking glasses
+bgpin lg
+
+# Flow commands (prepared)
+bgpin flow top
+bgpin flow anomaly
+```
+
+## 📊 Example Output
+
+```
+╭───────────────────────────────────────────────────────────╮
+│ ASN Information: AS262978                                 │
+├───────────┬───────────────────────────────────────────────┤
+│ Holder    │ Centro de Tecnologia Armazem Datacenter Ltda. │
+│ Announced │ true                                          │
+│ Block     │ 262144-263167                                 │
+╰───────────┴───────────────────────────────────────────────╯
+```
+
+## 📚 Documentation
+
+- [README](README.md) - Main documentation
+- [CLI Guide](docs/CLI_GUIDE.md) - Complete CLI guide
+- [Architecture](docs/ARCHITECTURE.md) - Architecture details
+- [Telemetry](docs/TELEMETRY.md) - Observability guide
+- [Quick Start](QUICK_START.md) - Quick start guide
+- [Contributing](CONTRIBUTING.md) - How to contribute
+
+## 🔧 Technical Details
+
+### Dependencies
+- Go 1.25+
+- github.com/spf13/cobra - CLI framework
+- github.com/spf13/viper - Configuration
+- github.com/jedib0t/go-pretty/v6 - Table formatting
+- go.opentelemetry.io/otel - Observability
+- golang.org/x/time/rate - Rate limiting
+
+### Architecture
+- Clean Architecture + Hexagonal
+- Ports & Adapters pattern
+- Thread-safe operations
+- Professional error handling
+
+### Testing
+- 9 integration tests
+- Real data (ASN 262978)
+- No mocks
+- All tests passing ✅
+
+## 🎯 Use Cases
+
+- ASN investigation
+- BGP neighbor analysis
+- Prefix monitoring
+- Traffic analysis (prepared)
+- Anomaly detection (prepared)
+- Upstream comparison (prepared)
+- Network troubleshooting
+- SOC/Blue Team operations
+
+## 🗺️ Roadmap
+
+### v0.2.0 (Planned)
+- [ ] NetFlow/sFlow/IPFIX collector
+- [ ] goflow integration
+- [ ] Time-series database storage
+- [ ] Grafana dashboards
+- [ ] Machine learning for anomalies
+
+### Future
+- [ ] Multiple Looking Glass support
+- [ ] Vendor parsers (Cisco, Juniper, FRR)
+- [ ] RPKI validation
+- [ ] Intelligent caching
+- [ ] Interactive TUI
+- [ ] PeeringDB integration
+- [ ] RouteViews integration
+
+## 🤝 Contributing
+
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+## 📝 License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+## 🙏 Acknowledgments
+
+- RIPE NCC for the RIS API
+- BGP community
+- ASN 262978 (Centro de Tecnologia Armazem Datacenter Ltda.) for test data
+
+## 📞 Support
+
+- GitHub Issues: https://github.com/rsdenck/bgpin/issues
+- Documentation: https://github.com/rsdenck/bgpin/tree/main/docs
+
+---
+
+**Built with ❤️ using Go**
