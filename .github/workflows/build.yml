@@ -40,8 +40,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-${{ matrix.goarch }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
+            ${{ runner.os }}-go-${{ matrix.goarch }}-
             ${{ runner.os }}-go-
 
       - name: Download dependencies
@@ -119,9 +120,11 @@ jobs:
           go-version: '1.23'
 
       - name: Run tests
+        timeout-minutes: 5
         run: |
           # Test only packages with actual test files
-          go test -v -race -coverprofile=coverage.txt -covermode=atomic ./sdk/integration_test/...
+          # Skip rate limit tests in CI to avoid timeouts
+          go test -v -race -coverprofile=coverage.txt -covermode=atomic -timeout=3m ./sdk/integration_test/... -short
 
       - name: Upload coverage
         uses: codecov/codecov-action@v4

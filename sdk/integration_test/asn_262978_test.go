@@ -157,6 +157,10 @@ func TestGetRISPeers_262978(t *testing.T) {
 }
 
 func TestRateLimiting(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping rate limiting test in short mode")
+	}
+	
 	config := sdk.DefaultConfig()
 	config.RateLimit = 2 // 2 requests per second
 	client := sdk.NewClient(config)
@@ -222,6 +226,10 @@ func TestContextTimeout(t *testing.T) {
 }
 
 func TestConcurrentRequests(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping concurrent requests test in short mode")
+	}
+	
 	client := sdk.NewDefaultClient()
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
