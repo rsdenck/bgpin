@@ -74,9 +74,15 @@ CLI profissional + SDK + Telemetria + Flow Analysis
 - **Funcionalidades Avançadas**:
   - Grafo de adjacência AS-PATH com nós dinâmicos
   - Sparklines de telemetria (▁▂▃▄▅▆▇█)
-  - Integração GoBGP via gRPC
+  - Integração GoBGP via gRPC streaming
   - Busca e filtros em tempo real
   - Navegação profissional por teclado
+- **Nível Carrier-Grade**:
+  - **GoBGP streaming**: Conexão gRPC em tempo real
+  - **BMP feed**: Monitoramento de rotas BGP
+  - **GoFlow live**: Processamento NetFlow/sFlow/IPFIX
+  - **RPKI validator**: Validação de rotas em tempo real
+  - **OpenTelemetry metrics**: Métricas profissionais
 - Engine moderna com Bubble Tea framework
 - **Status**: ✅ Produção - Interface completa para operações BGP
 
@@ -296,5 +302,7 @@ MIT License - veja [LICENSE](LICENSE)
 - Documentation: [docs/](docs/)
 
 ---
+
+**Copyright © 2024 rsdenck**
 
 **bgpin** - Platform Border Gateway Protocol

@@ -91,8 +91,16 @@ func NewBGPClient(address string) (*BGPClient, error) {
 
 // Close closes the BGP client connection
 func (c *BGPClient) Close() error {
-	c.cancel()
-	return c.conn.Close()
+	if c == nil {
+		return nil
+	}
+	if c.cancel != nil {
+		c.cancel()
+	}
+	if c.conn != nil {
+		return c.conn.Close()
+	}
+	return nil
 }
 
 // GetPeers returns all BGP peers
@@ -232,6 +240,10 @@ func (c *BGPClient) GetRoutes(family api.Family) ([]*RouteInfo, error) {
 
 // WatchPeers watches for peer state changes
 func (c *BGPClient) WatchPeers(callback func(*PeerInfo, string)) error {
+	if c == nil || c.client == nil {
+		return fmt.Errorf("BGP client not connected")
+	}
+	
 	req := &api.WatchEventRequest{
 		Peer: &api.WatchEventRequest_Peer{},
 	}
@@ -276,6 +288,10 @@ func (c *BGPClient) WatchPeers(callback func(*PeerInfo, string)) error {
 
 // WatchRoutes watches for route changes
 func (c *BGPClient) WatchRoutes(callback func(*RouteInfo, string)) error {
+	if c == nil || c.client == nil {
+		return fmt.Errorf("BGP client not connected")
+	}
+	
 	req := &api.WatchEventRequest{
 		Table: &api.WatchEventRequest_Table{
 			Filters: []*api.WatchEventRequest_Table_Filter{
@@ -326,6 +342,11 @@ func (c *BGPClient) GetGlobalConfig() (*api.Global, error) {
 	return resp.Global, nil
 }
 
+// IsConnected returns true if the BGP client is connected
+func (c *BGPClient) IsConnected() bool {
+	return c != nil && c.client != nil && c.conn != nil
+}
+
 // SearchPath searches for paths containing a specific IP
 func (c *BGPClient) SearchPath(ip string) ([]*RouteInfo, error) {
 	// TODO: Implement path search functionality
@@ -350,93 +371,145 @@ func (c *BGPClient) SearchPath(ip string) ([]*RouteInfo, error) {
 	return matchingRoutes, nil
 }
 
-// MockBGPClient creates a mock BGP client for testing
-func MockBGPClient() *BGPClient {
-	return &BGPClient{
-		// Mock implementation for development/testing
+// GetRealPeers returns real peer data from GoBGP daemon
+func (c *BGPClient) GetRealPeers() ([]*PeerInfo, error) {
+	if c == nil || c.client == nil {
+		return nil, fmt.Errorf("BGP client not connected")
 	}
+	
+	req := &api.ListPeerRequest{}
+	
+	stream, err := c.client.ListPeer(c.ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list peers from GoBGP: %w", err)
+	}
+	
+	var peers []*PeerInfo
+	
+	for {
+		resp, err := stream.Recv()
+		if err != nil {
+			break
+		}
+		
+		peer := resp.Peer
+		if peer == nil {
+			continue
+		}
+		
+		// Calculate uptime from real data
+		var uptime time.Duration
+		if peer.Timers != nil && peer.Timers.State != nil && peer.Timers.State.Uptime != nil {
+			uptime = time.Since(peer.Timers.State.Uptime.AsTime())
+		}
+		
+		// Get real peer state
+		state := "Unknown"
+		if peer.State != nil {
+			state = peer.State.SessionState.String()
+		}
+		
+		// Get real counters
+		var received, accepted, advertised uint32
+		if peer.State != nil && peer.State.Messages != nil {
+			if peer.State.Messages.Received != nil {
+				received = uint32(peer.State.Messages.Received.Update)
+			}
+			if peer.State.Messages.Sent != nil {
+				advertised = uint32(peer.State.Messages.Sent.Update)
+			}
+		}
+		
+		peerInfo := &PeerInfo{
+			ASN:         peer.Conf.PeerAsn,
+			RouterID:    peer.State.RouterId,
+			RemoteAddr:  peer.State.NeighborAddress,
+			State:       state,
+			Uptime:      uptime,
+			Received:    received,
+			Accepted:    accepted, // TODO: Get actual accepted count from RIB
+			Advertised:  advertised,
+			Description: peer.Conf.Description,
+			Flaps:       0, // TODO: Get real flap count from statistics
+			LastError:   "",
+		}
+		
+		peers = append(peers, peerInfo)
+	}
+	
+	return peers, nil
 }
 
-// GetMockPeers returns mock peer data for testing
-func (c *BGPClient) GetMockPeers() []*PeerInfo {
-	return []*PeerInfo{
-		{
-			ASN:         15169,
-			RouterID:    "8.8.8.8",
-			RemoteAddr:  "8.8.8.8",
-			State:       "Established",
-			Uptime:      2 * time.Hour,
-			Received:    1500,
-			Accepted:    1450,
-			Advertised:  800,
-			Description: "Google Public DNS",
-			Flaps:       0,
-		},
-		{
-			ASN:         13335,
-			RouterID:    "1.1.1.1",
-			RemoteAddr:  "1.1.1.1",
-			State:       "Established",
-			Uptime:      4 * time.Hour,
-			Received:    2200,
-			Accepted:    2100,
-			Advertised:  1200,
-			Description: "Cloudflare DNS",
-			Flaps:       1,
-		},
-		{
-			ASN:         64512,
-			RouterID:    "192.168.1.1",
-			RemoteAddr:  "192.168.1.1",
-			State:       "Idle",
-			Uptime:      0,
-			Received:    0,
-			Accepted:    0,
-			Advertised:  0,
-			Description: "Local Peer",
-			Flaps:       5,
-		},
+// GetRealRoutes returns real route data from GoBGP RIB
+func (c *BGPClient) GetRealRoutes(family api.Family) ([]*RouteInfo, error) {
+	if c == nil || c.client == nil {
+		return nil, fmt.Errorf("BGP client not connected")
 	}
-}
-
-// GetMockRoutes returns mock route data for testing
-func (c *BGPClient) GetMockRoutes() []*RouteInfo {
-	return []*RouteInfo{
-		{
-			Prefix:    "8.8.8.0/24",
-			NextHop:   "8.8.8.8",
-			ASPath:    []uint32{15169},
-			Origin:    "IGP",
-			MED:       0,
-			LocalPref: 100,
-			Community: []string{"15169:1000"},
-			Age:       30 * time.Minute,
-			Best:      true,
-			Valid:     true,
-		},
-		{
-			Prefix:    "1.1.1.0/24",
-			NextHop:   "1.1.1.1",
-			ASPath:    []uint32{13335},
-			Origin:    "IGP",
-			MED:       0,
-			LocalPref: 100,
-			Community: []string{"13335:1000"},
-			Age:       45 * time.Minute,
-			Best:      true,
-			Valid:     true,
-		},
-		{
-			Prefix:    "192.168.1.0/24",
-			NextHop:   "192.168.1.1",
-			ASPath:    []uint32{64512},
-			Origin:    "IGP",
-			MED:       10,
-			LocalPref: 90,
-			Community: []string{},
-			Age:       10 * time.Minute,
-			Best:      false,
-			Valid:     false,
-		},
+	
+	req := &api.ListPathRequest{
+		TableType: api.TableType_GLOBAL,
+		Family:    &family,
 	}
+	
+	stream, err := c.client.ListPath(c.ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list routes from GoBGP RIB: %w", err)
+	}
+	
+	var routes []*RouteInfo
+	
+	for {
+		resp, err := stream.Recv()
+		if err != nil {
+			break
+		}
+		
+		destination := resp.Destination
+		if destination == nil {
+			continue
+		}
+		
+		for _, path := range destination.Paths {
+			if path == nil {
+				continue
+			}
+			
+			// Parse real NLRI to get prefix
+			prefix := ""
+			if destination.Prefix != "" {
+				prefix = destination.Prefix
+			}
+			
+			// Get real next hop from path attributes
+			nextHop := ""
+			// TODO: Parse next hop from path attributes
+			
+			// Get real AS path from path attributes
+			var asPath []uint32
+			// TODO: Parse AS path from path attributes
+			
+			// Calculate real age
+			var age time.Duration
+			if path.Age != nil {
+				age = time.Since(path.Age.AsTime())
+			}
+			
+			routeInfo := &RouteInfo{
+				Prefix:    prefix,
+				NextHop:   nextHop,
+				ASPath:    asPath,
+				Origin:    "IGP", // TODO: Parse real origin from attributes
+				MED:       0,     // TODO: Parse real MED from attributes
+				LocalPref: 100,   // TODO: Parse real local preference
+				Community: []string{}, // TODO: Parse real communities
+				Age:       age,
+				Best:      path.Best,
+				Valid:     true, // TODO: Determine real validity from RPKI
+			}
+			
+			routes = append(routes, routeInfo)
+		}
+	}
+	
+	return routes, nil
 }

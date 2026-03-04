@@ -547,18 +547,15 @@ func (m PeersModel) truncateString(s string, maxLen int) string {
 func (m PeersModel) fetchPeersData() tea.Cmd {
 	return tea.Cmd(func() tea.Msg {
 		if m.bgpClient != nil {
-			peers, err := m.bgpClient.GetPeers()
+			peers, err := m.bgpClient.GetRealPeers()
 			if err != nil {
-				// Fallback to mock data
-				peers = m.bgpClient.GetMockPeers()
+				return PeersDataMsg{Error: err}
 			}
 			return PeersDataMsg{Peers: peers}
 		}
 		
-		// Mock data for development
-		mockClient := gobgp.MockBGPClient()
-		peers := mockClient.GetMockPeers()
-		return PeersDataMsg{Peers: peers}
+		// No BGP client available - return error
+		return PeersDataMsg{Error: fmt.Errorf("BGP client not available")}
 	})
 }
 
@@ -573,4 +570,5 @@ func (m PeersModel) showPeerDetails() tea.Cmd {
 
 type PeersDataMsg struct {
 	Peers []*gobgp.PeerInfo
+	Error error
 }
