@@ -215,6 +215,8 @@ func main() {
 - [Quick Start](docs/QUICK_START.md) - Início rápido
 - [CLI Guide](docs/CLI_GUIDE.md) - Todos os comandos
 - [Flow Collector](docs/FLOW_COLLECTOR.md) - NetFlow/sFlow/IPFIX
+- [SNMP Guide](docs/SNMP_GUIDE.md) - Monitoramento SNMP
+- [GoBGP Setup](docs/GOBGP_SETUP.md) - Configuração GoBGP
 - [Telemetry](docs/TELEMETRY.md) - OpenTelemetry
 - [Architecture](docs/ARCHITECTURE.md) - Design do sistema
 - [SDK Documentation](sdk/README.md) - SDK completo
