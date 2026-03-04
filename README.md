@@ -103,6 +103,26 @@ CLI profissional + SDK + Telemetria + Flow Analysis
 - Engine moderna com Bubble Tea framework
 - **Status**: ✅ Produção - Interface completa para operações BGP
 
+### **Arquitetura de Dados:**
+
+#### **BGP Data (Principal)**:
+```
+Roteador ⇄ BGP ⇄ GoBGP ⇄ bgpin TUI
+```
+- **Fonte**: Sessões BGP reais (porta 179)
+- **Protocolo**: BGP UPDATE messages
+- **Dados**: Peers, rotas, AS-PATH, topologia
+- **Status**: ✅ Implementado e funcional
+
+#### **Flow Data (Opcional)**:
+```
+Router → NetFlow/sFlow → Collector → bgpin TUI
+```
+- **Fonte**: NetFlow/sFlow/IPFIX do router
+- **Protocolo**: UDP flows
+- **Dados**: Tráfego, bandwidth, top talkers
+- **Status**: ⚠️ Opcional - requer configuração adicional
+
 ## Instalação
 
 ```bash
@@ -241,6 +261,26 @@ Interface Terminal User Interface (TUI) em desenvolvimento - versão beta do bgp
 
 ## Arquitetura
 
+### Fluxo de Dados Principal (BGP)
+```
+┌─────────────┐    BGP     ┌─────────────┐    gRPC    ┌─────────────┐
+│   Roteador  │ ←────────→ │    GoBGP    │ ←────────→ │  bgpin TUI  │
+│             │  porta 179 │   Daemon    │ porta 50051│             │
+└─────────────┘            └─────────────┘            └─────────────┘
+      │                           │                           │
+      │ Sessões BGP               │ RIB/ADJ-RIB              │ 5 Painéis:
+      │ UPDATE messages           │ Peer status              │ • Graph
+      │ Keepalives               │ Route table              │ • Peers  
+      │                           │                           │ • Routes
+      │                           │                           │ • Summary
+      │                           │                           │ • Flows*
+      │                                                       │
+      │ NetFlow/sFlow (Opcional)                             │
+      └─────────────────────────────────────────────────────┘
+                              UDP flows
+```
+
+### Componentes
 ```
 bgpin/
 ├── cmd/cli/              # CLI commands
@@ -248,6 +288,11 @@ bgpin/
 │   ├── adapters/         # HTTP, SSH, NETCONF
 │   ├── parsers/          # Cisco, Juniper, etc
 │   ├── flow/             # NetFlow/sFlow/IPFIX
+│   ├── tui/              # Terminal User Interface
+│   │   ├── gobgp/        # GoBGP gRPC client
+│   │   ├── graph/        # AS-PATH visualizer
+│   │   ├── panels/       # TUI panels
+│   │   └── telemetry/    # Sparklines
 │   └── telemetry/        # OpenTelemetry
 ├── sdk/                  # RIPE RIS SDK
 └── docs/                 # Documentation

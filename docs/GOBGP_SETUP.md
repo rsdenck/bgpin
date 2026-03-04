@@ -2,6 +2,26 @@
 
 Este guia mostra como configurar o GoBGP para funcionar com a TUI do bgpin usando dados BGP reais.
 
+## Arquitetura de Dados
+
+### BGP Data (Principal)
+```
+Roteador ⇄ BGP (porta 179) ⇄ GoBGP ⇄ bgpin TUI
+```
+- **Função**: Monitoramento de rotas BGP
+- **Dados**: Peers, rotas, AS-PATH, topologia
+- **Protocolo**: BGP UPDATE messages
+- **Status**: ✅ Funcional
+
+### Flow Data (Opcional)
+```
+Router → NetFlow/sFlow (UDP) → Collector → bgpin TUI
+```
+- **Função**: Análise de tráfego
+- **Dados**: Bandwidth, top talkers, protocolos
+- **Protocolo**: NetFlow/sFlow/IPFIX
+- **Status**: ⚠️ Configuração adicional necessária
+
 ## Pré-requisitos
 
 1. **Instalar GoBGP**:
@@ -181,13 +201,29 @@ gobgp global rib
 
 ## Dados de Flow (Opcional)
 
-Para dados NetFlow/sFlow no painel Flows:
+**IMPORTANTE**: O BGP funciona independente dos dados de flow.
 
-1. Configure NetFlow/sFlow no router
-2. Aponte para bgpin flow collector
-3. Configure `bgpin.yaml` com collector settings
+### Configuração Flow (se desejado):
 
-O BGP funciona independente dos dados de flow.
+1. **No Router**:
+   - Configure NetFlow/sFlow export
+   - Aponte para IP do bgpin collector
+   - Exemplo Cisco: `ip flow-export destination 192.168.1.100 2055`
+
+2. **No bgpin**:
+   - Configure `bgpin.yaml` com collector settings
+   - Inicie flow collector: `bgpin flow collector`
+
+3. **Na TUI**:
+   - Painel Flows (4) mostrará dados de tráfego
+   - Painéis BGP (1,2,3,5) funcionam independente
+
+### Fluxo Completo (Opcional):
+```
+Router → NetFlow/sFlow → bgpin collector → TUI Flows Panel
+```
+
+**Nota**: Mesmo sem flow data, a TUI mostra toda informação BGP (peers, rotas, topologia).
 
 ## Exemplo Completo
 
