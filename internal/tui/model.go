@@ -635,44 +635,11 @@ func (m *Model) refreshData() tea.Cmd {
 	)
 }
 
-// initializeGraph initializes the AS-PATH graph with sample data
+// initializeGraph initializes the AS-PATH graph - NO SAMPLE DATA
 func (m *Model) initializeGraph() tea.Cmd {
 	return tea.Cmd(func() tea.Msg {
-		// Add sample nodes to the graph for demonstration
-		centerASN := m.config.FocusASN
-		if centerASN == 0 {
-			centerASN = 65001
-		}
-		
-		// Add center node
-		m.graph.AddNode(centerASN, "Local AS", graph.StatusEstablished, 1200.5, 150, 5.2)
-		
-		// Add peer nodes in a circle around center
-		peers := []struct {
-			asn     int
-			name    string
-			status  graph.NodeStatus
-			traffic float64
-			routes  int
-			latency float64
-		}{
-			{15169, "Google", graph.StatusEstablished, 850.3, 1200, 12.1},
-			{13335, "Cloudflare", graph.StatusEstablished, 640.8, 800, 8.5},
-			{64512, "Private AS", graph.StatusIdle, 0, 0, 0},
-			{174, "Cogent", graph.StatusEstablished, 420.2, 600, 15.3},
-			{3356, "Level3", graph.StatusEstablished, 320.1, 450, 18.7},
-		}
-		
-		for _, peer := range peers {
-			m.graph.AddNode(peer.asn, peer.name, peer.status, peer.traffic, peer.routes, peer.latency)
-			m.graph.AddConnection(centerASN, peer.asn)
-		}
-		
-		// Add some inter-peer connections
-		m.graph.AddConnection(15169, 174)
-		m.graph.AddConnection(13335, 174)
-		m.graph.AddConnection(174, 3356)
-		
+		// NO sample data - only real BGP data allowed
+		// Graph will show "No BGP peers available" until real connection is established
 		return DataUpdateMsg{Panel: GraphPanel, Data: nil}
 	})
 }

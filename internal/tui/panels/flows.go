@@ -150,6 +150,7 @@ func (m *FlowsModel) UpdateData(data interface{}) {
 		m.updateTopFlows()
 		m.updateTelemetry()
 	}
+	// Handle error case - data will be nil when there's no flow collector
 }
 
 // renderLoading renders loading state
@@ -160,7 +161,7 @@ func (m FlowsModel) renderLoading() string {
 		Align(lipgloss.Center, lipgloss.Center).
 		Foreground(lipgloss.Color("#666666"))
 	
-	return style.Render("Loading NetFlow/sFlow/IPFIX data...\nConnecting to flow collector...")
+	return style.Render("NetFlow/sFlow collector not connected\n\nTo view flow data:\n1. Configure flow collector in bgpin.yaml\n2. Start NetFlow/sFlow/IPFIX export\n3. Real flow data will appear here")
 }
 
 // renderFlows renders the flows content
@@ -544,108 +545,17 @@ func (m FlowsModel) truncateString(s string, maxLen int) string {
 
 func (m FlowsModel) fetchFlowsData() tea.Cmd {
 	return tea.Cmd(func() tea.Msg {
-		// Generate mock flow data for development
-		flows := m.generateMockFlows()
-		return FlowsDataMsg{Flows: flows}
+		// NO MOCK DATA - only real NetFlow/sFlow/IPFIX data
+		// Return error indicating no flow collector connection
+		return FlowsDataMsg{Error: fmt.Errorf("NetFlow/sFlow collector not connected")}
 	})
-}
-
-func (m FlowsModel) generateMockFlows() []*FlowEntry {
-	now := time.Now()
-	
-	return []*FlowEntry{
-		{
-			SrcIP:     "192.168.1.100",
-			DstIP:     "8.8.8.8",
-			SrcPort:   12345,
-			DstPort:   53,
-			Protocol:  "UDP",
-			Bytes:     1024000,
-			Packets:   800,
-			Mbps:      850.5,
-			SrcASN:    65001,
-			DstASN:    15169,
-			FirstSeen: now.Add(-5 * time.Minute),
-			LastSeen:  now,
-			Flags:     []string{"DNS"},
-			GeoSrc:    "US",
-			GeoDst:    "US",
-		},
-		{
-			SrcIP:     "10.0.0.50",
-			DstIP:     "1.1.1.1",
-			SrcPort:   443,
-			DstPort:   443,
-			Protocol:  "TCP",
-			Bytes:     15360000,
-			Packets:   12000,
-			Mbps:      640.2,
-			SrcASN:    65002,
-			DstASN:    13335,
-			FirstSeen: now.Add(-10 * time.Minute),
-			LastSeen:  now,
-			Flags:     []string{"HTTPS", "Encrypted"},
-			GeoSrc:    "US",
-			GeoDst:    "US",
-		},
-		{
-			SrcIP:     "172.16.0.200",
-			DstIP:     "203.0.113.10",
-			SrcPort:   80,
-			DstPort:   80,
-			Protocol:  "TCP",
-			Bytes:     512000000,
-			Packets:   400000,
-			Mbps:      520.8,
-			SrcASN:    65003,
-			DstASN:    64512,
-			FirstSeen: now.Add(-2 * time.Minute),
-			LastSeen:  now,
-			Flags:     []string{"HTTP", "Suspicious"},
-			GeoSrc:    "US",
-			GeoDst:    "Unknown",
-		},
-		{
-			SrcIP:     "192.168.2.50",
-			DstIP:     "185.199.108.153",
-			SrcPort:   443,
-			DstPort:   443,
-			Protocol:  "TCP",
-			Bytes:     8500000,
-			Packets:   6800,
-			Mbps:      420.1,
-			SrcASN:    65004,
-			DstASN:    36459,
-			FirstSeen: now.Add(-15 * time.Minute),
-			LastSeen:  now,
-			Flags:     []string{"HTTPS", "GitHub"},
-			GeoSrc:    "US",
-			GeoDst:    "US",
-		},
-		{
-			SrcIP:     "10.1.1.100",
-			DstIP:     "142.250.191.14",
-			SrcPort:   443,
-			DstPort:   443,
-			Protocol:  "TCP",
-			Bytes:     6200000,
-			Packets:   4960,
-			Mbps:      310.5,
-			SrcASN:    65005,
-			DstASN:    15169,
-			FirstSeen: now.Add(-8 * time.Minute),
-			LastSeen:  now,
-			Flags:     []string{"HTTPS", "Google"},
-			GeoSrc:    "US",
-			GeoDst:    "US",
-		},
-	}
 }
 
 // Messages
 
 type FlowsDataMsg struct {
 	Flows []*FlowEntry
+	Error error
 }
 
 type FlowTickMsg time.Time

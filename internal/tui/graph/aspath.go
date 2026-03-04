@@ -340,7 +340,7 @@ func (g *ASPathGraph) renderEmpty() string {
 		Align(lipgloss.Center, lipgloss.Center).
 		Foreground(lipgloss.Color("#666666"))
 	
-	return style.Render("No BGP peers available\nConnecting to GoBGP...")
+	return style.Render("No BGP connection available\n\nTo view AS-PATH graph:\n1. Start GoBGP daemon on localhost:50051\n2. Configure BGP peers\n3. Graph will show real topology")
 }
 
 // GetSelectedNode returns the currently selected node
