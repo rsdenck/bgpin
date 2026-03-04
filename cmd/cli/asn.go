@@ -239,12 +239,7 @@ func outputASNNeighbors(neighbors *sdk.ASNNeighbors, format string) error {
 
 		t.AppendHeader(table.Row{"ASN", "Type", "Power"})
 
-		displayCount := 30
-		for i, neighbor := range neighbors.Neighbors {
-			if i >= displayCount {
-				t.AppendFooter(table.Row{"...", fmt.Sprintf("and %d more neighbors", len(neighbors.Neighbors)-displayCount), ""})
-				break
-			}
+		for _, neighbor := range neighbors.Neighbors {
 			t.AppendRow(table.Row{
 				fmt.Sprintf("AS%d", neighbor.ASN),
 				neighbor.Type,
@@ -281,14 +276,8 @@ func outputASNPrefixes(prefixes *sdk.AnnouncedPrefixes, format string) error {
 
 		t.AppendHeader(table.Row{"#", "Prefix", "Type"})
 
-		displayCount := 30
 		for i, prefix := range prefixes.Prefixes {
-			if i >= displayCount {
-				t.AppendFooter(table.Row{"...", fmt.Sprintf("and %d more prefixes", len(prefixes.Prefixes)-displayCount), ""})
-				break
-			}
 
-			// Detect IPv4 vs IPv6
 			prefixType := "IPv4"
 			if strings.Contains(prefix.Prefix, ":") {
 				prefixType = "IPv6"
@@ -330,13 +319,7 @@ func outputASNPeers(peers []string, format string) error {
 
 		t.AppendHeader(table.Row{"#", "Peer Information"})
 
-		displayCount := 30
 		for i, peer := range peers {
-			if i >= displayCount {
-				t.AppendFooter(table.Row{"...", fmt.Sprintf("and %d more peers", len(peers)-displayCount)})
-				break
-			}
-
 			t.AppendRow(table.Row{
 				i + 1,
 				peer,

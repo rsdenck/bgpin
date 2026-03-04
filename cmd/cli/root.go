@@ -38,6 +38,9 @@ structured output in JSON, YAML, or table format.`,
 		newASNCommand(),
 		newPrefixCommand(),
 		newFlowCommand(),
+		newRPKICommand(),
+		newConfigCommand(),
+		newAICommand(),
 		newVersionCommand(),
 	)
 

@@ -48,6 +48,12 @@ type Anomaly struct {
 	Message  string `json:"message"`
 }
 
+type ASnInfo struct {
+	ASN      int  `json:"asn"`
+	Valid    bool `json:"valid"`
+	ROACount int  `json:"roa_count"`
+}
+
 func (r *Route) HasASInPath(asn int) bool {
 	for _, as := range r.ASPath {
 		if as == asn {

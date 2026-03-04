@@ -3,11 +3,15 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/bgpin/bgpin/internal/core/bgp"
+	"github.com/bgpin/bgpin/internal/parsers/http"
 	"github.com/bgpin/bgpin/pkg/config"
+	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/jedib0t/go-pretty/v6/text"
 	"github.com/spf13/cobra"
 )
 
@@ -23,7 +27,7 @@ func newLookupCommand() *cobra.Command {
 		RunE:  runLookup,
 	}
 
-	cmd.Flags().StringVarP(&lgName, "lg", "l", "", "Looking glass name")
+	cmd.Flags().StringVarP(&lgName, "lg", "l", "", "Looking glass name (not used, uses RIPE RIS)")
 	cmd.Flags().StringVarP(&outputFormat, "output", "o", "table", "Output format: table, json, yaml")
 
 	return cmd
@@ -34,73 +38,16 @@ func runLookup(cmd *cobra.Command, args []string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	cfg := GetConfig()
+	parser := http.NewRIPEParser()
 
-	var targetLG *config.LookingGlass
-	if lgName != "" {
-		for _, lg := range cfg.LookingGlasses {
-			if strings.EqualFold(lg.Name, lgName) {
-				targetLG = &lg
-				break
-			}
-		}
-		if targetLG == nil {
-			return fmt.Errorf("looking glass not found: %s", lgName)
-		}
-	} else {
-		targetLG = &cfg.LookingGlasses[0]
-	}
-
-	var result *bgp.LookupResult
-	var err error
-
-	switch targetLG.Vendor {
-	case "cisco":
-		result, err = queryCiscoLG(ctx, targetLG, prefix)
-	case "juniper":
-		result, err = queryJuniperLG(ctx, targetLG, prefix)
-	default:
-		result, err = queryCiscoLG(ctx, targetLG, prefix)
-	}
-
+	result, err := parser.QueryBGP(ctx, prefix)
 	if err != nil {
 		return fmt.Errorf("lookup failed: %w", err)
 	}
 
+	result.QueryLG = "RIPE RIS"
+
 	return printResult(result, outputFormat)
-}
-
-func queryCiscoLG(ctx context.Context, lg *config.LookingGlass, prefix string) (*bgp.LookupResult, error) {
-	// TODO: Implement with new parser API
-	// parser, err := cisco.NewParser(cisco.Config{
-	//     Host: lg.URL,
-	//     Username: "admin",
-	//     Password: "password",
-	// })
-	
-	return &bgp.LookupResult{
-		Prefix:    prefix,
-		QueryLG:   lg.Name,
-		Timestamp: time.Now(),
-		Routes:    []bgp.Route{},
-	}, fmt.Errorf("cisco parser integration not yet implemented")
-}
-
-func queryJuniperLG(ctx context.Context, lg *config.LookingGlass, prefix string) (*bgp.LookupResult, error) {
-	// TODO: Implement with new parser API
-	// parser, err := junos.NewParser(junos.Config{
-	//     Host: lg.URL,
-	//     Port: 830,
-	//     Username: "admin",
-	//     Password: "password",
-	// })
-	
-	return &bgp.LookupResult{
-		Prefix:    prefix,
-		QueryLG:   lg.Name,
-		Timestamp: time.Now(),
-		Routes:    []bgp.Route{},
-	}, fmt.Errorf("juniper parser integration not yet implemented")
 }
 
 func printResult(result *bgp.LookupResult, format string) error {
@@ -133,26 +80,56 @@ func printYAML(result *bgp.LookupResult) error {
 }
 
 func printTable(result *bgp.LookupResult) error {
-	fmt.Printf("Prefix: %s\n", result.Prefix)
-	fmt.Printf("Looking Glass: %s\n", result.QueryLG)
-	fmt.Printf("Timestamp: %s\n\n", result.Timestamp.Format(time.RFC3339))
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.SetTitle(fmt.Sprintf("BGP Lookup: %s", result.Prefix))
+	t.Style().Title.Align = text.AlignCenter
+	t.SetStyle(table.StyleRounded)
+	t.Style().Options.SeparateRows = false
 
-	if len(result.Routes) == 0 {
-		fmt.Println("No routes found")
-		return nil
+	t.AppendHeader(table.Row{"#", "AS Path", "Origin", "Communities", "Best"})
+
+	for i, route := range result.Routes {
+
+		asPathStr := formatASPath(route.ASPath)
+		communities := ""
+		if len(route.Community) > 0 {
+			if len(route.Community) > 3 {
+				communities = fmt.Sprintf("%s (+%d)", strings.Join(route.Community[:3], ", "), len(route.Community)-3)
+			} else {
+				communities = strings.Join(route.Community, ", ")
+			}
+		}
+
+		best := ""
+		if route.Best {
+			best = "Yes"
+		}
+
+		t.AppendRow(table.Row{
+			i + 1,
+			asPathStr,
+			route.Origin,
+			communities,
+			best,
+		})
 	}
 
-	fmt.Println("Routes:")
-	fmt.Println("--------")
-	for _, route := range result.Routes {
-		fmt.Printf("  Prefix: %s\n", route.Prefix)
-		fmt.Printf("  Next Hop: %s\n", route.NextHop)
-		fmt.Printf("  AS Path: %v\n", route.ASPath)
-		fmt.Printf("  Local Pref: %d\n", route.LocalPref)
-		fmt.Printf("  MED: %d\n", route.MED)
-		fmt.Printf("  Best: %v\n", route.Best)
-		fmt.Println()
-	}
+	t.Render()
+
+	fmt.Printf("\nSource: %s | Query Time: %s\n", result.QueryLG, result.Timestamp.Format("2006-01-02 15:04:05"))
 
 	return nil
+}
+
+func formatASPath(asPath []int) string {
+	if len(asPath) == 0 {
+		return "N/A"
+	}
+
+	parts := make([]string, len(asPath))
+	for i, as := range asPath {
+		parts[i] = fmt.Sprintf("AS%d", as)
+	}
+	return strings.Join(parts, " ")
 }
