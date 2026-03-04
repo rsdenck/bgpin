@@ -43,7 +43,8 @@ structured output in JSON, YAML, or table format.`,
 		newAICommand(),
 		newApplyCommand(),
 		newTUICommand(),
-		newSNMPCommand(), // Novo comando SNMP
+		newSNMPCommand(),
+		newPeeringDBCommand(), // Novo comando PeeringDB
 		newVersionCommand(),
 	)
 

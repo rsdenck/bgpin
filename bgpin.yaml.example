@@ -83,6 +83,20 @@ snmp:
   
   # Dispositivos pré-configurados
   devices:
+    # ArmazemDC Routers
+    rt-jlle01:
+      host: "10.21.10.254"
+      community: "RT-ADC-JL-01-MGT"
+      version: "2c"
+      description: "ArmazemDC Router JL01"
+    
+    rt-jlle02:
+      host: "10.21.10.253"
+      community: "RT-ADC-JL-02-MGT"
+      version: "2c"
+      description: "ArmazemDC Router JL02"
+      
+    # Exemplos genéricos
     router-core:
       host: "192.168.1.1"
       community: "bgp-monitoring"
@@ -94,12 +108,6 @@ snmp:
       community: "network-ops"
       version: "2c"
       description: "Access Switch"
-      
-    router-border:
-      host: "10.0.0.1"
-      community: "private"
-      version: "2c"
-      description: "Border Router BGP"
 
 # Analysis settings
 analysis:

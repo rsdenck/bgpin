@@ -2,58 +2,76 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/bgpin/bgpin/internal/tui"
 	"github.com/spf13/cobra"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 func newTUICommand() *cobra.Command {
 	var tuiCmd = &cobra.Command{
 		Use:   "tui",
-		Short: "Start interactive BGP TUI (bgptop)",
-		Long: `Start the interactive Terminal User Interface for BGP monitoring.
+		Short: "Interface TUI moderna para monitoramento BGP em tempo real",
+		Long: `Interface TUI moderna para monitoramento de BGP, rotas e sistema.
 		
-bgptop provides a real-time, BTOP-like interface for monitoring:
-- BGP routes and announcements
-- ASN information and neighbors  
-- NetFlow/sFlow/IPFIX traffic analysis
-- Network anomalies and security alerts
-- Performance metrics and statistics
+Conecta diretamente ao router via SSH para obter dados em tempo real.
+Exibe informações de peers BGP, rotas, interfaces e sistema em uma interface moderna.
 
-Navigation:
-- Tab/Shift+Tab: Switch between panels
-- q/Ctrl+C: Quit
-- r: Refresh data
-- h: Help`,
+Recursos:
+- Monitoramento BGP em tempo real
+- Estatísticas de sistema e interfaces
+- Dados obtidos diretamente do router via SSH
+- Interface moderna com múltiplos painéis
+- Auto-refresh configurável
+
+Navegação:
+- Tab/Shift+Tab: Alternar entre painéis
+- q/Ctrl+C: Sair
+- r: Refresh manual
+- h/?: Ajuda`,
 		Example: `  bgpin tui
-  bgpin tui --refresh 1s
-  bgpin tui --asn 262978
-  bgpin tui --flows`,
+  bgpin tui --router 192.168.1.1 --user admin --pass secret
+  bgpin tui --refresh 5s
+  bgpin tui --demo`,
 		RunE: runTUI,
 	}
 
-	tuiCmd.Flags().StringP("refresh", "r", "1s", "Refresh interval (e.g., 1s, 5s, 30s)")
-	tuiCmd.Flags().IntP("asn", "a", 262978, "Focus on specific ASN (default: 262978)")
-	tuiCmd.Flags().BoolP("flows", "f", false, "Start with flows panel active")
+	// Flags para conexão SSH
+	tuiCmd.Flags().String("router", "192.168.0.1", "IP do router para conectar")
+	tuiCmd.Flags().String("user", "adcoperador", "Usuário SSH")
+	tuiCmd.Flags().String("pass", "1515qwd", "Senha SSH")
+	tuiCmd.Flags().String("refresh", "2s", "Intervalo de refresh dos dados")
+	tuiCmd.Flags().Bool("demo", false, "Modo demonstração com dados simulados")
 
 	return tuiCmd
 }
 
 func runTUI(cmd *cobra.Command, args []string) error {
-	refresh, _ := cmd.Flags().GetString("refresh")
-	asn, _ := cmd.Flags().GetInt("asn")
-	flows, _ := cmd.Flags().GetBool("flows")
+	// Obter configurações
+	routerIP, _ := cmd.Flags().GetString("router")
+	username, _ := cmd.Flags().GetString("user")
+	password, _ := cmd.Flags().GetString("pass")
+	demo, _ := cmd.Flags().GetBool("demo")
 
-	config := tui.Config{
-		RefreshInterval: refresh,
-		FocusASN:        asn,
-		StartWithFlows:  flows,
+	if demo {
+		fmt.Println("Iniciando TUI em modo demonstração...")
+		// Usar dados simulados
+		routerIP = "demo"
+		username = "demo"
+		password = "demo"
 	}
 
-	if err := tui.Start(config); err != nil {
-		fmt.Fprintf(os.Stderr, "Error starting TUI: %v\n", err)
-		return err
+	// Criar nova TUI moderna
+	modernTUI := tui.NewModernTUI(routerIP, username, password)
+
+	// Iniciar programa
+	p := tea.NewProgram(modernTUI, tea.WithAltScreen(), tea.WithMouseCellMotion())
+
+	fmt.Printf("🌐 BGPIN MONITOR - Conectando ao router %s...\n", routerIP)
+	fmt.Println("Pressione 'q' para sair, 'r' para refresh manual, Tab para navegar")
+
+	if _, err := p.Run(); err != nil {
+		return fmt.Errorf("erro ao executar TUI: %w", err)
 	}
 
 	return nil
