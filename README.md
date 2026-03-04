@@ -62,6 +62,14 @@ CLI profissional + SDK + Telemetria + Flow Analysis
 - Detecção de anomalias com IA
 - Rate limiting e retry automático
 
+### TUI Monitor
+- Interface de monitoramento em tempo real estilo BTOP
+- Comando: `bgpin apply tui`
+- Monitoramento visual de BGP/ASN em tempo real
+- Dashboard interativo com métricas de rede
+- Visualização de flows e anomalias
+- Navegação por teclado e interface responsiva
+
 ## Instalação
 
 ```bash
@@ -102,6 +110,9 @@ bgpin ai copilot
 
 # RPKI validation
 bgpin rpki validate 15169 8.8.8.0/24
+
+# TUI Monitor (interface interativa)
+bgpin apply tui
 
 # Formato JSON
 bgpin asn info 262978 -o json
@@ -210,11 +221,13 @@ bgpin/
 - [x] MRT parser
 - [x] Arista parser (EOS)
 - [x] Nokia parser (SR OS)
-- [ ] Machine Learning anomaly detection
+- [x] Machine Learning anomaly detection
+- [ ] TUI Monitor (`bgpin apply tui`) - Interface BTOP-like para BGP/ASN
 - [ ] Time-series database storage
-- [ ] Grafana dashboards
-- [ ] Web interface
 - [ ] REST API
+- [ ] Advanced flow correlation algorithms
+- [ ] BGP hijack detection system
+- [ ] Multi-vendor configuration automation
 
 ## Contribuindo
 

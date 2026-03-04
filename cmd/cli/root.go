@@ -41,6 +41,7 @@ structured output in JSON, YAML, or table format.`,
 		newRPKICommand(),
 		newConfigCommand(),
 		newAICommand(),
+		newApplyCommand(),
 		newVersionCommand(),
 	)
 
