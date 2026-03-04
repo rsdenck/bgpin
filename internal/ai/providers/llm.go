@@ -143,9 +143,19 @@ func NewOpenAIProvider(apiKey string, timeout time.Duration) *OpenAIProvider {
 	if apiKey == "" {
 		apiKey = os.Getenv("OPENAI_API_KEY")
 	}
-	return &OpenAIProvider{
+	
+	baseURL := os.Getenv("OPENAI_BASE_URL")
+	if baseURL == "" {
+		baseURL = "https://api.openai.com/v1"
+	}
+	
+	provider := &OpenAIProvider{
 		BaseProvider: *NewBaseProvider(timeout),
 	}
+	provider.APIKey = apiKey
+	provider.BaseURL = baseURL
+	provider.Model = "gpt-4"
+	return provider
 }
 
 func (p *OpenAIProvider) Name() string {
@@ -241,11 +251,17 @@ func NewClaudeProvider(apiKey string, timeout time.Duration) *ClaudeProvider {
 	if apiKey == "" {
 		apiKey = os.Getenv("ANTHROPIC_API_KEY")
 	}
+	
+	baseURL := os.Getenv("ANTHROPIC_BASE_URL")
+	if baseURL == "" {
+		baseURL = "https://api.anthropic.com/v1"
+	}
+	
 	provider := &ClaudeProvider{
 		BaseProvider: *NewBaseProvider(timeout),
 	}
 	provider.APIKey = apiKey
-	provider.BaseURL = "https://api.anthropic.com/v1"
+	provider.BaseURL = baseURL
 	provider.Model = "claude-3-sonnet-20240229"
 	return provider
 }
@@ -339,11 +355,17 @@ func NewGeminiProvider(apiKey string, timeout time.Duration) *GeminiProvider {
 	if apiKey == "" {
 		apiKey = os.Getenv("GOOGLE_API_KEY")
 	}
+	
+	baseURL := os.Getenv("GOOGLE_BASE_URL")
+	if baseURL == "" {
+		baseURL = "https://generativelanguage.googleapis.com/v1beta"
+	}
+	
 	provider := &GeminiProvider{
 		BaseProvider: *NewBaseProvider(timeout),
 	}
 	provider.APIKey = apiKey
-	provider.BaseURL = "https://generativelanguage.googleapis.com/v1beta"
+	provider.BaseURL = baseURL
 	provider.Model = "gemini-pro"
 	return provider
 }
