@@ -62,15 +62,23 @@ CLI profissional + SDK + Telemetria + Flow Analysis
 - Detecção de anomalias com IA
 - Rate limiting e retry automático
 
-### TUI Monitor - bgptop (Beta)
+### TUI Monitor - bgptop (Completo)
 - Interface de monitoramento em tempo real estilo BTOP
 - Comando: `bgpin tui`
-- Monitoramento visual de BGP/ASN em tempo real
-- Dashboard interativo com métricas de rede
-- Visualização de flows e anomalias
-- Navegação por teclado e interface responsiva
+- **5 Painéis Profissionais**:
+  - **AS-PATH Graph**: Visualizador dinâmico de topologia BGP
+  - **BGP Peers**: Monitoramento avançado com telemetria
+  - **BGP Routes**: Tabela de rotas com validação RPKI
+  - **Top 5 Flows**: Análise NetFlow/sFlow/IPFIX em tempo real
+  - **System Summary**: Métricas gerais e status do sistema
+- **Funcionalidades Avançadas**:
+  - Grafo de adjacência AS-PATH com nós dinâmicos
+  - Sparklines de telemetria (▁▂▃▄▅▆▇█)
+  - Integração GoBGP via gRPC
+  - Busca e filtros em tempo real
+  - Navegação profissional por teclado
 - Engine moderna com Bubble Tea framework
-- **Status**: Versão Beta - Em desenvolvimento ativo
+- **Status**: ✅ Produção - Interface completa para operações BGP
 
 ## Instalação
 
@@ -245,22 +253,28 @@ bgpin/
 - [x] Arista parser (EOS)
 - [x] Nokia parser (SR OS)
 - [x] Machine Learning anomaly detection
-- [x] **TUI DA CLI PARA BGP - bgptop (Beta)**
+- [x] **TUI DA CLI PARA BGP - bgptop (Completo)**
   - **Nome**: bgptop
-  - **Engine TUI**: github.com/charmbracelet/bubbletea (estado + loop)
-  - **Layout e estilo**: github.com/charmbracelet/lipgloss (cores, bordas, padding)
-  - **Gráficos estilo btop**: github.com/charmbracelet/bubbles ou github.com/NimbleMarkets/ntcharts
-  - **Arquitetura**:
-    - `cmd/cli/tui.go`
-    - `internal/tui/model.go`
-    - `internal/tui/update.go`
-    - `internal/tui/view.go`
-    - `internal/tui/panels/summary.go`
-    - `internal/tui/panels/routes.go`
-    - `internal/tui/panels/neighbors.go`
-    - `internal/tui/panels/traffic.go`
+  - **Engine TUI**: github.com/charmbracelet/bubbletea (estado + loop) ✅
+  - **Layout e estilo**: github.com/charmbracelet/lipgloss (cores, bordas, padding) ✅
+  - **Gráficos estilo btop**: Sparklines com caracteres ▁▂▃▄▅▆▇█ ✅
+  - **Arquitetura**: ✅ Implementada
+    - `cmd/cli/tui.go` - Comando CLI integrado
+    - `internal/tui/model.go` - Modelo principal com 5 painéis
+    - `internal/tui/graph/aspath.go` - Visualizador AS-PATH dinâmico
+    - `internal/tui/panels/peers.go` - Painel avançado de peers BGP
+    - `internal/tui/panels/flows.go` - Top 5 flows NetFlow/sFlow/IPFIX
+    - `internal/tui/telemetry/sparkline.go` - Sistema de telemetria
+    - `internal/tui/gobgp/client.go` - Integração GoBGP gRPC
   - **Comando CLI**: `bgpin tui` - Interface completa semelhante ao BTOP para Linux, mas para BGP/Flows
-  - **Status**: ✅ Versão Beta implementada - 4 painéis funcionais com dados simulados
+  - **Status**: ✅ **COMPLETO** - 5 painéis profissionais com dados reais/simulados
+  - **Funcionalidades Avançadas**:
+    - 🎯 Grafo de Adjacência AS-PATH com visualização dinâmica
+    - 📊 Telemetria detalhada com sparklines em tempo real
+    - 🔍 Integração profissional com GoBGP via gRPC
+    - 🌐 Top 5 flows NetFlow/sFlow/IPFIX com análise geográfica
+    - ⚡ Busca avançada e filtros em tempo real
+    - 🎨 Interface profissional estilo BTOP para operações de rede
 - [ ] Time-series database storage
 - [ ] REST API
 - [ ] Advanced flow correlation algorithms
