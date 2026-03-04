@@ -23,14 +23,14 @@ var (
 func newAICommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "ai",
-		Short: "AI-powered BGP analysis",
-		Long:  "Use LLM providers to analyze BGP data with AI",
+		Short: "Análise BGP com inteligência artificial",
+		Long:  "Use provedores LLM para analisar dados BGP com IA",
 	}
 
-	cmd.PersistentFlags().StringVarP(&aiProvider, "provider", "p", "ollama", "LLM provider: openai, claude, gemini, ollama")
-	cmd.PersistentFlags().StringVarP(&aiModel, "model", "m", "", "Model to use (provider-specific)")
-	cmd.PersistentFlags().StringVarP(&aiPromptFile, "file", "f", "", "Input JSON file with BGP data")
-	cmd.PersistentFlags().BoolVarP(&aiInteractive, "interactive", "i", false, "Interactive copilot mode")
+	cmd.PersistentFlags().StringVarP(&aiProvider, "provider", "p", "ollama", "Provedor LLM: openai, claude, gemini, ollama")
+	cmd.PersistentFlags().StringVarP(&aiModel, "model", "m", "", "Modelo a usar (específico do provedor)")
+	cmd.PersistentFlags().StringVarP(&aiPromptFile, "file", "f", "", "Arquivo JSON de entrada com dados BGP")
+	cmd.PersistentFlags().BoolVarP(&aiInteractive, "interactive", "i", false, "Modo copiloto interativo")
 
 	cmd.AddCommand(newAIAnalyzeCommand())
 	cmd.AddCommand(newAIExplainCommand())
@@ -42,8 +42,8 @@ func newAICommand() *cobra.Command {
 func newAIAnalyzeCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "analyze [prefix]",
-		Short: "Analyze BGP prefix with AI",
-		Long:  "Query BGP data and send to LLM for analysis",
+		Short: "Analisar prefixo BGP com IA",
+		Long:  "Consultar dados BGP e enviar para LLM para análise",
 		Args:  cobra.ExactArgs(1),
 		RunE:  runAIAnalyze,
 		Example: `  bgpin ai analyze 8.8.8.0/24 --provider openai
@@ -84,27 +84,27 @@ func runAIAnalyze(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get provider: %w", err)
 	}
 
-	systemPrompt := `You are a senior BGP network engineer. Analyze the following BGP route data and provide technical insights.
-Identify:
-1. Hijack risk assessment
-2. Route leak indicators  
-3. Path anomalies
-4. Optimization suggestions
-5. Security concerns
+	systemPrompt := `Você é um engenheiro de rede BGP sênior. Analise os seguintes dados de rota BGP e forneça insights técnicos.
+Identifique:
+1. Avaliação de risco de sequestro
+2. Indicadores de vazamento de rota
+3. Anomalias no caminho
+4. Sugestões de otimização
+5. Preocupações de segurança
 
-Return a concise, structured technical analysis.`
+Retorne uma análise técnica estruturada e concisa em português.`
 
 	analysis, err := provider.Analyze(ctx, systemPrompt, bgpData)
 	if err != nil {
 		return fmt.Errorf("AI analysis failed: %w", err)
 	}
 
-	fmt.Println("=== AI Analysis ===")
+	fmt.Println("=== Análise IA ===")
 	fmt.Println(analysis)
-	fmt.Println("\n=== Raw Data ===")
-	fmt.Printf("Prefix: %s\n", prefix)
-	fmt.Printf("Origin ASN: AS%d\n", asn)
-	fmt.Printf("RPKI Status: %s\n", rpkiStatus)
+	fmt.Println("\n=== Dados Brutos ===")
+	fmt.Printf("Prefixo: %s\n", prefix)
+	fmt.Printf("ASN Origem: AS%d\n", asn)
+	fmt.Printf("Status RPKI: %s\n", rpkiStatus)
 
 	return nil
 }
@@ -112,8 +112,8 @@ Return a concise, structured technical analysis.`
 func newAIExplainCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "explain [prefix]",
-		Short: "Explain BGP route in plain English",
-		Long:  "Get human-readable explanation of BGP route attributes",
+		Short: "Explicar rota BGP em português claro",
+		Long:  "Obter explicação legível de atributos de rota BGP",
 		Args:  cobra.ExactArgs(1),
 		RunE:  runAIExplain,
 		Example: `  bgpin ai explain 8.8.8.0/24
@@ -150,15 +150,15 @@ func runAIExplain(cmd *cobra.Command, args []string) error {
 		dataJSON = fmt.Sprintf("Prefix: %s, AS Path: %v, Routes count: %d", prefix, asPath, len(result.Routes))
 	}
 
-	systemPrompt := `You are a BGP expert. Explain the following route information in simple, clear English. 
-Focus on what the AS path means, why communities matter, and what the RPKI status indicates.`
+	systemPrompt := `Você é um especialista em BGP. Explique as seguintes informações de rota em português simples e claro.
+Foque no que o caminho AS significa, por que as comunidades importam e o que o status RPKI indica.`
 
 	explanation, err := provider.Analyze(ctx, systemPrompt, dataJSON)
 	if err != nil {
 		return fmt.Errorf("AI explanation failed: %w", err)
 	}
 
-	fmt.Println("=== BGP Route Explanation ===")
+	fmt.Println("=== Explicação da Rota BGP ===")
 	fmt.Println(explanation)
 
 	return nil
@@ -167,8 +167,8 @@ Focus on what the AS path means, why communities matter, and what the RPKI statu
 func newAICopilotCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "copilot",
-		Short: "Interactive BGP Copilot mode",
-		Long:  "Start an interactive session with AI assistant",
+		Short: "Modo Copiloto BGP interativo",
+		Long:  "Iniciar sessão interativa com assistente IA",
 		RunE:  runAICopilot,
 		Example: `  bgpin ai copilot
   bgpin ai copilot --provider openai`,
@@ -181,24 +181,24 @@ func runAICopilot(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Println("=== BGP Copilot ===")
-	fmt.Println("Provider:", provider.Name())
-	fmt.Println("Type 'exit' to quit, 'help' for commands\n")
+	fmt.Println("=== Copiloto BGP ===")
+	fmt.Println("Provedor:", provider.Name())
+	fmt.Println("Digite 'exit' para sair, 'help' para comandos\n")
 
 	ctx := context.Background()
 
 	commands := map[string]string{
-		"help":    "Available commands: prefix <prefix>, asn <asn>, rpki <asn> <prefix>, analyze <prefix>",
-		"prefix":  "Usage: prefix 8.8.8.0/24",
-		"asn":     "Usage: asn 13335",
-		"rpki":    "Usage: rpki 15169 8.8.8.0/24",
-		"analyze": "Usage: analyze 8.8.8.0/24",
+		"help":    "Comandos disponíveis: prefix <prefix>, asn <asn>, rpki <asn> <prefix>, analyze <prefix>",
+		"prefix":  "Uso: prefix 8.8.8.0/24",
+		"asn":     "Uso: asn 13335",
+		"rpki":    "Uso: rpki 15169 8.8.8.0/24",
+		"analyze": "Uso: analyze 8.8.8.0/24",
 	}
 
 	questions := map[string]string{
-		"why is this prefix flapping?": "This could indicate route instability, network issues, or BGP convergence problems. Check for frequent updates in the AS path.",
-		"show path anomaly risk":       "Analyze AS path for loops, private AS usage, and unusual AS sequences.",
-		"compare yesterday":            "Historical comparison requires archived data. Use MRT files for historical analysis.",
+		"por que este prefixo está oscilando?": "Isso pode indicar instabilidade de rota, problemas de rede ou problemas de convergência BGP. Verifique atualizações frequentes no caminho AS.",
+		"mostrar risco de anomalia no caminho": "Analise o caminho AS para loops, uso de AS privado e sequências AS incomuns.",
+		"comparar com ontem":                   "Comparação histórica requer dados arquivados. Use arquivos MRT para análise histórica.",
 	}
 
 	for {
@@ -208,7 +208,7 @@ func runAICopilot(cmd *cobra.Command, args []string) error {
 
 		input = strings.TrimSpace(input)
 		if input == "exit" || input == "quit" {
-			fmt.Println("Goodbye!")
+			fmt.Println("Até logo!")
 			break
 		}
 
@@ -229,9 +229,9 @@ func runAICopilot(cmd *cobra.Command, args []string) error {
 			continue
 		}
 
-		analysis, err := provider.Analyze(ctx, "You are a BGP expert. Answer the user's question about BGP networking.", input)
+		analysis, err := provider.Analyze(ctx, "Você é um especialista em BGP. Responda a pergunta do usuário sobre redes BGP.", input)
 		if err != nil {
-			fmt.Println("Error:", err)
+			fmt.Println("Erro:", err)
 		} else {
 			fmt.Println(analysis)
 		}

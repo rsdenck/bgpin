@@ -50,7 +50,17 @@ CLI profissional + SDK + Telemetria + Flow Analysis
 ### Vendor Parsers
 - Cisco (IOS, IOS-XE, IOS-XR, NX-OS) - Implementado
 - Juniper (JunOS) - Implementado
-- Arista, Nokia, MikroTik - Planejado
+- Arista (EOS) - Implementado
+- Nokia (SR OS) - Implementado
+- MikroTik - Planejado
+
+### AI Integration
+- Análise BGP com inteligência artificial
+- Suporte a múltiplos provedores LLM (OpenAI, Claude, Gemini, Ollama)
+- Explicações em português claro
+- Modo copiloto interativo
+- Detecção de anomalias com IA
+- Rate limiting e retry automático
 
 ## Instalação
 
@@ -84,6 +94,14 @@ bgpin asn prefixes 262978
 bgpin flow top
 bgpin flow asn 15169
 bgpin flow anomaly
+
+# AI analysis
+bgpin ai analyze 8.8.8.0/24
+bgpin ai explain 1.1.1.0/24
+bgpin ai copilot
+
+# RPKI validation
+bgpin rpki validate 15169 8.8.8.0/24
 
 # Formato JSON
 bgpin asn info 262978 -o json
@@ -128,6 +146,7 @@ func main() {
 - [Vendors Status](docs/vendors/STATUS.md) - Status dos parsers
 
 ### Releases
+- [v0.3.0](docs/releases/v0.3.0.md) - AI integration + RPKI + MRT parser
 - [v0.2.0](docs/releases/v0.2.0.md) - Flow collector + Cisco/Juniper parsers
 - [v0.1.0](docs/releases/v0.1.0.md) - Initial release
 
@@ -186,12 +205,16 @@ bgpin/
 - [x] Cisco parser (IOS/IOS-XE/IOS-XR/NX-OS)
 - [x] Juniper parser (JunOS/NETCONF)
 - [x] OpenTelemetry integration
-- [ ] Arista parser (EOS)
-- [ ] Nokia parser (SR OS)
-- [ ] RPKI validation
+- [x] RPKI validation
+- [x] AI integration (OpenAI, Claude, Gemini, Ollama)
+- [x] MRT parser
+- [x] Arista parser (EOS)
+- [x] Nokia parser (SR OS)
 - [ ] Machine Learning anomaly detection
 - [ ] Time-series database storage
 - [ ] Grafana dashboards
+- [ ] Web interface
+- [ ] REST API
 
 ## Contribuindo
 

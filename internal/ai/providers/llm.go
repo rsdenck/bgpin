@@ -451,7 +451,7 @@ type OllamaProvider struct {
 func NewOllamaProvider(timeout time.Duration) *OllamaProvider {
 	ollamaURL := os.Getenv("OLLAMA_HOST")
 	if ollamaURL == "" {
-		ollamaURL = "http://localhost:11434"
+		ollamaURL = "http://10.1.254.32:11434"
 	}
 
 	provider := &OllamaProvider{
