@@ -1,0 +1,54 @@
+# Configuração GoBGP para ASN 262978
+# Salve como gobgp.conf e execute: gobgpd -f gobgp.conf
+
+[global.config]
+as = 262978
+router-id = "192.168.255.1"
+
+# Habilita gRPC API para TUI
+[global.api]
+listen-addresses = ["127.0.0.1:50051"]
+
+# Neighbors BGP reais
+[[neighbors]]
+[neighbors.config]
+neighbor-address = "10.0.255.1"
+peer-as = 65001
+description = "Upstream Provider 1"
+
+[[neighbors]]
+[neighbors.config]
+neighbor-address = "10.0.255.2"
+peer-as = 65002
+description = "Upstream Provider 2"
+
+[[neighbors]]
+[neighbors.config]
+neighbor-address = "10.0.255.3"
+peer-as = 65003
+description = "Peer Exchange"
+
+# Configuração de rotas (opcional)
+[[defined-sets.prefix-sets]]
+prefix-set-name = "my-prefixes"
+[[defined-sets.prefix-sets.prefix-list]]
+ip-prefix = "203.0.113.0/24"
+masklength-range = "24..24"
+
+# Política de roteamento (opcional)
+[[policy-definitions]]
+name = "export-policy"
+[[policy-definitions.statements]]
+name = "export-my-prefixes"
+[policy-definitions.statements.conditions.match-prefix-set]
+prefix-set = "my-prefixes"
+[policy-definitions.statements.actions]
+route-disposition = "accept-route"
+
+# Aplicar política aos neighbors
+[[neighbors]]
+[neighbors.config]
+neighbor-address = "10.0.255.1"
+peer-as = 65001
+[neighbors.apply-policy.config]
+export-policy-list = ["export-policy"]

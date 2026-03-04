@@ -62,9 +62,10 @@ CLI profissional + SDK + Telemetria + Flow Analysis
 - Detecção de anomalias com IA
 - Rate limiting e retry automático
 
-### TUI Monitor - bgptop (Completo)
+### TUI Monitor - bgptop (Produção)
 - Interface de monitoramento em tempo real estilo BTOP
 - Comando: `bgpin tui`
+- **ASN Padrão**: 262978 (configurável)
 - **5 Painéis Profissionais**:
   - **AS-PATH Graph**: Visualizador dinâmico de topologia BGP
   - **BGP Peers**: Monitoramento avançado com telemetria
@@ -83,6 +84,22 @@ CLI profissional + SDK + Telemetria + Flow Analysis
   - **GoFlow live**: Processamento NetFlow/sFlow/IPFIX
   - **RPKI validator**: Validação de rotas em tempo real
   - **OpenTelemetry metrics**: Métricas profissionais
+- **Configuração GoBGP**:
+  ```bash
+  # 1. Instalar GoBGP
+  go install github.com/osrg/gobgp/v3/cmd/gobgpd@latest
+  go install github.com/osrg/gobgp/v3/cmd/gobgp@latest
+  
+  # 2. Usar configuração exemplo
+  cp gobgp.conf.example gobgp.conf
+  # Editar gobgp.conf com seus neighbors reais
+  
+  # 3. Iniciar GoBGP daemon
+  gobgpd -f gobgp.conf
+  
+  # 4. Iniciar TUI
+  bgpin tui
+  ```
 - Engine moderna com Bubble Tea framework
 - **Status**: ✅ Produção - Interface completa para operações BGP
 

@@ -95,7 +95,7 @@ func NewModel(config Config, refreshInterval time.Duration) *Model {
 	// Create AS-PATH graph
 	centerASN := config.FocusASN
 	if centerASN == 0 {
-		centerASN = 65001 // Default ASN
+		centerASN = 262978 // Default to user's ASN
 	}
 	
 	asGraph := graph.NewASPathGraph(centerASN, 80, 20)

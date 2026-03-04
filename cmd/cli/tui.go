@@ -27,13 +27,14 @@ Navigation:
 - r: Refresh data
 - h: Help`,
 		Example: `  bgpin tui
-  bgpin tui --refresh 5s
-  bgpin tui --asn 262978`,
+  bgpin tui --refresh 1s
+  bgpin tui --asn 262978
+  bgpin tui --flows`,
 		RunE: runTUI,
 	}
 
-	tuiCmd.Flags().StringP("refresh", "r", "2s", "Refresh interval (e.g., 1s, 5s, 30s)")
-	tuiCmd.Flags().IntP("asn", "a", 0, "Focus on specific ASN")
+	tuiCmd.Flags().StringP("refresh", "r", "1s", "Refresh interval (e.g., 1s, 5s, 30s)")
+	tuiCmd.Flags().IntP("asn", "a", 262978, "Focus on specific ASN (default: 262978)")
 	tuiCmd.Flags().BoolP("flows", "f", false, "Start with flows panel active")
 
 	return tuiCmd

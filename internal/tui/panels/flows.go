@@ -161,7 +161,7 @@ func (m FlowsModel) renderLoading() string {
 		Align(lipgloss.Center, lipgloss.Center).
 		Foreground(lipgloss.Color("#666666"))
 	
-	return style.Render("NetFlow/sFlow collector not connected\n\nTo view flow data:\n1. Configure flow collector in bgpin.yaml\n2. Start NetFlow/sFlow/IPFIX export\n3. Real flow data will appear here")
+	return style.Render("Flow collector não conectado\n\nPara dados de flow:\n1. Configure NetFlow/sFlow no router\n2. Aponte para bgpin flow collector\n3. Dados de tráfego aparecerão aqui\n\n(Opcional - BGP funciona independente)")
 }
 
 // renderFlows renders the flows content
