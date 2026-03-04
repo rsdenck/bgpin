@@ -273,14 +273,17 @@ bgpin/
     - `internal/tui/telemetry/sparkline.go` - Sistema de telemetria
     - `internal/tui/gobgp/client.go` - Integração GoBGP gRPC
   - **Comando CLI**: `bgpin tui` - Interface completa semelhante ao BTOP para Linux, mas para BGP/Flows
-  - **Status**: ✅ **COMPLETO** - 5 painéis profissionais com dados reais/simulados
+  - **Status**: ✅ **PRODUÇÃO** - 5 painéis profissionais com dados reais
   - **Funcionalidades Avançadas**:
     - 🎯 Grafo de Adjacência AS-PATH com visualização dinâmica
     - 📊 Telemetria detalhada com sparklines em tempo real
-    - 🔍 Integração profissional com GoBGP via gRPC
+    - 🔍 Integração profissional com GoBGP via gRPC streaming
     - 🌐 Top 5 flows NetFlow/sFlow/IPFIX com análise geográfica
     - ⚡ Busca avançada e filtros em tempo real
     - 🎨 Interface profissional estilo BTOP para operações de rede
+    - 🛡️ Tratamento robusto de erros sem panics
+    - 🔄 Auto-refresh a cada segundo para monitoramento carrier-grade
+    - 📡 Título "BGPIN MONITOR" e indicadores de status em tempo real
 - [ ] Time-series database storage
 - [ ] REST API
 - [ ] Advanced flow correlation algorithms
