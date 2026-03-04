@@ -11,6 +11,8 @@ import (
 	"github.com/bgpin/bgpin/internal/ai/schema"
 	"github.com/bgpin/bgpin/internal/parsers/http"
 	"github.com/bgpin/bgpin/internal/parsers/rpki"
+	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/jedib0t/go-pretty/v6/text"
 	"github.com/spf13/cobra"
 )
 
@@ -302,12 +304,12 @@ func runAIFlow(cmd *cobra.Command, args []string) error {
 			},
 		},
 		"summary": map[string]interface{}{
-			"total_flows":    3,
-			"total_bytes":    528384,
-			"total_packets":  4128,
-			"unique_src_ips": 3,
-			"unique_dst_ips": 3,
-			"protocols":      []string{"UDP", "TCP"},
+			"total_flows":      3,
+			"total_bytes":      528384,
+			"total_packets":    4128,
+			"unique_src_ips":   3,
+			"unique_dst_ips":   3,
+			"protocols":        []string{"UDP", "TCP"},
 			"suspicious_flows": 2,
 		},
 	}
@@ -347,11 +349,62 @@ Forneça uma análise detalhada em português com recomendações práticas.`
 
 	fmt.Println("=== Análise de Flows com IA ===")
 	fmt.Println(analysis)
+	
 	fmt.Println("\n=== Resumo dos Dados ===")
-	fmt.Printf("Total de Flows: %v\n", flowData["summary"].(map[string]interface{})["total_flows"])
-	fmt.Printf("Total de Bytes: %v\n", flowData["summary"].(map[string]interface{})["total_bytes"])
-	fmt.Printf("Flows Suspeitos: %v\n", flowData["summary"].(map[string]interface{})["suspicious_flows"])
-	fmt.Printf("Protocolos: %v\n", flowData["summary"].(map[string]interface{})["protocols"])
+	
+	// Criar tabela para resumo dos dados
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.SetTitle("Resumo da Análise de Flows")
+	t.Style().Title.Align = text.AlignCenter
+	t.SetStyle(table.StyleRounded)
+	t.Style().Options.SeparateRows = false
+
+	t.AppendHeader(table.Row{"Métrica", "Valor"})
+	t.AppendRow(table.Row{"Total de Flows", flowData["summary"].(map[string]interface{})["total_flows"]})
+	t.AppendRow(table.Row{"Total de Bytes", fmt.Sprintf("%v", flowData["summary"].(map[string]interface{})["total_bytes"])})
+	t.AppendRow(table.Row{"Total de Pacotes", flowData["summary"].(map[string]interface{})["total_packets"]})
+	t.AppendRow(table.Row{"Flows Suspeitos", flowData["summary"].(map[string]interface{})["suspicious_flows"]})
+	t.AppendRow(table.Row{"IPs Únicos (Origem)", flowData["summary"].(map[string]interface{})["unique_src_ips"]})
+	t.AppendRow(table.Row{"IPs Únicos (Destino)", flowData["summary"].(map[string]interface{})["unique_dst_ips"]})
+	t.AppendRow(table.Row{"Protocolos", fmt.Sprintf("%v", flowData["summary"].(map[string]interface{})["protocols"])})
+
+	t.Render()
+
+	// Tabela detalhada dos flows analisados
+	fmt.Println("\n=== Detalhes dos Flows Analisados ===")
+	
+	t2 := table.NewWriter()
+	t2.SetOutputMirror(os.Stdout)
+	t2.SetTitle("Flows Detectados")
+	t2.Style().Title.Align = text.AlignCenter
+	t2.SetStyle(table.StyleRounded)
+	t2.Style().Options.SeparateRows = false
+
+	t2.AppendHeader(table.Row{"IP Origem", "IP Destino", "Protocolo", "Bytes", "Pacotes", "Status"})
+	
+	flows := flowData["flows"].([]map[string]interface{})
+	for _, flow := range flows {
+		status := flow["flags"].(string)
+		if status == "normal" {
+			status = "Normal"
+		} else if status == "suspicious_volume" {
+			status = "Volume Suspeito"
+		} else if status == "ddos_pattern" {
+			status = "Padrão DDoS"
+		}
+		
+		t2.AppendRow(table.Row{
+			flow["src_ip"],
+			flow["dst_ip"],
+			flow["protocol"],
+			fmt.Sprintf("%v", flow["bytes"]),
+			fmt.Sprintf("%v", flow["packets"]),
+			status,
+		})
+	}
+	
+	t2.Render()
 
 	return nil
 }
