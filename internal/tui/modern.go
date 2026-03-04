@@ -38,6 +38,11 @@ type ModernTUI struct {
 	cpuGauge         *components.Gauge
 	memoryGauge      *components.Gauge
 	
+	// Gráficos de análise técnica
+	routeAnalysisChart *components.LineChart
+	trafficAnalysisChart *components.CandlestickChart
+	peerVolumeChart    *components.VolumeChart
+	
 	// Dados em tempo real
 	bgpSummary    BGPSummary
 	peerStats     []PeerStat
@@ -240,6 +245,16 @@ func (m *ModernTUI) initializeComponents() {
 	m.networkChart = components.NewNetworkChart("Network Traffic", "Mbps", 80, 12)
 	
 	m.bgpPeerChart = components.NewBGPPeerChart("BGP Peer Prefixes", 80, 12)
+	
+	// Inicializar gráficos de análise técnica
+	m.routeAnalysisChart = components.NewLineChart("Route Analysis", 80, 15)
+	m.routeAnalysisChart.AddSeries("IPv4 Routes", cpuColor)
+	m.routeAnalysisChart.AddSeries("IPv6 Routes", memoryColor)
+	m.routeAnalysisChart.AddSeries("BGP Updates", networkInColor)
+	
+	m.trafficAnalysisChart = components.NewCandlestickChart("Traffic Analysis", "5min", 80, 15)
+	
+	m.peerVolumeChart = components.NewVolumeChart("Peer Activity Volume", 80, 12)
 	
 	// Inicializar medidores
 	m.cpuGauge = components.NewGauge("CPU", "%", 100)
@@ -533,22 +548,23 @@ func (m *ModernTUI) renderTabs() string {
 
 // renderOverviewPanel renderiza o painel de visão geral
 func (m *ModernTUI) renderOverviewPanel() string {
-	// Layout principal: gráficos grandes ocupando a maior parte da tela
+	// Layout estilo análise técnica
 	
-	// Painel superior: CPU e Memory lado a lado
-	cpuPanel := chartStyle.Width(m.width/2-2).Height(15).Render(m.cpuChart.Render())
-	memoryPanel := chartStyle.Width(m.width/2-2).Height(15).Render(m.memoryChart.Render())
-	topRow := lipgloss.JoinHorizontal(lipgloss.Top, cpuPanel, memoryPanel)
+	// Painel superior: Análise de rotas (gráfico de linha)
+	routeAnalysisPanel := chartStyle.Width(m.width-4).Height(18).Render(m.routeAnalysisChart.Render())
 	
-	// Painel do meio: Network Traffic
-	networkPanel := chartStyle.Width(m.width-4).Height(15).Render(m.networkChart.Render())
+	// Painel do meio: Análise de tráfego (candlestick)
+	trafficAnalysisPanel := chartStyle.Width(m.width/2-2).Height(18).Render(m.trafficAnalysisChart.Render())
 	
-	// Painel inferior: BGP Peers e System Info
-	bgpPanel := chartStyle.Width(m.width/2-2).Height(15).Render(m.bgpPeerChart.Render())
-	systemPanel := m.renderSystemSummaryPanel()
-	bottomRow := lipgloss.JoinHorizontal(lipgloss.Top, bgpPanel, systemPanel)
+	// Painel do meio direito: Volume de atividade de peers
+	peerVolumePanel := chartStyle.Width(m.width/2-2).Height(18).Render(m.peerVolumeChart.Render())
 	
-	return lipgloss.JoinVertical(lipgloss.Left, topRow, networkPanel, bottomRow)
+	middleRow := lipgloss.JoinHorizontal(lipgloss.Top, trafficAnalysisPanel, peerVolumePanel)
+	
+	// Painel inferior: Métricas do sistema (compacto)
+	systemMetricsPanel := m.renderCompactSystemMetrics()
+	
+	return lipgloss.JoinVertical(lipgloss.Left, routeAnalysisPanel, middleRow, systemMetricsPanel)
 }
 
 // renderMetricsPanel renderiza painel de métricas com gráficos
@@ -573,44 +589,47 @@ func (m *ModernTUI) renderMetricsPanel() string {
 	)
 }
 
-// renderSystemSummaryPanel renderiza resumo compacto do sistema
-func (m *ModernTUI) renderSystemSummaryPanel() string {
+// renderCompactSystemMetrics renderiza métricas do sistema de forma compacta
+func (m *ModernTUI) renderCompactSystemMetrics() string {
 	var content strings.Builder
 	
-	// Título
-	content.WriteString(titleStyle.Render("System Summary") + "\n\n")
-	
-	// Informações básicas
-	content.WriteString(fmt.Sprintf("Hostname: %s\n", metricValueStyle.Render(m.systemInfo.Hostname)))
-	content.WriteString(fmt.Sprintf("Uptime: %s\n", metricValueStyle.Render(m.systemInfo.Uptime)))
-	content.WriteString(fmt.Sprintf("Version: %s\n\n", infoStyle.Render(m.systemInfo.Version)))
-	
-	// BGP Status
-	content.WriteString(metricLabelStyle.Render("BGP Status:") + "\n")
-	content.WriteString(fmt.Sprintf("Router ID: %s\n", metricValueStyle.Render(m.bgpSummary.RouterID)))
-	content.WriteString(fmt.Sprintf("Local AS: %s\n", metricValueStyle.Render(fmt.Sprintf("AS%d", m.bgpSummary.LocalAS))))
-	content.WriteString(fmt.Sprintf("Active Peers: %s/%d\n", 
+	// Linha de métricas principais
+	content.WriteString(metricLabelStyle.Render("SYSTEM METRICS") + " | ")
+	content.WriteString(fmt.Sprintf("CPU: %s | ", 
+		m.getColoredMetric(m.systemInfo.CPUUsage, 80, 95)))
+	content.WriteString(fmt.Sprintf("MEM: %s | ", 
+		m.getColoredMetric(m.systemInfo.MemoryUsage, 85, 95)))
+	content.WriteString(fmt.Sprintf("BGP: %s/%d peers | ", 
 		successStyle.Render(strconv.Itoa(m.bgpSummary.ActivePeers)), 
 		m.bgpSummary.TotalPeers))
-	content.WriteString(fmt.Sprintf("Total Routes: %s\n", 
+	content.WriteString(fmt.Sprintf("Routes: %s | ", 
 		metricValueStyle.Render(strconv.Itoa(m.bgpSummary.TotalRoutes))))
 	
 	// Alertas
-	content.WriteString("\n" + metricLabelStyle.Render("System Alerts:") + "\n")
 	alertCounts := m.alertManager.GetAlertCount()
 	if alertCounts[metrics.AlertLevelCritical] > 0 {
-		content.WriteString(fmt.Sprintf("Critical: %s\n", 
-			errorStyle.Render(strconv.Itoa(alertCounts[metrics.AlertLevelCritical]))))
+		content.WriteString(errorStyle.Render(fmt.Sprintf("CRIT: %d | ", alertCounts[metrics.AlertLevelCritical])))
 	}
 	if alertCounts[metrics.AlertLevelWarning] > 0 {
-		content.WriteString(fmt.Sprintf("Warning: %s\n", 
-			warningStyle.Render(strconv.Itoa(alertCounts[metrics.AlertLevelWarning]))))
-	}
-	if alertCounts[metrics.AlertLevelCritical] == 0 && alertCounts[metrics.AlertLevelWarning] == 0 {
-		content.WriteString(successStyle.Render("All systems normal") + "\n")
+		content.WriteString(warningStyle.Render(fmt.Sprintf("WARN: %d | ", alertCounts[metrics.AlertLevelWarning])))
 	}
 	
-	return chartStyle.Width(m.width/2-2).Height(15).Render(content.String())
+	content.WriteString(fmt.Sprintf("Uptime: %s", infoStyle.Render(m.systemInfo.Uptime)))
+	
+	return chartStyle.Width(m.width-4).Height(3).Render(content.String())
+}
+
+// getColoredMetric retorna uma métrica com cor baseada nos thresholds
+func (m *ModernTUI) getColoredMetric(value, warningThreshold, criticalThreshold float64) string {
+	valueStr := fmt.Sprintf("%.1f%%", value)
+	
+	if value >= criticalThreshold {
+		return errorStyle.Render(valueStr)
+	} else if value >= warningThreshold {
+		return warningStyle.Render(valueStr)
+	} else {
+		return successStyle.Render(valueStr)
+	}
 }
 
 // renderBGPSummaryPanel renderiza resumo BGP
@@ -1346,14 +1365,16 @@ func (m *ModernTUI) simulateMetrics() {
 		return
 	}
 	
-	ticker := time.NewTicker(1 * time.Second) // Mais frequente para gráficos maiores
+	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
 	
 	for {
 		select {
 		case <-ticker.C:
+			now := time.Now()
+			
 			// Simular CPU usage (20-80%)
-			cpuUsage := 20.0 + 30.0*math.Sin(float64(time.Now().Unix())/10.0) + 10.0*math.Sin(float64(time.Now().Unix())/3.0)
+			cpuUsage := 20.0 + 30.0*math.Sin(float64(now.Unix())/10.0) + 10.0*math.Sin(float64(now.Unix())/3.0)
 			if cpuUsage < 0 {
 				cpuUsage = 0
 			}
@@ -1368,7 +1389,7 @@ func (m *ModernTUI) simulateMetrics() {
 			m.systemInfo.CPUUsage = cpuUsage
 			
 			// Simular Memory usage (30-70%)
-			memUsage := 40.0 + 20.0*math.Sin(float64(time.Now().Unix())/15.0) + 5.0*math.Sin(float64(time.Now().Unix())/5.0)
+			memUsage := 40.0 + 20.0*math.Sin(float64(now.Unix())/15.0) + 5.0*math.Sin(float64(now.Unix())/5.0)
 			if memUsage < 0 {
 				memUsage = 0
 			}
@@ -1384,8 +1405,8 @@ func (m *ModernTUI) simulateMetrics() {
 			
 			// Simular Network traffic (entrada e saída)
 			baseTraffic := 50.0
-			inTraffic := baseTraffic + 30.0*math.Sin(float64(time.Now().Unix())/8.0) + 10.0*math.Sin(float64(time.Now().Unix())/2.0)
-			outTraffic := baseTraffic + 25.0*math.Sin(float64(time.Now().Unix())/12.0) + 15.0*math.Sin(float64(time.Now().Unix())/4.0)
+			inTraffic := baseTraffic + 30.0*math.Sin(float64(now.Unix())/8.0) + 10.0*math.Sin(float64(now.Unix())/2.0)
+			outTraffic := baseTraffic + 25.0*math.Sin(float64(now.Unix())/12.0) + 15.0*math.Sin(float64(now.Unix())/4.0)
 			
 			if inTraffic < 0 {
 				inTraffic = 0
@@ -1397,15 +1418,43 @@ func (m *ModernTUI) simulateMetrics() {
 			m.networkChart.AddData(inTraffic, outTraffic)
 			m.metricsCollector.RecordValue("network_traffic", inTraffic+outTraffic)
 			
+			// Simular dados de análise de rotas
+			ipv4Routes := 750000.0 + 50000.0*math.Sin(float64(now.Unix())/30.0)
+			ipv6Routes := 100000.0 + 10000.0*math.Sin(float64(now.Unix())/25.0)
+			bgpUpdates := 1000.0 + 500.0*math.Sin(float64(now.Unix())/5.0)
+			
+			m.routeAnalysisChart.AddDataPoint("IPv4 Routes", now, ipv4Routes)
+			m.routeAnalysisChart.AddDataPoint("IPv6 Routes", now, ipv6Routes)
+			m.routeAnalysisChart.AddDataPoint("BGP Updates", now, bgpUpdates)
+			
+			// Simular dados de candlestick para análise de tráfego (a cada 5 segundos)
+			if now.Unix()%5 == 0 {
+				// Simular OHLC para tráfego
+				basePrice := 100.0
+				volatility := 10.0
+				
+				open := basePrice + volatility*math.Sin(float64(now.Unix())/20.0)
+				high := open + math.Abs(volatility*math.Sin(float64(now.Unix())/7.0))
+				low := open - math.Abs(volatility*math.Sin(float64(now.Unix())/11.0))
+				close := open + volatility*math.Sin(float64(now.Unix())/13.0)
+				volume := 1000.0 + 500.0*math.Abs(math.Sin(float64(now.Unix())/6.0))
+				
+				m.trafficAnalysisChart.AddData(now, open, high, low, close, volume)
+			}
+			
 			// Simular dados de peers BGP
 			for i, peer := range m.peerStats {
 				if peer.State == "Established" {
 					// Simular variação nos prefixos recebidos
-					variation := 1.0 + 0.1*math.Sin(float64(time.Now().Unix()+int64(i))/20.0)
+					variation := 1.0 + 0.1*math.Sin(float64(now.Unix()+int64(i))/20.0)
 					prefixCount := float64(peer.PrefixRcv) * variation
 					
 					peerName := fmt.Sprintf("AS%d", peer.ASN)
 					m.bgpPeerChart.AddPeerData(peerName, prefixCount)
+					
+					// Adicionar ao gráfico de volume
+					peerActivity := prefixCount / 1000.0 // Normalizar
+					m.peerVolumeChart.AddData(now, peerActivity, prefixCount)
 				}
 			}
 			
