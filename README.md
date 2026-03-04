@@ -62,13 +62,15 @@ CLI profissional + SDK + Telemetria + Flow Analysis
 - Detecção de anomalias com IA
 - Rate limiting e retry automático
 
-### TUI Monitor
+### TUI Monitor - bgptop (Beta)
 - Interface de monitoramento em tempo real estilo BTOP
-- Comando: `bgpin apply tui`
+- Comando: `bgpin tui`
 - Monitoramento visual de BGP/ASN em tempo real
 - Dashboard interativo com métricas de rede
 - Visualização de flows e anomalias
 - Navegação por teclado e interface responsiva
+- Engine moderna com Bubble Tea framework
+- **Status**: Versão Beta - Em desenvolvimento ativo
 
 ## Instalação
 
@@ -112,7 +114,7 @@ bgpin ai copilot
 bgpin rpki validate 15169 8.8.8.0/24
 
 # TUI Monitor (interface interativa)
-bgpin apply tui
+bgpin tui
 
 # Formato JSON
 bgpin asn info 262978 -o json
@@ -162,6 +164,27 @@ func main() {
 - [v0.1.0](docs/releases/v0.1.0.md) - Initial release
 
 ## Exemplos de Saída
+
+### AI Flow Analysis
+![Flow Analysis Tables](img/flow_ia.jpg)
+
+A análise de flows com IA mostra três tabelas organizadas:
+1. **Flows Detectados** - Lista detalhada dos flows com status de segurança
+2. **Resumo da Análise** - Métricas consolidadas do tráfego
+3. **Análise de Tráfego** - Análise inteligente com recomendações em português
+
+![Flow Analysis Details](img/flow_ia_analise.jpg)
+
+### TUI Monitor - bgptop (Beta)
+![TUI Interface v1](img/tui_v1.png)
+
+Interface Terminal User Interface (TUI) em desenvolvimento - versão beta do bgptop:
+- **Painel Summary**: Métricas gerais de BGP e sistema
+- **Painel Routes**: Visualização de rotas BGP em tempo real
+- **Painel Neighbors**: Status dos vizinhos BGP
+- **Painel Traffic**: Análise de tráfego NetFlow/sFlow/IPFIX
+- **Navegação**: Tab/Shift+Tab para alternar painéis, q para sair
+- **Atualização**: Dados atualizados automaticamente a cada 2 segundos
 
 ### Informações de ASN
 ```
@@ -222,7 +245,22 @@ bgpin/
 - [x] Arista parser (EOS)
 - [x] Nokia parser (SR OS)
 - [x] Machine Learning anomaly detection
-- [ ] TUI Monitor (`bgpin apply tui`) - Interface BTOP-like para BGP/ASN
+- [x] **TUI DA CLI PARA BGP - bgptop (Beta)**
+  - **Nome**: bgptop
+  - **Engine TUI**: github.com/charmbracelet/bubbletea (estado + loop)
+  - **Layout e estilo**: github.com/charmbracelet/lipgloss (cores, bordas, padding)
+  - **Gráficos estilo btop**: github.com/charmbracelet/bubbles ou github.com/NimbleMarkets/ntcharts
+  - **Arquitetura**:
+    - `cmd/cli/tui.go`
+    - `internal/tui/model.go`
+    - `internal/tui/update.go`
+    - `internal/tui/view.go`
+    - `internal/tui/panels/summary.go`
+    - `internal/tui/panels/routes.go`
+    - `internal/tui/panels/neighbors.go`
+    - `internal/tui/panels/traffic.go`
+  - **Comando CLI**: `bgpin tui` - Interface completa semelhante ao BTOP para Linux, mas para BGP/Flows
+  - **Status**: ✅ Versão Beta implementada - 4 painéis funcionais com dados simulados
 - [ ] Time-series database storage
 - [ ] REST API
 - [ ] Advanced flow correlation algorithms

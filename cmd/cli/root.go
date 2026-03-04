@@ -42,6 +42,7 @@ structured output in JSON, YAML, or table format.`,
 		newConfigCommand(),
 		newAICommand(),
 		newApplyCommand(),
+		newTUICommand(),
 		newVersionCommand(),
 	)
 

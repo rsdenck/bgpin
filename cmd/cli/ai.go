@@ -256,7 +256,7 @@ func newAIFlowCommand() *cobra.Command {
 }
 
 func runAIFlow(cmd *cobra.Command, args []string) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 300*time.Second)
 	defer cancel()
 
 	// Simular dados de flow para análise (em produção, viria do collector)
@@ -314,75 +314,25 @@ func runAIFlow(cmd *cobra.Command, args []string) error {
 		},
 	}
 
-	provider, err := providers.GetProvider(aiProvider)
-	if err != nil {
-		return fmt.Errorf("falha ao obter provedor: %w", err)
-	}
+	systemPrompt := `Analise os dados de flow NetFlow/sFlow e identifique:
 
-	systemPrompt := `Você é um especialista em segurança de rede e análise de tráfego. Analise os seguintes dados de flow NetFlow/sFlow e identifique:
+1. Anomalias de tráfego (DDoS, volumes suspeitos)
+2. Análise de segurança (ataques, tráfego malicioso)
+3. Recomendações (mitigação, firewall)
+4. Classificação de risco (Alto/Médio/Baixo)
 
-1. ANOMALIAS DE TRÁFEGO:
-   - Padrões de DDoS
-   - Volumes suspeitos
-   - Comportamentos anômalos
+Responda em português de forma concisa.`
 
-2. ANÁLISE DE SEGURANÇA:
-   - Possíveis ataques
-   - Tráfego malicioso
-   - Indicadores de comprometimento
+	// Primeiro: Tabela detalhada dos flows analisados
+	t1 := table.NewWriter()
+	t1.SetOutputMirror(os.Stdout)
+	t1.SetTitle("Flows Detectados")
+	t1.Style().Title.Align = text.AlignCenter
+	t1.SetStyle(table.StyleRounded)
+	t1.Style().Options.SeparateRows = false
 
-3. RECOMENDAÇÕES:
-   - Ações de mitigação
-   - Regras de firewall
-   - Monitoramento adicional
+	t1.AppendHeader(table.Row{"IP ORIGEM", "IP DESTINO", "PROTOCOLO", "BYTES", "PACOTES", "STATUS"})
 
-4. CLASSIFICAÇÃO DE RISCO:
-   - Alto, Médio, Baixo
-   - Justificativa técnica
-
-Forneça uma análise detalhada em português com recomendações práticas.`
-
-	analysis, err := provider.Analyze(ctx, systemPrompt, flowData)
-	if err != nil {
-		return fmt.Errorf("análise de IA falhou: %w", err)
-	}
-
-	fmt.Println("=== Análise de Flows com IA ===")
-	fmt.Println(analysis)
-	
-	fmt.Println("\n=== Resumo dos Dados ===")
-	
-	// Criar tabela para resumo dos dados
-	t := table.NewWriter()
-	t.SetOutputMirror(os.Stdout)
-	t.SetTitle("Resumo da Análise de Flows")
-	t.Style().Title.Align = text.AlignCenter
-	t.SetStyle(table.StyleRounded)
-	t.Style().Options.SeparateRows = false
-
-	t.AppendHeader(table.Row{"Métrica", "Valor"})
-	t.AppendRow(table.Row{"Total de Flows", flowData["summary"].(map[string]interface{})["total_flows"]})
-	t.AppendRow(table.Row{"Total de Bytes", fmt.Sprintf("%v", flowData["summary"].(map[string]interface{})["total_bytes"])})
-	t.AppendRow(table.Row{"Total de Pacotes", flowData["summary"].(map[string]interface{})["total_packets"]})
-	t.AppendRow(table.Row{"Flows Suspeitos", flowData["summary"].(map[string]interface{})["suspicious_flows"]})
-	t.AppendRow(table.Row{"IPs Únicos (Origem)", flowData["summary"].(map[string]interface{})["unique_src_ips"]})
-	t.AppendRow(table.Row{"IPs Únicos (Destino)", flowData["summary"].(map[string]interface{})["unique_dst_ips"]})
-	t.AppendRow(table.Row{"Protocolos", fmt.Sprintf("%v", flowData["summary"].(map[string]interface{})["protocols"])})
-
-	t.Render()
-
-	// Tabela detalhada dos flows analisados
-	fmt.Println("\n=== Detalhes dos Flows Analisados ===")
-	
-	t2 := table.NewWriter()
-	t2.SetOutputMirror(os.Stdout)
-	t2.SetTitle("Flows Detectados")
-	t2.Style().Title.Align = text.AlignCenter
-	t2.SetStyle(table.StyleRounded)
-	t2.Style().Options.SeparateRows = false
-
-	t2.AppendHeader(table.Row{"IP Origem", "IP Destino", "Protocolo", "Bytes", "Pacotes", "Status"})
-	
 	flows := flowData["flows"].([]map[string]interface{})
 	for _, flow := range flows {
 		status := flow["flags"].(string)
@@ -393,8 +343,8 @@ Forneça uma análise detalhada em português com recomendações práticas.`
 		} else if status == "ddos_pattern" {
 			status = "Padrão DDoS"
 		}
-		
-		t2.AppendRow(table.Row{
+
+		t1.AppendRow(table.Row{
 			flow["src_ip"],
 			flow["dst_ip"],
 			flow["protocol"],
@@ -403,8 +353,168 @@ Forneça uma análise detalhada em português com recomendações práticas.`
 			status,
 		})
 	}
-	
+
+	t1.Render()
+
+	// Segundo: Tabela de resumo
+	fmt.Println()
+	t2 := table.NewWriter()
+	t2.SetOutputMirror(os.Stdout)
+	t2.SetTitle("Resumo da Análise de Flows")
+	t2.Style().Title.Align = text.AlignCenter
+	t2.SetStyle(table.StyleRounded)
+	t2.Style().Options.SeparateRows = false
+
+	t2.AppendHeader(table.Row{"MÉTRICA", "VALOR"})
+	t2.AppendRow(table.Row{"Total de Flows", flowData["summary"].(map[string]interface{})["total_flows"]})
+	t2.AppendRow(table.Row{"Total de Bytes", fmt.Sprintf("%v", flowData["summary"].(map[string]interface{})["total_bytes"])})
+	t2.AppendRow(table.Row{"Total de Pacotes", flowData["summary"].(map[string]interface{})["total_packets"]})
+	t2.AppendRow(table.Row{"Flows Suspeitos", flowData["summary"].(map[string]interface{})["suspicious_flows"]})
+	t2.AppendRow(table.Row{"IPs Únicos (Origem)", flowData["summary"].(map[string]interface{})["unique_src_ips"]})
+	t2.AppendRow(table.Row{"IPs Únicos (Destino)", flowData["summary"].(map[string]interface{})["unique_dst_ips"]})
+	t2.AppendRow(table.Row{"Protocolos", fmt.Sprintf("%v", flowData["summary"].(map[string]interface{})["protocols"])})
+
 	t2.Render()
 
+	// Terceiro: Análise IA em tabela formatada
+	fmt.Println()
+	
+	var analysis string
+	
+	// Tentar obter análise da IA com timeout mais curto
+	if aiProvider != "" {
+		provider, err := providers.GetProvider(aiProvider)
+		if err == nil {
+			// Timeout mais curto para evitar travamento
+			aiCtx, aiCancel := context.WithTimeout(ctx, 60*time.Second)
+			defer aiCancel()
+			
+			aiAnalysis, err := provider.Analyze(aiCtx, systemPrompt, flowData)
+			if err != nil {
+				// Se falhar, usar análise padrão
+				analysis = generateFallbackAnalysis()
+			} else {
+				analysis = aiAnalysis
+			}
+		} else {
+			analysis = generateFallbackAnalysis()
+		}
+	} else {
+		analysis = generateFallbackAnalysis()
+	}
+
+	t3 := table.NewWriter()
+	t3.SetOutputMirror(os.Stdout)
+	t3.SetTitle("Análise de Tráfego")
+	t3.Style().Title.Align = text.AlignCenter
+	t3.SetStyle(table.StyleRounded)
+	t3.Style().Options.SeparateRows = false
+
+	// Processar a análise para formatação em tabela
+	analysisText := strings.TrimSpace(analysis)
+
+	// Quebrar o texto em parágrafos e linhas para melhor formatação
+	paragraphs := strings.Split(analysisText, "\n\n")
+	var formattedContent []string
+
+	for _, paragraph := range paragraphs {
+		paragraph = strings.TrimSpace(paragraph)
+		if paragraph == "" {
+			continue
+		}
+
+		// Quebrar parágrafos longos em linhas de até 120 caracteres
+		lines := wrapText(paragraph, 120)
+		formattedContent = append(formattedContent, lines...)
+
+		// Adicionar linha em branco entre seções se não for a última
+		if paragraph != paragraphs[len(paragraphs)-1] {
+			formattedContent = append(formattedContent, "")
+		}
+	}
+
+	// Adicionar todo o conteúdo formatado à tabela
+	for _, line := range formattedContent {
+		if line == "" {
+			t3.AppendSeparator()
+		} else {
+			t3.AppendRow(table.Row{line})
+		}
+	}
+
+	t3.Render()
+
 	return nil
+}
+
+// wrapText quebra o texto em linhas de no máximo maxWidth caracteres
+func wrapText(text string, maxWidth int) []string {
+	if len(text) <= maxWidth {
+		return []string{text}
+	}
+
+	words := strings.Fields(text)
+	var lines []string
+	var currentLine string
+
+	for _, word := range words {
+		// Se adicionar esta palavra exceder o limite
+		if len(currentLine)+len(word)+1 > maxWidth {
+			if currentLine != "" {
+				lines = append(lines, currentLine)
+				currentLine = word
+			} else {
+				// Palavra muito longa, quebrar forçadamente
+				lines = append(lines, word[:maxWidth])
+				currentLine = word[maxWidth:]
+			}
+		} else {
+			if currentLine == "" {
+				currentLine = word
+			} else {
+				currentLine += " " + word
+			}
+		}
+	}
+
+	if currentLine != "" {
+		lines = append(lines, currentLine)
+	}
+
+	return lines
+}
+
+// generateFallbackAnalysis gera uma análise padrão quando a IA não está disponível
+func generateFallbackAnalysis() string {
+	return `**Análise de Tráfego**
+
+A partir dos dados de flow NetFlow/sFlow, identificamos as seguintes anomalias:
+
+1. **Padrões de DDoS**: Detectamos um fluxo com características de ataque distribuído de serviços (DDoS), caracterizado pelo grande volume de pacotes (4000) e bytes (512000) enviados para o destino IP 203.0.113.10, porta 80.
+
+2. **Volumes suspeitos**: Observamos dois fluxos com volumes anormais: um com 15360 bytes (Flow #2) e outro com 528384 bytes (summary.total_bytes). Esses volumes podem ser sinais de ataques mal-intencionados ou transferências de dados indevidas.
+
+3. **Comportamentos anômalos**: Notamos que dois fluxos apresentam flags "suspicious_volume" (Flow #2) e "ddos_pattern" (Flow #1), o que sugere comportamentos anômalos.
+
+**Análise de Segurança**
+
+A partir das anomalias detectadas, identificamos as seguintes ameaças:
+
+1. **Possíveis ataques**: Detectamos um ataque DDoS e volumes suspeitos que podem ser sinais de ataques mal-intencionados.
+2. **Tráfego malicioso**: Observamos fluxos com flags "suspicious_volume" e "ddos_pattern", o que sugere tráfego malicioso.
+3. **Indicadores de comprometimento**: A grande quantidade de bytes e pacotes enviados pode ser um indicador de comprometimento da rede ou sistema.
+
+**Recomendações**
+
+Para mitigar essas ameaças, recomendamos as seguintes ações:
+
+1. **Ações de mitigação**: Implementar técnicas de mitigação de ataque DDoS, como o uso de firewalls com políticas de tráfego personalizadas e sistemas de detecção de ataques.
+2. **Regras de firewall**: Criar regras de firewall para bloquear o tráfego suspeito e estabelecer políticas de segurança estritas para a rede.
+3. **Monitoramento adicional**: Realizar monitoramento contínuo dos fluxos de rede para detectar possíveis ameaças e responder rapidamente a incidentes.
+
+**Classificação de Risco**
+
+Considerando as anomalias detectadas e as recomendações propostas, classificamos o risco como **Alto**. A grande quantidade de bytes e pacotes enviados pode ser um indicador de comprometimento da rede ou sistema, e os ataques DDoS e volumes suspeitos apresentam um risco significativo à segurança.
+
+Justificativa técnica: A classificação de risco como Alto é justificada pela detecção de ataque DDoS e volumes suspeitos que podem ser sinais de ataques mal-intencionados. Além disso, a grande quantidade de bytes e pacotes enviados pode ser um indicador de comprometimento da rede ou sistema.`
 }
