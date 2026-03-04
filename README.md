@@ -54,6 +54,13 @@ CLI profissional + SDK + Telemetria + Flow Analysis
 - Nokia (SR OS) - Implementado
 - MikroTik - Planejado
 
+### SNMP Monitoring
+- Monitoramento de dispositivos via SNMP
+- Suporte SNMPv1, SNMPv2c e SNMPv3
+- Community strings configuráveis
+- Interfaces, sistema, BGP e métricas customizadas
+- Integração com roteadores e switches
+
 ### AI Integration
 - Análise BGP com inteligência artificial
 - Suporte a múltiplos provedores LLM (OpenAI, Claude, Gemini, Ollama)
@@ -61,10 +68,8 @@ CLI profissional + SDK + Telemetria + Flow Analysis
 - Modo copiloto interativo
 - Detecção de anomalias com IA
 - Rate limiting e retry automático
-
 ### TUI Monitor - bgptop (Produção)
 - Interface de monitoramento em tempo real estilo BTOP
-- Comando: `bgpin tui`
 - **ASN Padrão**: 262978 (configurável)
 - **5 Painéis Profissionais**:
   - **AS-PATH Graph**: Visualizador dinâmico de topologia BGP
@@ -163,6 +168,12 @@ bgpin ai copilot
 
 # RPKI validation
 bgpin rpki validate 15169 8.8.8.0/24
+
+# SNMP monitoring
+bgpin snmp interfaces 192.168.1.1
+bgpin snmp system router.local --community private
+bgpin snmp bgp 10.0.0.1 --version 2c
+bgpin snmp walk 192.168.1.1 1.3.6.1.2.1.1
 
 # TUI Monitor (interface interativa)
 bgpin tui

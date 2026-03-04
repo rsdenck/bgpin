@@ -43,6 +43,7 @@ structured output in JSON, YAML, or table format.`,
 		newAICommand(),
 		newApplyCommand(),
 		newTUICommand(),
+		newSNMPCommand(), // Novo comando SNMP
 		newVersionCommand(),
 	)
 

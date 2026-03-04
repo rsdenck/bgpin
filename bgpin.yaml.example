@@ -73,6 +73,34 @@ ripe:
   retry_wait_max: 10  # seconds
   user_agent: "bgpin/0.1.0"
 
+# SNMP Configuration
+snmp:
+  default_community: "public"
+  default_version: "2c"
+  default_port: 161
+  default_timeout: 5
+  default_retries: 3
+  
+  # Dispositivos pré-configurados
+  devices:
+    router-core:
+      host: "192.168.1.1"
+      community: "bgp-monitoring"
+      version: "2c"
+      description: "Core Router"
+    
+    switch-access:
+      host: "192.168.1.10"
+      community: "network-ops"
+      version: "2c"
+      description: "Access Switch"
+      
+    router-border:
+      host: "10.0.0.1"
+      community: "private"
+      version: "2c"
+      description: "Border Router BGP"
+
 # Analysis settings
 analysis:
   # Detect AS-PATH prepending
