@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/bgpin/bgpin/internal/ai/providers"
 	"github.com/bgpin/bgpin/internal/ai/schema"
@@ -35,6 +36,7 @@ func newAICommand() *cobra.Command {
 	cmd.AddCommand(newAIAnalyzeCommand())
 	cmd.AddCommand(newAIExplainCommand())
 	cmd.AddCommand(newAICopilotCommand())
+	cmd.AddCommand(newAIFlowCommand())
 
 	return cmd
 }
@@ -54,7 +56,7 @@ func newAIAnalyzeCommand() *cobra.Command {
 func runAIAnalyze(cmd *cobra.Command, args []string) error {
 	prefix := args[0]
 
-	ctx, cancel := context.WithTimeout(context.Background(), 60)
+	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
 	defer cancel()
 
 	ripeParser := http.NewRIPEParser()
@@ -124,7 +126,7 @@ func newAIExplainCommand() *cobra.Command {
 func runAIExplain(cmd *cobra.Command, args []string) error {
 	prefix := args[0]
 
-	ctx, cancel := context.WithTimeout(context.Background(), 60)
+	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
 	defer cancel()
 
 	ripeParser := http.NewRIPEParser()
@@ -236,6 +238,120 @@ func runAICopilot(cmd *cobra.Command, args []string) error {
 			fmt.Println(analysis)
 		}
 	}
+
+	return nil
+}
+
+func newAIFlowCommand() *cobra.Command {
+	return &cobra.Command{
+		Use:   "flow",
+		Short: "Análise de flows com IA para detecção de anomalias",
+		Long:  "Exportar dados de flow e analisar com IA para detectar padrões e anomalias",
+		RunE:  runAIFlow,
+		Example: `  bgpin ai flow --provider ollama
+  bgpin ai flow --provider openai --limit 50`,
+	}
+}
+
+func runAIFlow(cmd *cobra.Command, args []string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
+	defer cancel()
+
+	// Simular dados de flow para análise (em produção, viria do collector)
+	flowData := map[string]interface{}{
+		"timestamp": time.Now().Format(time.RFC3339),
+		"flows": []map[string]interface{}{
+			{
+				"src_ip":     "192.168.1.100",
+				"dst_ip":     "8.8.8.8",
+				"src_port":   12345,
+				"dst_port":   53,
+				"protocol":   "UDP",
+				"bytes":      1024,
+				"packets":    8,
+				"src_asn":    65001,
+				"dst_asn":    15169,
+				"duration":   5.2,
+				"flags":      "normal",
+			},
+			{
+				"src_ip":     "10.0.0.50",
+				"dst_ip":     "1.1.1.1",
+				"src_port":   443,
+				"dst_port":   443,
+				"protocol":   "TCP",
+				"bytes":      15360,
+				"packets":    120,
+				"src_asn":    65002,
+				"dst_asn":    13335,
+				"duration":   30.1,
+				"flags":      "suspicious_volume",
+			},
+			{
+				"src_ip":     "172.16.0.200",
+				"dst_ip":     "203.0.113.10",
+				"src_port":   80,
+				"dst_port":   80,
+				"protocol":   "TCP",
+				"bytes":      512000,
+				"packets":    4000,
+				"src_asn":    65003,
+				"dst_asn":    64512,
+				"duration":   2.5,
+				"flags":      "ddos_pattern",
+			},
+		},
+		"summary": map[string]interface{}{
+			"total_flows":    3,
+			"total_bytes":    528384,
+			"total_packets":  4128,
+			"unique_src_ips": 3,
+			"unique_dst_ips": 3,
+			"protocols":      []string{"UDP", "TCP"},
+			"suspicious_flows": 2,
+		},
+	}
+
+	provider, err := providers.GetProvider(aiProvider)
+	if err != nil {
+		return fmt.Errorf("falha ao obter provedor: %w", err)
+	}
+
+	systemPrompt := `Você é um especialista em segurança de rede e análise de tráfego. Analise os seguintes dados de flow NetFlow/sFlow e identifique:
+
+1. ANOMALIAS DE TRÁFEGO:
+   - Padrões de DDoS
+   - Volumes suspeitos
+   - Comportamentos anômalos
+
+2. ANÁLISE DE SEGURANÇA:
+   - Possíveis ataques
+   - Tráfego malicioso
+   - Indicadores de comprometimento
+
+3. RECOMENDAÇÕES:
+   - Ações de mitigação
+   - Regras de firewall
+   - Monitoramento adicional
+
+4. CLASSIFICAÇÃO DE RISCO:
+   - Alto, Médio, Baixo
+   - Justificativa técnica
+
+Forneça uma análise detalhada em português com recomendações práticas.`
+
+	analysis, err := provider.Analyze(ctx, systemPrompt, flowData)
+	if err != nil {
+		return fmt.Errorf("análise de IA falhou: %w", err)
+	}
+
+	fmt.Println("=== Análise de Flows com IA ===")
+	fmt.Println(analysis)
+	fmt.Println("\n=== Resumo dos Dados ===")
+	fmt.Printf("Total de Flows: %v\n", flowData["summary"].(map[string]interface{})["total_flows"])
+	fmt.Printf("Total de Bytes: %v\n", flowData["summary"].(map[string]interface{})["total_bytes"])
+	fmt.Printf("Flows Suspeitos: %v\n", flowData["summary"].(map[string]interface{})["suspicious_flows"])
+	fmt.Printf("Protocolos: %v\n", flowData["summary"].(map[string]interface{})["protocols"])
 
 	return nil
 }

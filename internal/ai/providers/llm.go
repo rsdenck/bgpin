@@ -458,7 +458,11 @@ func NewOllamaProvider(timeout time.Duration) *OllamaProvider {
 		BaseProvider: *NewBaseProvider(timeout),
 	}
 	provider.BaseURL = ollamaURL
-	provider.Model = "llama2"
+	provider.Model = "llama3:latest"
+	// Ollama pode ser mais lento, aumentar timeout
+	if provider.Timeout < 180*time.Second {
+		provider.Timeout = 180 * time.Second
+	}
 	return provider
 }
 
